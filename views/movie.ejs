@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= baseimgURL + data.poster_path %></title>
+    <link rel="stylesheet" href="/styles/moviestyles.css">
+    <link rel="stylesheet" href="/styles/navbar.css">
+</head>
+<body>
+    <div class="main">
+        <%- include("navbar.ejs") %>
+        <div class="mtitle">
+            <%= data.title %>
+        </div>
+        <div class="mcontainer" >
+            <div class="mimg">
+                <img src="<%= baseimgURL + data.poster_path %>" alt="poster-image">
+            </div>
+            <div class="mdetails">
+                <div id="namee">
+                    <span class="name"> Name :- </span>
+                    <span class="key"> <%= data.title %> </span>
+                </div>
+                <div id="desc">
+                    <span class="name"> Overview :-</span>
+                    <span class="key"><%= data.overview %></span>
+                </div>
+                <div id="genre">
+                    <span class="name"> Genres :-</span>
+                    <span class="key">
+                        <% for(let i=0 ; i<data.genres.length ; i++){%>
+                        <span class="bullet-elements"><%= data.genres[i].name %></span>
+                        <%} %>
+                    </span>
+                </div>
+                <!-- <div id="lang">
+                    <span class="name"> Language </span>
+                    <span class="key"><%=  %></span>
+                </div> -->
+                <div id="prod-comp">
+                    <span class="name">Production Companies :- </span>
+                    <span class="key">
+                        <% for(let i=0 ; i<data.production_companies.length ; i++){%>
+                            <span class="bullet-elements"><%= data.production_companies[i].name %></span>
+                        <%} %>
+                    </span>
+                </div>
+                <div id="avg-rating">
+                    <span class="name">Average Rating :- </span>
+                    <span class="key"><%= data.vote_average %></span>
+                </div>
+                <div id="release">
+                    <span class="name"> Release Date :-</span>
+                    <span class="key"> <%= data.release_date %></span>
+                </div>
+            </div>
+        </div>
+        <div class="mcast">
+            <div class="name">
+                Movie Cast
+            </div>
+            <div class="cast-container">
+                <% for(let i=0 ; i<castdata.cast.length ; i++){ %>
+                    <a href="<%= `/cast/${castdata.cast[i].id}/${castdata.cast[i].name}` %>">
+                        <div class="cast-details">
+                            <% if (locals.castdata.cast[i].profile_path){%>
+                                <img src="<%= baseimgURL + castdata.cast[i].profile_path %>" alt="image" srcset="">
+                            <%}else {%>
+                                <img src="/images/profile-photo.jpg" alt="image" srcset="" height="180px">
+                            <%}%>
+                            <div>
+                                <span class="cast-name"><%= castdata.cast[i].name %></span> as <span class="cast-charac"><%= castdata.cast[i].character %></span>
+                            </div>
+                        </div>
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/javascript/darkmode.js"></script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style1.css">
+    <title> Movies </title>
+</head>
+
+<body>
+    <div class="navbar">
+        <!-- <div class="nav-item">Logo</div> -->
+        <!-- <input type="text" placeholder="Search Here" class="nav-item search" /> -->
+        <nav>
+           
+            <div href="" class="nav-item"> <a href="">Home</a> </div>
+            <div href="" class="nav-item"> <a href="" class="nav-item">About Me</a> </div>
+            <div href="" class="categories2 nav-item"> <a href="">Categories</a>
+                <!-- <div class="categories"> Categories </div> -->
+                <div class="dropdown-content">
+                    <a href="">Action</a>
+                    <a href="">Drama</a>
+                    <a href="">History</a>
+                    <a href="">Raju</a>
+                    <a href="">Yugal</a>
+                </div>
+            </div>
+            <div class="dark-btn-div">
+                <input type="checkbox" id="dark">
+                <label for="dark" class="toggle-label">
+                    <span class="toggle-ball"></span>
+                </label>
+            </div>
+            <!-- <div class="categories-dropbox">
+                <a href="">Action</a>
+                <a href="">Drama</a>
+                <a href="">History</a>
+                <a href="">Raju</a>
+                <a href="">Yugal</a>
+
+            </div> -->
+        </nav>
+    </div>
+
+    <!-- <div class="carousel">
+
+    </div> -->
+    <header class="head">
+        <h1>Welcome </br>to the new world </br> of Movies</h1>
+    </header>
+
+    <section class="movie-section">
+
+    </section>
+
+    <footer>
+
+    </footer>
+
+
+    </div>
+
+
+    <script>
+        let dark_mode = document.getElementById("dark");
+
+        dark_mode.addEventListener("click", () => {
+            if (dark.checked) {
+                //code for light mode
+                document.documentElement.style.setProperty("--bgcolor", "#ffffff");
+                document.documentElement.style.setProperty("--navcolor", "#41cf5a");
+                document.documentElement.style.setProperty("--bg2color", "#fffff2");
+                document.documentElement.style.setProperty("--fontcolor", "rgb(27, 27, 27)");
+                document.documentElement.style.setProperty("--shadow", "rgba(60, 60, 60, 0.5)");
+            } else {
+                //for dark mode 
+                document.documentElement.style.setProperty("--bgcolor", "#101010");
+                document.documentElement.style.setProperty("--navcolor", "#03C988");
+                document.documentElement.style.setProperty("--bg2color", "#212121");
+                document.documentElement.style.setProperty("--fontcolor", "rgb(194, 247, 255)");
+                document.documentElement.style.setProperty("--shadow", "rgb(147 147 147 / 50%)");
+            }
+        });
+
+    </script>
+</body>
+
+
+</html>

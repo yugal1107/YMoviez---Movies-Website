@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/caststyles.css">
+    <link rel="stylesheet" href="/styles/navbar.css">
+    <title></title>
+</head>
+<body>
+    <div class="main">
+        <%- include("navbar.ejs") %>
+        <div class="castheading">
+            Movies Of Type  "<%= gname %>"
+        </div>
+        <div class="movie-type">
+            <div class="movie-container">
+
+                <% for(let i=0 ; i<genre.results.length ; i++) {%>
+                    <a class="movie-items" href="<%= `/movie/${genre.results[i].id}` %>">
+                        <img class="movie-img" src="<%= baseimgURL + genre.results[i].poster_path %>" alt = "Poster Image">
+                        <div class="movie-name">
+                            <%if (genre.results[i].title.length > 15) {%>
+                                <%= genre.results[i].title.slice(0,14) + "..."%>
+                            <%}else {%>
+                                <%=genre.results[i].title%>
+                            <%}%>
+                        </div>
+                        <div class="movie-desc"><%= genre.results[i].overview.slice(0,100) %><%= "....." %></div>
+                    </a>
+                <% } %>
+            </div>    
+        </div>
+    </div>
+</body>
+<script src="/javascript/darkmode.js"></script>
+</html>
