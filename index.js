@@ -2,6 +2,7 @@ import express from "express";
 import axios from "axios";
 import axiosRetry from 'axios-retry';
 import ejs from "ejs";
+import path from "path";
 
 axiosRetry(axios, { retries: 3 });
 import {} from 'dotenv/config';
@@ -17,7 +18,7 @@ let baseimgURL = 'https://image.tmdb.org/t/p/w500';
 // app.use(express.static("public"));
 
 //Changes for vercel deployment
- 
+
 // Require static assets from public folder 
 app.use(express.static(path.join(__dirname, 'public'))); 
  
