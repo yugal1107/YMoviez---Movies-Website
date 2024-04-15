@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import axiosRetry from 'axios-retry';
+import ejs from "ejs";
 
 axiosRetry(axios, { retries: 3 });
 import {} from 'dotenv/config';
