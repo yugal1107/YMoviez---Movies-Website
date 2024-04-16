@@ -2,6 +2,11 @@ import express from "express";
 import axios from "axios";
 import axiosRetry from 'axios-retry';
 import ejs from "ejs";
+import path from "path";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 axiosRetry(axios, { retries: 3 });
 import {} from 'dotenv/config';
@@ -14,7 +19,17 @@ const api_key_auth = process.env.apikeyauth;
 const access_token_auth = process.env.accesstokenauth;
 let baseimgURL = 'https://image.tmdb.org/t/p/w500';
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
+
+//Changes for vercel deployment
+
+// Require static assets from public folder 
+app.use(express.static(path.join(__dirname, 'public'))); 
+ 
+// Set 'views' directory for any views  
+// being rendered res.render() 
+app.set('views', path.join(__dirname, 'views')); 
+
 
 app.get("/", async (req,res) => {
 
