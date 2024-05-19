@@ -22,7 +22,7 @@ app.get("/", async (req,res) => {
     console.log("Fetching API");
     try{
         
-        const response4 = await axios.get("https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1" , {
+        const response4 = await axios.get("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_original_language=hi" , {
             timeout: 1000,
             headers: {
                 accept: 'application/json',
@@ -183,6 +183,9 @@ app.get("/category/:gid/:gname" , async (req,res) => {
 
 });
 
+app.get("/about", (req,res)=>{
+    res.render("about.ejs");
+})
 
 app.listen(port  , () => {
     console.log("Server running in port 3000....");
