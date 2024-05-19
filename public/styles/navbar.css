@@ -198,4 +198,8 @@ nav a {
     top: 20px;
   }
   /* Add more responsive styles here */
+
+  nav {
+    gap: 0px;
+  }
 }

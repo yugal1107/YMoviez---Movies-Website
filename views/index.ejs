@@ -22,6 +22,27 @@
     <section class="movie-section">
         <div class="movie-type">
             <div class="list-title">
+                Upcoming Movies  
+            </div>
+            <div class="movie-container">
+
+                <% for(let i=0 ; i<10 ; i++) {%>
+                    <a class="movie-items" href="<%= `/movie/${up[i].id}` %>">
+                        <img class="movie-img" src="<%= baseimgURL + up[i].poster_path %>" alt = "Poster Image">
+                        <div class="movie-name">
+                            <%if (up[i].title.length > 15) {%>
+                                <%= up[i].title.slice(0,14) + "..."%>
+                            <%}else {%>
+                                <%=up[i].title%>
+                            <%}%>
+                        </div>
+                        <div class="movie-desc"><%= hi[i].overview.slice(0,100) %><%= "....." %></div>
+                    </a>
+                <% } %>
+            </div>    
+        </div>
+        <div class="movie-type">
+            <div class="list-title">
                 Popular Hindi Movies  
             </div>
             <div class="movie-container">
