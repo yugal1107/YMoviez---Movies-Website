@@ -20,22 +20,6 @@ app.get("/", async (req, res) => {
   // Method 1 : Angela Yu
   console.log("Fetching API");
   try {
-    const response0 = await axios.get(
-      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-      {
-        timeout: 1000,
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${access_token_auth}`,
-        },
-      }
-    );
-
-    const upcomingdata = await response0.data;
-    const upcomingmovie = await upcomingdata.results;
-
-    console.log("API 0 fetched successfully");
-
     const response1 = await axios.get(
       "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_original_language=hi",
       {
@@ -111,7 +95,6 @@ app.get("/", async (req, res) => {
       hi: hindimovie,
       p: popularmovie,
       np: nowplayingmovie,
-      up: upcomingmovie,
       baseimgURL: baseimgURL,
     });
     console.log("Get request accepted");
