@@ -328,21 +328,20 @@ nav a {
   }
 }  */
 
-
 @media screen and (max-width: 480px) {
   h1 {
     display: none;
   }
-  .movie-img{
+  .movie-img {
     width: 100px;
   }
-  .movie-items{
+  .movie-items {
     gap: 5px;
     width: 100px;
-    padding: 1px;
+    padding: 2px;
   }
-  .movie-container{
+  .movie-container {
     gap: 10px;
-    margin: 0px;
+    margin: 3px;
   }
 }

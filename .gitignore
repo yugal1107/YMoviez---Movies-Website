@@ -129,3 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 .vercel
+
+#private files
+/client
+testing.txt
