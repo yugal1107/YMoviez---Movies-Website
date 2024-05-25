@@ -17,13 +17,12 @@ let baseimgURL = "https://image.tmdb.org/t/p/w500";
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
-  // Method 1 : Angela Yu
   console.log("Fetching API");
   try {
     const response4 = await axios.get(
       "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
       {
-        timeout: 1000,
+        timeout: 5000,  // Increased timeout duration
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${access_token_auth}`,
@@ -39,7 +38,7 @@ app.get("/", async (req, res) => {
     const response1 = await axios.get(
       "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
       {
-        timeout: 1000,
+        timeout: 5000,  // Increased timeout duration
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${access_token_auth}`,
@@ -51,32 +50,10 @@ app.get("/", async (req, res) => {
 
     console.log("API 2 fetched successfully");
 
-    // Method 2
-
-    // const options = {
-    // method: 'GET',
-    // url: 'https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1',
-    // headers: {
-    //     accept: 'application/json',
-    //     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYWExM2I2ZWU0N2Q0ZGFjMjE4ZjIyZTdhMmQzYjU4ZiIsInN1YiI6IjY1OGRiOWRmOGVkMDNmNWU4MDkzZjcwNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EN9Lg9h_JqSPfjmYYYCTir5S8664u_3moUjojoauqI0'
-    // }
-    // };
-
-    // axios
-    // .request(options)
-    // .then(function (response) {
-    //     console.log(response.data);
-    // })
-    // .catch(function (error) {
-    //     console.error(error);
-    // });
-
-    // console.log(data);
-
     const response2 = await axios.get(
       "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
       {
-        timeout: 1000,
+        timeout: 5000,  // Increased timeout duration
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${access_token_auth}`,
@@ -85,11 +62,8 @@ app.get("/", async (req, res) => {
     );
     const populardata = await response2.data;
     const popularmovie = await populardata.results;
-    // console.log(nowplayingdata[0]);
 
     console.log("API 3 fetched successfully");
-
-    // console.log(moviedata[0]);
 
     res.render("index.ejs", {
       hi: hindimovie,
@@ -102,10 +76,18 @@ app.get("/", async (req, res) => {
     res.send("Sorry , we are getting some error with API now ...");
     console.log("Sorry , we are getting some type of error .......");
     console.error(error);
+
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 
-console.log("Fetching of APIs and dispalying them done......");
+console.log("Fetching of APIs and displaying them done......");
 
 app.get("/movie/:movieid", async (req, res) => {
   let movieid = req.params.movieid;
@@ -122,7 +104,7 @@ app.get("/movie/:movieid", async (req, res) => {
       axios.get(
         `https://api.themoviedb.org/3/movie/${movieid}/credits?language=en-US`,
         {
-          timeout: 1000,
+          timeout: 5000,  // Increased timeout duration
           headers: {
             accept: "application/json",
             Authorization: `Bearer ${access_token_auth}`,
@@ -147,7 +129,13 @@ app.get("/movie/:movieid", async (req, res) => {
     console.log(castdata.cast.length);
   } catch (error) {
     console.error(error);
-    // console.error(error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 
@@ -155,12 +143,10 @@ app.get("/cast/:cid/:cname", async (req, res) => {
   let person_id = req.params.cid;
   let person_name = req.params.cname;
   try {
-    // API request
-
     const response = await axios.get(
       `https://api.themoviedb.org/3/person/${person_id}/movie_credits`,
       {
-        timeout: 1000,
+        timeout: 5000,  // Increased timeout duration
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${access_token_auth}`,
@@ -169,8 +155,6 @@ app.get("/cast/:cid/:cname", async (req, res) => {
     );
     const result = await response.data;
 
-    // console.log(result);
-
     res.render("cast.ejs", {
       hi: result,
       baseimgURL: baseimgURL,
@@ -178,6 +162,13 @@ app.get("/cast/:cid/:cname", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 
@@ -188,7 +179,7 @@ app.get("/category/:gid/:gname", async (req, res) => {
     const response = await axios.get(
       `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreid}`,
       {
-        timeout: 1000,
+        timeout: 5000,  // Increased timeout duration
         headers: {
           accept: "application/json",
           Authorization: `Bearer ${access_token_auth}`,
@@ -204,9 +195,16 @@ app.get("/category/:gid/:gname", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
   }
 });
 
 app.listen(port, () => {
-  console.log("Server running in port....", 4000);
+  console.log("Server running on port....", 4000);
 });

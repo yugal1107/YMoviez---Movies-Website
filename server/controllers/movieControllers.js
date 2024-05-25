@@ -33,6 +33,8 @@ async function getMovie() {
       // Handle the error appropriately (e.g., throw error, return default value, etc.)
       throw error; // Optionally rethrow the error to handle it further up the call stack
     }
+
+    
   }
   
 
