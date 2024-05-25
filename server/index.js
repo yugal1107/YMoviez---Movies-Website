@@ -3,6 +3,7 @@ import userRouter from "./routers/user.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import checkAuth from "./middlewares/auth-middlewares.js";
+import movieRouter from "./routers/movieRouter.js";
 
 dotenv.config();
 const app = express();
@@ -12,8 +13,9 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", checkAuth )
+app.use("/api/movie", checkAuth)
 
+app.use("/api/movie", movieRouter);
 app.use("/api/user", userRouter);
 
 // app.use("/api/authenticate" , authicateUser )

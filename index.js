@@ -8,7 +8,7 @@ axiosRetry(axios, { retries: 3 });
 import {} from 'dotenv/config';
 
 const app = express();
-const port = 3000;
+const port = 4000;
 // const hostname =  "192.168.146.4";
 
 const api_key_auth = process.env.apikeyauth;
@@ -186,5 +186,5 @@ app.get("/category/:gid/:gname" , async (req,res) => {
 
 
 app.listen(port  , () => {
-    console.log("Server running in port 3000....");
+    console.log("Server running in port...." , 4000);
 });
