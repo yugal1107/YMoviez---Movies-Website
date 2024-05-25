@@ -14,25 +14,27 @@ const urls = [
 ];
 
 async function getMovie() {
-  try {
-    const response = await axios.get(
-      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&&with_original_language=hi",
-      {
-        timeout: 1000,
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${access_token_auth}`,
-        },
-      }
-    );
-    const movieData = response.data;
-    console.log("Console from getMovie");
-    return movieData;
-  } catch (error) {
-    console.log("Error while fetching data from API", error);
-    // res.status(500).send({ msg: "Error while fetching data from API" , error });
+    try {
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&with_original_language=hi",
+        {
+          timeout: 1000,
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${access_token_auth}`, // Correct template literal usage
+          },
+        }
+      );
+      const movieData = response.data; // No need to await response.data
+      console.log("Console from getMovie");
+      return movieData;
+    } catch (error) {
+      console.log("Error while fetching data from API", error);
+      // Handle the error appropriately (e.g., throw error, return default value, etc.)
+      throw error; // Optionally rethrow the error to handle it further up the call stack
+    }
   }
-}
+  
 
 async function movieHome(req, res) {
   try {
@@ -45,4 +47,4 @@ async function movieHome(req, res) {
   }
 }
 
-export { movieHome };
+export { movieHome, getMovie };
