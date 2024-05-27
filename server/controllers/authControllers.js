@@ -22,9 +22,9 @@ const secretkey = "mysecretkey";
 
 function getUser(token) {
   try {
-    const userid = jwt.verify(token, secretkey);
-    if (!userid) return null;
-    return userid;
+    const user = jwt.verify(token, secretkey);
+    if (!user) return null;
+    return user;
   } catch (error) {
     console.log("Error while verifying token:", error.message);
   }

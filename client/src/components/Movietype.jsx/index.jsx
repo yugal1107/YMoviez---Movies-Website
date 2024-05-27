@@ -3,18 +3,22 @@ import Moviecard from "../Moviecard";
 
 const Movietype = (props) => {
   return (
-    <div className="block flex-col rounded-lg bg-slate-800 text-white p-3 m-2 overflow-x-scroll">
-        {console.log(props)}
-      <div className="text-3xl p-1">Popular Movies</div>
-      <div className="flex gap-1">
+    <div className="scroll-smooth block flex-col rounded-3xl bg-slate-800 text-white p-5 m-2 overflow-x-scroll">
+      {console.log(props)}
+      <div className="text-3xl p-1 pb-5 font-bold">{props.title}</div>
+      <div className="flex gap-2">
         {props.data.map((movie) => {
-            
-          return <Moviecard
-            key={movie.id}
-            name={movie.original_title}
-            description={movie.overview}
-            rating={movie.vote_average}
-          />;
+          console.log(movie.id);
+
+          return (
+            <Moviecard
+              key={movie.id}
+              name={movie.original_title || movie.name}
+              description={movie.overview}
+              rating={movie.vote_average}
+              image_url={movie.poster_path}
+            />
+          );
         })}
       </div>
     </div>

@@ -2,14 +2,15 @@ import { getUser } from "../controllers/authControllers.js";
 
 function checkAuth(req, res, next) {
   console.log("Middleware running .......");
-  const authorizationHeader = req.headers["Authorization"];
+  console.log(req.cookies);
+  const token =
+    req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+  console.log("Token : ", token);
   req.user = null;
 
-  if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
+  if (!token) {
     return next();
   }
-
-  const token = authorizationHeader.split("Bearer ")[1];
   req.user = getUser(token);
   console.log(req.user);
   next();
