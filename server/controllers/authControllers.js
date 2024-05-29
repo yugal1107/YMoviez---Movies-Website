@@ -108,15 +108,8 @@ function login(req, res) {
 }
 
 function logout(req, res) {
-  //Statefull Authentication
-  // idtousermap.delete(req.cookies.uid);
-  // res.clearCookie("uid");
-  // console.log("User logged out successfully");
-  // return res.redirect("/user/login");
-
-  // Stateless Authentication
   console.log("User logged out successfully");
-  return res.clearCookie("uid");
+  return res.clearCookie("token").send("User logged out successfully");
 }
 
 export { createUser, login, getUser, setUser, logout };

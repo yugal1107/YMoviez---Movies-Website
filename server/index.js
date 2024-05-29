@@ -6,6 +6,8 @@ import checkAuth from "./middlewares/auth-middlewares.js";
 import movieRouter from "./routers/movieRouter.js";
 import navRouter from "./routers/navRouter.js";
 import cookieParser from "cookie-parser";
+import { homeRouter } from "./routers/homeRouter.js";
+import seriesRouter from "./routers/seriesRouter.js";
 
 dotenv.config();
 const app = express();
@@ -14,12 +16,14 @@ const PORT = 3000;
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use("/api/movie", checkAuth);
 app.use("/api/navbar", checkAuth);
 
+app.use("/api/home", homeRouter);
 app.use("/api/movie", movieRouter);
+app.use("/api/series", seriesRouter);
 app.use("/api/user", userRouter);
 app.use("/api/navbar", navRouter);
 
