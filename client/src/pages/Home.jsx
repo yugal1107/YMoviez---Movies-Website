@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import Movietype from "../components/Movietype.jsx";
 import { fetchData } from "../services/fetchData.js";
+import { Link } from "react-router-dom";
 // import data from "../../public/data.json";
 
 // const movies = data.results;
@@ -44,9 +45,10 @@ const Home = () => {
           of movies.
         </h1>
       </div>
-
-      <Movietype data={movieData.popular_movies} title="Popular Movies" />
-      <Movietype data={movieData.upcoming_movies} title="Upcoming Movies" />
+      <div className="flex flex-col gap-10">
+        <Movietype data={movieData.trending_movies} title="Popular Movies" />
+        <Movietype data={movieData.hindi_movies} title="Upcoming Movies" />
+      </div>
     </div>
   );
 };

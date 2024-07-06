@@ -2,22 +2,21 @@ import React from "react";
 
 const baseimgURL = "https://image.tmdb.org/t/p/w500";
 
-const Moviecard = (props) => {
-  // console.log(props);
+const Moviecard = ({ image_url, name, rating }) => {
   return (
-    <div className="flex flex-col justify-between gap-1 p-2 w-60 aspect-">
+    <div className="flex flex-col justify-between gap-1 p-4 w-60 bg-gray-100 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
       <img
-        src={baseimgURL + props.image_url}
-        className="rounded-lg max-w-60"
-      ></img>
-      <div>
-        <div className="name text-2xl truncate">{props.name}</div>
-        <div className="rating">
-          <span>Rating : </span>
-          <span>{props.rating}</span>
+        src={image_url ? baseimgURL + image_url : "/images/movie.jpeg"}
+        alt={name}
+        className="rounded-lg h-80 w-full object-cover"
+      />
+      <div className="mt-2">
+        <div className="name text-xl font-semibold truncate">{name}</div>
+        <div className="rating mt-1">
+          <span className="font-medium">Rating: </span>
+          <span className="text-yellow-500">{rating}</span>
         </div>
       </div>
-      {/* <div className="desciption text-sm truncate">{props.description}</div> */}
     </div>
   );
 };

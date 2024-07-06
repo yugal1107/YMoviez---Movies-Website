@@ -2,6 +2,9 @@ import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { fetchData } from "../../services/fetchData";
+import SearchBox from "./SearchBox";
+import NavElement from "./NavElement";
+import NavButton from "./NavButton";
 
 const Navbar = () => {
   const [name, setName] = useState("Guest");
@@ -22,56 +25,21 @@ const Navbar = () => {
   return (
     <nav className="bg-green-400 flex justify-between items-center p-2 font-thin text-3xl">
       <div className="flex gap-3 justify-around items-center">
-        <Link to="/" className="text-white font-bold">
-          Home
-        </Link>
+        <NavElement title="Home" link="/" />
+        <NavElement title="About Me" link="/" />
         <Dropdown />
-        <Link to="/about" className="text-white font-bold">
-          About
-        </Link>
-        <Link to="/contact" className="text-white font-bold">
-          Contact
-        </Link>
+        <div>
+          <SearchBox />
+        </div>
       </div>
       {name === "Guest" ? (
-        <div>
-          <Link
-            to="/login"
-            className="text-white font-bold bg-green-900 rounded-md p-1"
-          >
-            Login
-          </Link>
-        </div>
+        <NavButton title="Login" link="/login" />
       ) : (
         <>
-          <div>
-            <Link to="/profile" className="text-white font-bold p-3">
-              {name}
-            </Link>
-          </div>
-          <div>
-            <Link
-              to="/logout"
-              className="text-white font-bold bg-green-900 rounded-md p-1"
-            >
-              Logout
-            </Link>
-          </div>
+          <NavElement title={name} link="/" />
+          <NavButton title="Logout" link="/logout" />
         </>
       )}
-      {/* <div>
-        <Link to="/profile" className="text-white font-bold p-3">
-          {name}
-        </Link>
-      </div>
-      <div>
-        <Link
-          to="/login"
-          className="text-white font-bold bg-green-900 rounded-md p-1"
-        >
-          Login
-        </Link>
-      </div> */}
     </nav>
   );
 };

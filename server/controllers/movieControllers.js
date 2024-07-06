@@ -9,27 +9,41 @@ dotenv.config();
 const access_token_auth = process.env.ACCESS_TOKEN_AUTH;
 // const page = 1;
 
-const responses = {
-  popular_movies: popular.results,
-  upcoming_movies: upcoming.results,
-  trending_movies: trending.results,
-};
+// const responses = {
+//   popular_movies: popular.results,
+//   upcoming_movies: upcoming.results,
+//   trending_movies: trending.results,
+// };
 
 async function getMovie() {
   try {
-    // const response = await axios.get(
-    //   "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&with_original_language=hi",
-    //   {
-    //     timeout: 1000,
-    //     headers: {
-    //       accept: "application/json",
-    //       Authorization: `Bearer ${access_token_auth}`, // Correct template literal usage
-    //     },
-    //   }
-    // );
-    // const movieData = response.data; // No need to await response.data
+    const hindi_response = await axios.get(
+      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1&with_original_language=hi",
+      {
+        timeout: 1000,
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${access_token_auth}`, // Correct template literal usage
+        },
+      }
+    );
+    const trending_response = await axios.get(
+      "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+      {
+        timeout: 1000,
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${access_token_auth}`, // Correct template literal usage
+        },
+      }
+    );
 
-    return responses;
+    const trending_movies=trending_response.data;
+    const hindi_movies=hindi_response.data;
+
+    return {trending_movies:trending_movies , hindi_movies:hindi_movies };
+
+    // return responses;
   } catch (error) {
     console.log("Error while fetching data from API", error);
     // Handle the error appropriately (e.g., throw error, return default value, etc.)
@@ -75,7 +89,7 @@ async function getDetails(movieid) {
 
     return details;
   } catch (error) {
-    console.log("Error while fetching data from API", error);
+    console.log("Error while fetching data from getDetails() API /n", error);
     // Handle the error appropriately (e.g., throw error, return default value, etc.)
     throw error; // Optionally rethrow the error to handle it further up the call stack
   }
