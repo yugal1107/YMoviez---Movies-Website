@@ -1,5 +1,6 @@
 import axios from "axios";
 import { React, useState } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -7,6 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [userCreated, setUserCreated] = useState(false);
 
   const register = async () => {
     try {
@@ -16,15 +18,31 @@ const Register = () => {
         email: email,
         password: password,
       });
-      if (response.status===201){
-        console.log(response.json.msg)
+      if (response.status === 201) {
+        setUserCreated(true);
+        console.log(response.json.msg);
       }
-      
     } catch (error) {
       console.error(error);
     }
-    setLoading(false)
+    setLoading(false);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (userCreated) {
+    return (
+      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            User Created Successfully
+          </h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -45,7 +63,7 @@ const Register = () => {
             </label>
             <div className="mt-2">
               <input
-              onChange={(e)=>setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 id="name"
                 name="name"
                 type="text"
@@ -64,7 +82,7 @@ const Register = () => {
             </label>
             <div className="mt-2">
               <input
-              onChange={(e)=>setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 name="email"
                 type="email"
@@ -86,7 +104,7 @@ const Register = () => {
             </div>
             <div className="mt-2">
               <input
-              onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 name="password"
                 type="password"
@@ -102,7 +120,7 @@ const Register = () => {
               type="submit"
               className="flex w-full justify-center rounded-md bg-green-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
             >
-              Sign in
+              Register
             </button>
           </div>
         </form>

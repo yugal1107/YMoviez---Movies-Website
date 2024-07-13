@@ -8,7 +8,7 @@ const access_token_auth = process.env.ACCESS_TOKEN_AUTH;
 async function getMovieSeries(credit_id) {
   try {
     const response = await axios.get(
-      "https://api.themoviedb.org/3/credit/${credit_id}",
+      `https://api.themoviedb.org/3/person/${credit_id}/movie_credits`,
       {
         timeout: 1000,
         headers: {
@@ -19,8 +19,7 @@ async function getMovieSeries(credit_id) {
     );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data of cast from API", error);
-    throw error;
+    console.log("Error while fetching data of cast from castcontroller", error);
   }
 }
 
@@ -39,7 +38,6 @@ async function getCastDetails(credit_id) {
     return response.data;
   } catch (error) {
     console.log("Error while fetching data of cast from API", error);
-    throw error;
   }
 }
 
@@ -49,7 +47,6 @@ async function searchMovieSeries(req, res) {
     res.status(200).send(movieData);
   } catch (error) {
     console.log("Error while fetching series movies data from API");
-    throw error;
   }
 }
 
@@ -59,6 +56,7 @@ async function searchCastDetails(req, res) {
     res.status(200).send(castData);
   } catch (error) {
     console.log("Error while fetching cast details data from API");
-    throw error;
   }
 }
+
+export { searchMovieSeries, searchCastDetails };

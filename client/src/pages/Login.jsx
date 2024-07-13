@@ -1,12 +1,14 @@
 import axios from "axios";
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Notification from "../components/Notification";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [notificationVisible, setNotificationVisible] = useState(false);
 
   const navigate = useNavigate(); // Hook for navigation
 
@@ -25,6 +27,7 @@ const Login = () => {
       if (res.error) {
         console.log("Error : ", res.error);
       } else {
+        setNotificationVisible(true);
         navigate("/");
       }
 
@@ -34,6 +37,7 @@ const Login = () => {
       }
       setLoading(false);
     } catch (error) {
+      setError("Invalid Credentials");
       console.log(error);
     }
   };
@@ -125,6 +129,11 @@ const Login = () => {
           </p>
         </div>
       </div>
+      <Notification
+        message="Logged in successfully!"
+        visible={notificationVisible}
+        onClose={() => setNotificationVisible(false)}
+      />
     </>
   );
 };

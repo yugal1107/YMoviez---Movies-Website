@@ -13,11 +13,18 @@ const SearchBox = () => {
     navigate(`/search/${query}`);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      navigate(`/search/${query}`);
+    }
+  }
+
   return (
     <div className="flex items-center justify-center py-4">
       <input
         type="text"
         value={query}
+        onKeyDown={handleKeyDown}
         onChange={handleInputChange}
         className=" sm:w-1/2 lg:w-1/3 pr-20 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder="Search here ..."

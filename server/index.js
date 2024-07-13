@@ -8,6 +8,7 @@ import navRouter from "./routers/navRouter.js";
 import cookieParser from "cookie-parser";
 import { homeRouter } from "./routers/homeRouter.js";
 import seriesRouter from "./routers/seriesRouter.js";
+import castRouter from "./routers/castRouter.js";
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/movie", movieRouter);
 app.use("/api/series", seriesRouter);
 app.use("/api/user", userRouter);
 app.use("/api/navbar", navRouter);
+app.use("/api/cast", castRouter);
 
 // app.use("/api/authenticate" , authicateUser )
 

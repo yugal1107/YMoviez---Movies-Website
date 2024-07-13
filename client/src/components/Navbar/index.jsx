@@ -5,6 +5,7 @@ import { fetchData } from "../../services/fetchData";
 import SearchBox from "./SearchBox";
 import NavElement from "./NavElement";
 import NavButton from "./NavButton";
+import axios from "axios";
 
 const Navbar = () => {
   const [name, setName] = useState("Guest");
@@ -20,7 +21,19 @@ const Navbar = () => {
 
   useEffect(() => {
     getName();
-  }, []);
+  }, [name]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post("/api/user/logout");
+      if (response.status === 200) {
+        setName("Guest");
+        console.log("Logged out successfully");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <nav className="bg-green-400 flex justify-between items-center p-2 font-thin text-3xl">
@@ -37,7 +50,7 @@ const Navbar = () => {
       ) : (
         <>
           <NavElement title={name} link="/" />
-          <NavButton title="Logout" link="/logout" />
+          <NavButton title="Logout" link="/logout" logout={handleLogout} />
         </>
       )}
     </nav>

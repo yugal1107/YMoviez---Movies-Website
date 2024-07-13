@@ -1,8 +1,12 @@
 import { Router } from "express";
+import {
+  searchCastDetails,
+  searchMovieSeries,
+} from "../controllers/castControllers.js";
 const castRouter = Router();
 
-castRouter.get("/cast/movie/:castid", getMoviesByCast);
-castRouter.get("/cast/series/:castid", getSeriesByCast);
-castRouter.get("/cast/:castid", getCastDetails);
+castRouter.get("/movie/:castid", searchMovieSeries);
+// castRouter.get("/cast/series/:castid", getSeriesByCast);
+castRouter.get("/:castid", searchCastDetails);
 
 export default castRouter;

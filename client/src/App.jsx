@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Movie from "./pages/Movie";
 import Search from "./pages/Search";
+import CastMovies from "./pages/CastMovies";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/movie/:movieid" element={<Movie />} />
         <Route path="/search/:query" element={<Search />} />
+        <Route path="/cast/:castid/:castname" element={<CastMovies />} />
       </Routes>
     </Router>
   );
