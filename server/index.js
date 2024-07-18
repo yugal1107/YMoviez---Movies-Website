@@ -9,10 +9,13 @@ import cookieParser from "cookie-parser";
 import { homeRouter } from "./routers/homeRouter.js";
 import seriesRouter from "./routers/seriesRouter.js";
 import castRouter from "./routers/castRouter.js";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
 const PORT = 3000;
+
+app.use(cors()); 
 
 app.use(express.static("public"));
 app.use(express.json());
