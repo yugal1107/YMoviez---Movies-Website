@@ -12,7 +12,9 @@ const Navbar = () => {
 
   const getName = async () => {
     try {
-      const nameData = await fetchData("/api/navbar");
+      const nameData = await fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}/api/navbar`
+      );
       setName(nameData.name);
     } catch (error) {
       console.error(error);
@@ -25,7 +27,9 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post("/api/user/logout");
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}api/user/logout`
+      );
       if (response.status === 200) {
         setName("Guest");
         console.log("Logged out successfully");

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams , Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchData } from "../services/fetchData";
 import Moviecard from "../components/Moviecard";
 
@@ -12,7 +12,9 @@ const Search = () => {
     try {
       setLoading(true);
       setSearchResults([]);
-      const searchResults = await fetchData(`/api/movie/search/${query}`);
+      const searchResults = await fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}api/movie/search/${query}`
+      );
       console.log("Search Results : ", searchResults);
       setSearchResults(searchResults.searchData);
     } catch (error) {

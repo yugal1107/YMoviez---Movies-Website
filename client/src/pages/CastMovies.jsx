@@ -15,7 +15,7 @@ const CastMovies = () => {
     try {
       setLoading(true);
       setSearchResults([]);
-      const searchResults = await fetchData(`/api/cast/movie/${castid}`);
+      const searchResults = await fetchData(`${import.meta.env.VITE_BASE_API_URL}api/cast/movie/${castid}`);
       console.log("Search Results : ", searchResults);
       setSearchResults(searchResults);
       console.log("Search Results from usestate : ", searchResults);

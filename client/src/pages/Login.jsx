@@ -18,10 +18,13 @@ const Login = () => {
       setLoading(true);
       setError("");
       console.log(email, password);
-      const res = await axios.post("/api/user/login", {
-        email: email,
-        password: password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}api/user/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       const user = await res.data;
 
       if (res.error) {

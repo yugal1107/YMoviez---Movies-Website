@@ -15,7 +15,9 @@ const Home = () => {
   const getData = async () => {
     try {
       setLoading(true);
-      const responseData = await fetchData("/api/movie/home");
+      const responseData = await fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}api/movie/home`
+      );
       console.log("MOvieData : ", responseData.movieData);
       setMovieData(responseData.movieData);
       setName(responseData.user.name);

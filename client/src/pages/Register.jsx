@@ -13,11 +13,14 @@ const Register = () => {
   const register = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/user/register", {
-        name: name,
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_API_URL}api/user/register`,
+        {
+          name: name,
+          email: email,
+          password: password,
+        }
+      );
       if (response.status === 201) {
         setUserCreated(true);
         console.log(response.json.msg);
