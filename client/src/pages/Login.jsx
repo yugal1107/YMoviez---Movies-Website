@@ -21,10 +21,14 @@ const Login = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_API_URL}api/user/login`,
         {
-          email: email,
-          password: password,
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
         }
       );
+      console.log("Response : ", res);
       const user = await res.data;
 
       if (res.error) {

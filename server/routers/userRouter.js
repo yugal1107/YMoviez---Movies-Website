@@ -1,6 +1,11 @@
 import { Router } from "express";
 import axios from "axios";
-import { createUser, login, logout } from "../controllers/authControllers.js";
+import {
+  checkUser,
+  createUser,
+  login,
+  logout,
+} from "../controllers/authControllers.js";
 
 const userRouter = Router();
 
@@ -16,6 +21,8 @@ userRouter.get("/login", (req, res) => {
 userRouter.get("/register", (req, res) => {
   res.render("register");
 });
+
+userRouter.post("/checkuser", checkUser);
 
 userRouter.post("/register", createUser);
 userRouter.post("/login", login);

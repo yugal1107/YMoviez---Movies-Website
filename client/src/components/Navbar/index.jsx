@@ -13,7 +13,7 @@ const Navbar = () => {
   const getName = async () => {
     try {
       const nameData = await fetchData(
-        `${import.meta.env.VITE_BASE_API_URL}/api/navbar`
+        `${import.meta.env.VITE_BASE_API_URL}api/navbar`
       );
       setName(nameData.name);
     } catch (error) {

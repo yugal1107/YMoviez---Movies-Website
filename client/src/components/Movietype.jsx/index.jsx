@@ -15,7 +15,7 @@ const Movietype = (props) => {
             <Link to={`/movie/${movie.id}`}>
               <Moviecard
                 key={movie.id}
-                name={movie.original_title || movie.name}
+                name={movie.title || movie.name}
                 description={movie.overview}
                 rating={movie.vote_average}
                 image_url={movie.poster_path}

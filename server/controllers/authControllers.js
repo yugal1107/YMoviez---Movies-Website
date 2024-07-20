@@ -85,8 +85,11 @@ function login(req, res) {
             .status(200)
             .cookie("token", token, {
               httpOnly: true,
+              secure: true,
+              sameSite: "None",
+              partitioned: true,
             })
-            .json({ token: token, msg: "User logged in successfully", user });
+            .json({ msg: "User logged in successfully", user });
 
           // return res.cookie("uid", setUser(user));
         } catch (error) {
@@ -112,4 +115,22 @@ function logout(req, res) {
   return res.clearCookie("token").send("User logged out successfully");
 }
 
-export { createUser, login, getUser, setUser, logout };
+async function checkUser(req, res) {
+  await User.findOne({
+    email: req.body.email,
+  })
+    .then((user) => {
+      if (user) {
+        console.log("User already exists");
+        res.status(200).send({ exists: true });
+      } else {
+        console.log("User does not exists");
+        res.status(200).send({ exists: false });
+      }
+    })
+    .catch((error) => {
+      console.log("Error occured while verifying email ", error.message);
+    });
+}
+
+export { createUser, login, getUser, setUser, logout, checkUser };
