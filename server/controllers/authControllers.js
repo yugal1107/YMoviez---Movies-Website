@@ -87,7 +87,6 @@ function login(req, res) {
               httpOnly: true,
               secure: true,
               sameSite: "None",
-              partitioned: true,
             })
             .json({ msg: "User logged in successfully", user });
 

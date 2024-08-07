@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <div className="p-1">
       <div className="p-4">
-        <span className="text-9xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
           W
         </span>
         <h1 className="inline text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">

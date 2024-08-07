@@ -41,48 +41,60 @@ const Movie = (props) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-green-50">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-4xl font-bold mb-6">{movie.title}</h1>
-        <div className="flex flex-col md:flex-row">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6">{movie.title}</h1>
+        <div className="flex flex-col md:flex-row rounded-3xl bg-green-200 p-5">
           <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-6">
             <img
               src={`${baseimgURL}${movie.poster_path}`}
               alt="poster-image"
-              className="w-full md:w-64"
+              className="w-full md:w-64 rounded-xl"
             />
           </div>
           <div className="md:flex-1">
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <span className="text-xl font-semibold">Name:</span>{" "}
               <span>{movie.title}</span>
+            </div> */}
+            <div className="mb-4">
+              <span className="text-green-800 block md:inline text-2xl md:text-2xl font-semibold">
+                Overview :{" "}
+              </span>{" "}
+              <span className="text-lg md:text-xl font-normal">
+                {movie.overview}
+              </span>
             </div>
             <div className="mb-4">
-              <span className="text-xl font-semibold">Overview:</span>{" "}
-              <span>{movie.overview}</span>
-            </div>
-            <div className="mb-4">
-              <span className="text-xl font-semibold">Genres:</span>
-              <div>
+              <span className="block py-2 md:inline text-green-800 text-2xl font-semibold pr-7">
+                Genres :
+              </span>
+              <div className="flex flex-wrap">
                 {movie.genres.map((genre) => (
-                  <span
+                  <a
                     key={genre.id}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                    className="flex justify-center items-center"
+                    href=""
                   >
-                    {genre.name}
-                  </span>
+                    <span
+                      key={genre.id}
+                      className="inline-block bg-green-300 rounded-xl px-2 md:px-3 py-1 text-lg md:text-xl font-semibold text-gray-700 mr-2 mb-2 text-center"
+                    >
+                      {genre.name}
+                    </span>
+                  </a>
                 ))}
               </div>
             </div>
             <div className="mb-4">
-              <span className="text-xl font-semibold">
-                Production Companies:
+              <span className="block md:inline text-2xl py-2 font-semibold text-green-800 pr-7">
+                Production Companies :
               </span>
-              <div>
+              <div className="flex flex-wrap">
                 {movie.production_companies.map((company) => (
                   <span
                     key={company.id}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                    className="inline-block bg-green-300 rounded-xl px-3 py-1 text-lg md:text-xl font-semibold text-gray-700 mr-2 mb-2"
                   >
                     {company.name}
                   </span>
@@ -90,25 +102,33 @@ const Movie = (props) => {
               </div>
             </div>
             <div className="mb-4">
-              <span className="text-xl font-semibold">Average Rating:</span>{" "}
-              <span>{movie.vote_average}</span>
+              <span className="text-2xl font-semibold text-green-800">
+                Average Rating :
+              </span>{" "}
+              <span className="text-lg md:text-xl font-medium pl-2">
+                {movie.vote_average}
+              </span>
             </div>
             <div className="mb-4">
-              <span className="text-xl font-semibold">Release Date:</span>{" "}
-              <span>{movie.release_date}</span>
+              <span className="text-2xl text-green-800 font-semibold">
+                Release Date :
+              </span>{" "}
+              <span className="text-lg md:text-xl font-medium pl-2">
+                {movie.release_date}
+              </span>
             </div>
           </div>
         </div>
-        <div className="mt-10">
-          <h2 className="text-3xl font-bold mb-6">Movie Cast</h2>
-          <div className="flex flex-wrap">
+        <div className="mt-10 bg-green-200 p-5 rounded-3xl">
+          <h2 className="text-3xl font-bold mb-4">Movie Cast</h2>
+          <div className="flex overflow-scroll gap-2">
             {cast.map((actor) => (
               <a
                 key={actor.id}
                 href={`/cast/${actor.id}/${actor.name}`}
-                className="w-full sm:w-1/2 lg:w-1/4 p-4"
+                className="flex-shrink-0 w-36 hover:scale-105 transition-transform duration-300"
               >
-                <div className="bg-white rounded-lg shadow-lg p-4">
+                <div className="bg-white rounded-lg shadow-lg">
                   <img
                     src={
                       actor.profile_path
@@ -116,7 +136,7 @@ const Movie = (props) => {
                         : "/images/profile.png"
                     }
                     alt="profile"
-                    className="w-full h-48 object-cover rounded-t-lg mb-4"
+                    className="rounded-lg"
                   />
                   <div className="text-center">
                     <span className="block text-lg font-semibold">

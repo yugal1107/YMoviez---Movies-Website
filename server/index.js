@@ -15,12 +15,14 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(
-  cors({
-    origin: "https://moviesfrontend-two.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: "https://moviesfrontend-two.vercel.app",
+//     credentials: true,
+//   })
+// );
 
 app.use(express.static("public"));
 app.use(express.json());
