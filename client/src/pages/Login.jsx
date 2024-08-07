@@ -1,147 +1,117 @@
-import axios from "axios";
-import { React, useState } from "react";
+import { useState } from "react";
+import React from "react";
+import { Input, Button } from "@nextui-org/react";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import Notification from "../components/Notification";
+const provider = new GoogleAuthProvider();
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [notificationVisible, setNotificationVisible] = useState(false);
 
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
-  const userLogin = async (event) => {
-    event.preventDefault();
-    try {
-      setLoading(true);
-      setError("");
-      console.log(email, password);
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}api/user/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("Response : ", res);
-      const user = await res.data;
-
-      if (res.error) {
-        console.log("Error : ", res.error);
-      } else {
-        setNotificationVisible(true);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const auth = getAuth(app);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
         navigate("/");
-      }
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
+  };
 
-      if (user.error) {
-        setError(user.error);
-        console.log(user.error);
-      }
-      setLoading(false);
-    } catch (error) {
-      setError("Invalid Credentials");
-      console.log(error);
-    }
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    const auth = getAuth(app);
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        navigate("/");
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   };
 
   return (
-    // <div className="flex-col justify-center align-middle w-2/4 bg-green-100" >
-    //     <div className="text-lg">Sign In Here</div>
-    //     <form action=""></form>
-    // </div>
-
-    <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" method="POST" onSubmit={userLogin}>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  onChange={(e) => setEmail(e.target.value)}
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                {/* <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div> */}
-              </div>
-              <div className="mt-2">
-                <input
-                  onChange={(e) => setPassword(e.target.value)}
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
-            <a
-              href="/register"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+    <div className="flex h-dvh justify-center items-center bg-green-200">
+      <div className="rounded-2xl flex flex-col bg-white w-1/3 shadow-lg">
+        <h1 className="text-3xl text-center p-7 rounded-2xl font-bold">
+          Login Here
+        </h1>
+        <form
+          action="submit"
+          onSubmit={handleSubmit}
+          className="flex flex-col p-5 px-10 gap-10"
+        >
+          <Input
+            type="email"
+            label="Email"
+            placeholder="you@example.com"
+            labelPlacement="outside"
+            onChange={(e) => setEmail(e.target.value)}
+            //   startContent={
+            //     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            //   }
+          />
+          <Input
+            labelPlacement="outside"
+            label="Password"
+            placeholder="Enter your password"
+            type={"password"}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {/* <button type="submit" className="btn-primary bg-green-500 rounded-lg p-2">
+            Submit
+          </button> */}
+          <div className="flex flex-col justify-center items-center">
+            <Button type="submit" className="bg-green-300 px-2">
+              Submit
+            </Button>
+            <p className="text-center"> or </p>
+            <Button
+              onClick={handleGoogleSignIn}
+              className="bg-green-300 w-full"
             >
-              Register Here
-            </a>
+              Continue with Google
+            </Button>
+          </div>
+        </form>
+        {error && (
+          <p className="text-red-500 text-center bg-red-100 rounded-2xl p-3">
+            {error}
           </p>
-        </div>
+        )}
       </div>
-      <Notification
-        message="Logged in successfully!"
-        visible={notificationVisible}
-        onClose={() => setNotificationVisible(false)}
-      />
-    </>
+    </div>
   );
 };
 

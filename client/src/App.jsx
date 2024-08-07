@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Movie from "./pages/Movie";
 import Search from "./pages/Search";
 import CastMovies from "./pages/CastMovies";
+import CarouselUI from "./components/Carousel";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/movie/:movieid" element={<Movie />} />
         <Route path="/search/:query" element={<Search />} />
         <Route path="/cast/:castid/:castname" element={<CastMovies />} />
+        <Route path="/demo" element={<CarouselUI />} />
       </Routes>
     </Router>
   );

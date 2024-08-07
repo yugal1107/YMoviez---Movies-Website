@@ -1,135 +1,93 @@
-import axios from "axios";
-import { React, useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
+import { Input } from "@nextui-org/react";
+import React, { useState } from "react";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { app } from "../firebase";
+import { Button } from "@nextui-org/react";
+import { useAuth } from "../context/authContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [userCreated, setUserCreated] = useState(false);
 
-  const register = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}api/user/register`,
-        {
-          name: name,
-          email: email,
-          password: password,
-        }
-      );
-      if (response.status === 201) {
-        setUserCreated(true);
-        console.log(response.json.msg);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setLoading(false);
+  const navigate = useNavigate();
+
+  const { user } = useAuth();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const auth = getAuth(app);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        return updateProfile(auth.currentUser, { displayName: name });
+        // console.log(user);
+        // ...
+      }).then(() => {
+        navigate("/login");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
+        // ..
+      });
   };
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (userCreated) {
-    return (
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            User Created Successfully
-          </h2>
-        </div>
-      </div>
-    );
-  }
+  console.log(user);
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Enter the following details to Register
-        </h2>
+    <div className="flex h-dvh justify-center items-center bg-cyan-200 p-4 sm:p-8">
+  <div className="rounded-2xl flex flex-col bg-white w-full sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-lg">
+    <h1 className="text-3xl text-center p-7 rounded-2xl font-bold">
+      Register Here
+    </h1>
+    <form
+      action="submit"
+      onSubmit={handleSubmit}
+      className="flex flex-col p-5 px-6 sm:px-10 gap-6 sm:gap-10"
+    >
+      <Input
+        type="text"
+        label="Name"
+        placeholder="Enter your name"
+        labelPlacement="outside"
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        type="email"
+        label="Email"
+        placeholder="you@example.com"
+        labelPlacement="outside"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <Input
+        labelPlacement="outside"
+        label="Password"
+        placeholder="Enter your password"
+        type={"password"}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <div className="flex flex-col justify-center items-center">
+        <Button type="submit" className="bg-cyan-300 px-4 py-2 rounded-lg">
+          Submit
+        </Button>
       </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={register}>
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Name
-            </label>
-            <div className="mt-2">
-              <input
-                onChange={(e) => setName(e.target.value)}
-                id="name"
-                name="name"
-                type="text"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                onChange={(e) => setEmail(e.target.value)}
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-green-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"
-            >
-              Register
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+    </form>
+    {error && (
+      <p className="text-red-500 text-center bg-red-100 rounded-2xl p-3">
+        {error}
+      </p>
+    )}
+  </div>
+</div>);
 };
 
 export default Register;

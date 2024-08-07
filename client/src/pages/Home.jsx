@@ -1,7 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Movietype from "../components/Movietype.jsx";
 import { fetchData } from "../services/fetchData.js";
-import { Link } from "react-router-dom";
 // import data from "../../public/data.json";
 
 // const movies = data.results;
@@ -38,7 +37,7 @@ const Home = () => {
 
   return (
     <div className="p-1">
-      <div className="p-4">
+      {/* <div className="p-4">
         <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
           W
         </span>
@@ -46,7 +45,7 @@ const Home = () => {
           elcome <span className="text-red-500">{name}</span> to the new world
           of movies.
         </h1>
-      </div>
+      </div> */}
       <div className="flex flex-col gap-10">
         <Movietype data={movieData.trending_movies} title="Popular Movies" />
         <Movietype data={movieData.hindi_movies} title="Upcoming Movies" />

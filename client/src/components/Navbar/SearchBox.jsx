@@ -5,6 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 const SearchBox = ({ className }) => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -12,6 +13,7 @@ const SearchBox = ({ className }) => {
 
   const handleClick = () => {
     navigate(`/search/${query}`);
+    setShowSearch(false);
   };
 
   const handleKeyDown = (e) => {
@@ -21,22 +23,32 @@ const SearchBox = ({ className }) => {
   };
 
   return (
-    <div className={`flex items-center justify-center ${className}`}>
-      <input
-        type="text"
-        value={query}
-        onKeyDown={handleKeyDown}
-        onChange={handleInputChange}
-        className="h-8 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Search here ..."
+    <>
+      <SearchOutlined
+        className="text-white px-1 md:hidden hover:bg-green-500 rounded-lg"
+        onClick={() => setShowSearch(!showSearch)}
       />
-      <button
-        onClick={handleClick}
-        className="px-2 h-8 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center align-center"
+      <div
+        className={`absolute w-full left-0 p-2 bg-green-400 lg:relative lg:top-0 lg:p-0 lg:w-auto flex items-center justify-center ease-in-out ${className} ${
+          showSearch ? `top-14` : `-top-60`
+        }`}
       >
-        <SearchOutlined className="text-2xl" />
-      </button>
-    </div>
+        <input
+          type="text"
+          value={query}
+          onKeyDown={handleKeyDown}
+          onChange={handleInputChange}
+          className="h-8 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Search here ..."
+        />
+        <button
+          onClick={handleClick}
+          className="px-2 h-8 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center align-center"
+        >
+          <SearchOutlined className="text-2xl" />
+        </button>
+      </div>
+    </>
   );
 };
 
