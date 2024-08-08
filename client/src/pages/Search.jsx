@@ -40,7 +40,7 @@ const Search = () => {
         </h1>
       </div>
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-5">
         {searchResults.results.map((movie) => {
           return (
             <Link to={`/movie/${movie.id}`}>

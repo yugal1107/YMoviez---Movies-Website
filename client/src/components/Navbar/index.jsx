@@ -13,9 +13,25 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../../context/authContext";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../../firebase";
 
 const Navbar = () => {
   const { user } = useAuth();
+  console.log(user);
+
+  const handleLogout = () => {
+    const auth = getAuth(app);
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("Logged out successfully");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
+
   // const [name, setName] = useState("Guest");
   // if (user.displayName) {
   //   setName(user.displayName);
@@ -36,19 +52,19 @@ const Navbar = () => {
   //   getName();
   // }, [name]);
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}api/user/logout`
-      );
-      if (response.status === 200) {
-        setName("Guest");
-        console.log("Logged out successfully");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_BASE_API_URL}api/user/logout`
+  //     );
+  //     if (response.status === 200) {
+  //       setName("Guest");
+  //       console.log("Logged out successfully");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <nav className="bg-green-400 flex justify-between items-center py-0 px-2 font-thin text-2xl h-14">
@@ -73,9 +89,9 @@ const Navbar = () => {
           <SearchBox className="lg:flex" />
         </div>
       </div>
-      <Button href="/login" type="primary" size="large">
+      {/* <Button href="/login" type="primary" size="large">
         <span className="text-xl">Login</span>
-      </Button>
+      </Button> */}
       {/* {name === "Guest" ? (
         <NavButton title="Login" link="/login" />
       ) : (
@@ -84,6 +100,15 @@ const Navbar = () => {
           <NavButton title="Logout" link="/logout" logout={handleLogout} />
         </>
       )} */}
+      {user ? (
+        <Button type="primary" size="large" onClick={handleLogout}>
+          <span className="text-xl">Logout</span>
+        </Button>
+      ) : (
+        <Button href="/login" type="primary" size="large">
+          <span className="text-xl">Login</span>
+        </Button>
+      )}
     </nav>
   );
 };

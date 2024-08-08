@@ -62,15 +62,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-dvh justify-center items-center bg-green-200">
-      <div className="rounded-2xl flex flex-col bg-white w-1/3 shadow-lg">
+    <div className="flex h-dvh justify-center items-center bg-green-200 p-4">
+      <div className="rounded-2xl flex flex-col bg-white w-full sm:w-2/3 lg:w-1/3 shadow-lg">
         <h1 className="text-3xl text-center p-7 rounded-2xl font-bold">
           Login Here
         </h1>
         <form
           action="submit"
           onSubmit={handleSubmit}
-          className="flex flex-col p-5 px-10 gap-10"
+          className="flex flex-col p-5 px-6 sm:px-10 gap-6 sm:gap-10"
         >
           <Input
             type="email"
@@ -93,13 +93,13 @@ const Login = () => {
             Submit
           </button> */}
           <div className="flex flex-col justify-center items-center">
-            <Button type="submit" className="bg-green-300 px-2">
+            <Button type="submit" className="bg-green-300 px-2 font-medium">
               Submit
             </Button>
             <p className="text-center"> or </p>
             <Button
               onClick={handleGoogleSignIn}
-              className="bg-green-300 w-full"
+              className="bg-green-300 w-full font-medium"
             >
               Continue with Google
             </Button>

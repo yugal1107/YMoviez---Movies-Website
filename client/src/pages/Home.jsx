@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import Movietype from "../components/Movietype.jsx";
 import { fetchData } from "../services/fetchData.js";
+import { useAuth } from "../context/authContext.jsx";
 // import data from "../../public/data.json";
 
 // const movies = data.results;
@@ -9,7 +10,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [movieData, setMovieData] = useState({});
   const [error, setError] = useState("");
-  const [name, setName] = useState("");
+  const { user } = useAuth();
 
   const getData = async () => {
     try {
@@ -37,15 +38,16 @@ const Home = () => {
 
   return (
     <div className="p-1">
-      {/* <div className="p-4">
-        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+      <div className="p-4">
+        {/* <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
           W
-        </span>
+        </span> */}
         <h1 className="inline text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-          elcome <span className="text-red-500">{name}</span> to the new world
+          Welcome <span className="text-red-500">{user}</span>to the new world
           of movies.
         </h1>
-      </div> */}
+      </div>
+
       <div className="flex flex-col gap-10">
         <Movietype data={movieData.trending_movies} title="Popular Movies" />
         <Movietype data={movieData.hindi_movies} title="Upcoming Movies" />
