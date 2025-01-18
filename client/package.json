@@ -11,14 +11,18 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@heroicons/react": "^2.1.5",
     "@nextui-org/react": "^2.4.6",
     "@radix-ui/themes": "^3.1.1",
     "antd": "^5.19.3",
     "axios": "^1.7.2",
     "firebase": "^10.12.5",
     "framer-motion": "^11.3.22",
+    "lucide-react": "^0.447.0",
+    "next-themes": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.23.0",
     "vercel": "^35.2.3"
   },

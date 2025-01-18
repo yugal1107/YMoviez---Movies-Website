@@ -99,8 +99,9 @@ const Login = () => {
             <p className="text-center"> or </p>
             <Button
               onClick={handleGoogleSignIn}
-              className="bg-green-300 w-full font-medium"
+              className="bg-green-300 font-medium"
             >
+              <img className="h-5 md:h-6" src="/google-icon.png" alt="" />
               Continue with Google
             </Button>
           </div>

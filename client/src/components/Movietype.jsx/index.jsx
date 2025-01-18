@@ -1,20 +1,35 @@
 import React from "react";
-import Moviecard from "../Moviecard";
 import { Link } from "react-router-dom";
+import { ChevronRight, Star } from "lucide-react";
+import Moviecard from "../Moviecard";
 
-const Movietype = (props) => {
+const baseImgURL = "https://image.tmdb.org/t/p/w500";
+
+const Movietype = ({ data, title, icon }) => {
   return (
-    <div className="scroll-smooth block flex-col rounded-3xl p-3 m-2 overflow-x-scroll">
-      {/* {console.log(props)} */}
-      <div className="text-3xl p-1 pb-5 font-bold">{props.title}</div>
-      <div className="flex gap-5">
-        {props.data.results.map((movie) => {
-          // console.log(movie.id);
+    <div className="relative">
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          {icon}
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+            {title}
+          </h2>
+        </div>
+        <button className="flex items-center space-x-1 text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 transition-colors">
+          <span className="text-xs md:text-sm font-medium">View All</span>
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
 
-          return (
-            <Link to={`/movie/${movie.id}`}>
+      <div className="relative">
+        <div className="flex space-x-6 overflow-x-auto p-4 scrollbar-hide">
+          {data.results.map((movie) => (
+            <Link
+              key={movie.id}
+              to={`/movie/${movie.id}`}
+              className="flex-none transform transition-transform hover:scale-105"
+            >
               <Moviecard
-                key={movie.id}
                 name={movie.title || movie.name}
                 description={movie.overview}
                 rating={movie.vote_average}
@@ -22,8 +37,12 @@ const Movietype = (props) => {
                 id={movie.id}
               />
             </Link>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Optional: Gradient fades for scroll indication */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 md:w-10 bg-gradient-to-r from-gray-400 dark:from-gray-900" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 md:w-10 bg-gradient-to-l from-gray-400 dark:from-gray-900" />
       </div>
     </div>
   );

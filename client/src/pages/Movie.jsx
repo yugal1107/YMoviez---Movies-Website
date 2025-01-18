@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchData } from "../services/fetchData";
+import { Loader2, Star, Calendar, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const baseimgURL = "https://image.tmdb.org/t/p/w500";
+const baseimgURL = "https://image.tmdb.org/t/p/original";
 
-const Movie = (props) => {
+const Movie = () => {
   const { movieid } = useParams();
   const [loading, setLoading] = useState(true);
   const [movie, setMovie] = useState({});
-  const [cast, setCast] = useState();
-  console.log("Params : ", movieid);
+  const [cast, setCast] = useState([]);
+  const [relatedMovies, setRelatedMovies] = useState([]);
 
   const getMovieData = async () => {
     try {
@@ -21,12 +22,15 @@ const Movie = (props) => {
       const castData = await fetchData(
         `${import.meta.env.VITE_BASE_API_URL}api/movie/cast/${movieid}`
       );
-      console.log("Cast Data : ", castData.castData);
-      console.log("Movie Details : ", responseData.movieDetails);
-      setCast(castData.castData.cast);
+      const relatedMoviesData = await fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}api/movie/related/${movieid}`
+      );
+
       setMovie(responseData.movieDetails);
+      setCast(castData.castData.cast);
+      setRelatedMovies(relatedMoviesData.relatedMovies);
     } catch (error) {
-      console.error("Error occured while fetching movie Details : ", error);
+      console.error("Error fetching movie data:", error);
     } finally {
       setLoading(false);
     }
@@ -34,125 +38,143 @@ const Movie = (props) => {
 
   useEffect(() => {
     getMovieData();
-  }, []);
+  }, [movieid]);
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="flex h-screen items-center justify-center bg-black">
+        <Loader2 className="h-12 w-12 animate-spin text-pink-500" />
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
-      <div className="container mx-auto px-4 py-6">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">{movie.title}</h1>
-        <div className="flex flex-col md:flex-row rounded-3xl bg-green-200 p-5">
-          <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-6">
+    <div className="min-h-screen bg-black text-white">
+      {/* Hero Section with Backdrop */}
+      <div 
+        className="relative h-[70vh] w-full bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${baseimgURL}${movie.backdrop_path})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 flex gap-8">
+          {/* Poster */}
+          <div className="hidden md:block w-64 translate-y-16">
             <img
               src={`${baseimgURL}${movie.poster_path}`}
-              alt="poster-image"
-              className="w-full md:w-64 rounded-xl"
+              alt="Movie Poster"
+              className="w-full rounded-lg shadow-2xl ring-1 ring-white/10 transition-transform hover:scale-105"
             />
           </div>
-          <div className="md:flex-1">
-            {/* <div className="mb-4">
-              <span className="text-xl font-semibold">Name:</span>{" "}
-              <span>{movie.title}</span>
-            </div> */}
-            <div className="mb-4">
-              <span className="text-green-800 block md:inline text-2xl md:text-2xl font-semibold">
-                Overview :{" "}
-              </span>{" "}
-              <span className="text-lg md:text-xl font-normal">
-                {movie.overview}
-              </span>
-            </div>
-            <div className="mb-4">
-              <span className="block py-2 md:inline text-green-800 text-2xl font-semibold pr-7">
-                Genres :
-              </span>
-              <div className="flex flex-wrap">
-                {movie.genres.map((genre) => (
-                  <a
-                    key={genre.id}
-                    className="flex justify-center items-center"
-                    href=""
-                  >
-                    <span
-                      key={genre.id}
-                      className="inline-block bg-green-300 rounded-xl px-2 md:px-3 py-1 text-lg md:text-xl font-semibold text-gray-700 mr-2 mb-2 text-center"
-                    >
-                      {genre.name}
-                    </span>
-                  </a>
-                ))}
+          {/* Movie Info */}
+          <div className="flex-1 space-y-4 self-end">
+            <h1 className="text-5xl font-bold">{movie.title}</h1>
+            <div className="flex items-center gap-6 text-lg">
+              <div className="flex items-center text-yellow-400">
+                <Star className="h-6 w-6 mr-1 fill-yellow-400" />
+                <span>{movie.vote_average.toFixed(1)}</span>
+              </div>
+              <div className="flex items-center text-gray-300">
+                <Calendar className="h-5 w-5 mr-1" />
+                <span>{movie.release_date}</span>
+              </div>
+              <div className="flex items-center text-gray-300">
+                <Clock className="h-5 w-5 mr-1" />
+                <span>{movie.runtime} min</span>
               </div>
             </div>
-            <div className="mb-4">
-              <span className="block md:inline text-2xl py-2 font-semibold text-green-800 pr-7">
-                Production Companies :
-              </span>
-              <div className="flex flex-wrap">
-                {movie.production_companies.map((company) => (
-                  <span
-                    key={company.id}
-                    className="inline-block bg-green-300 rounded-xl px-3 py-1 text-lg md:text-xl font-semibold text-gray-700 mr-2 mb-2"
-                  >
-                    {company.name}
-                  </span>
-                ))}
-              </div>
+            <p className="text-xl text-gray-300 max-w-3xl">{movie.overview}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-16 space-y-16">
+        {/* Genres and Production */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Genres</h2>
+            <div className="flex flex-wrap gap-2">
+              {movie.genres.map((genre) => (
+                <Link
+                  key={genre.id}
+                  to={`/genre/${genre.id}`}
+                  className="px-4 py-2 rounded-full bg-pink-500/10 text-pink-500 hover:bg-pink-500/20 transition"
+                >
+                  {genre.name}
+                </Link>
+              ))}
             </div>
-            <div className="mb-4">
-              <span className="text-2xl font-semibold text-green-800">
-                Average Rating :
-              </span>{" "}
-              <span className="text-lg md:text-xl font-medium pl-2">
-                {movie.vote_average}
-              </span>
-            </div>
-            <div className="mb-4">
-              <span className="text-2xl text-green-800 font-semibold">
-                Release Date :
-              </span>{" "}
-              <span className="text-lg md:text-xl font-medium pl-2">
-                {movie.release_date}
-              </span>
+          </div>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Production Companies</h2>
+            <div className="flex flex-wrap gap-2">
+              {movie.production_companies.map((company) => (
+                <span
+                  key={company.id}
+                  className="px-4 py-2 rounded-full bg-gray-800 text-gray-300"
+                >
+                  {company.name}
+                </span>
+              ))}
             </div>
           </div>
         </div>
-        <div className="mt-10 bg-green-200 p-5 rounded-3xl">
-          <h2 className="text-3xl font-bold mb-4">Movie Cast</h2>
-          <div className="flex overflow-scroll gap-2">
+
+        {/* Cast Section */}
+        <section className="space-y-6">
+          <h2 className="text-3xl font-bold">Cast</h2>
+          <div className="flex overflow-x-auto gap-4 pb-4">
             {cast.map((actor) => (
-              <a
+              <Link
                 key={actor.id}
-                href={`/cast/${actor.id}/${actor.name}`}
-                className="flex-shrink-0 w-36 hover:scale-105 transition-transform duration-300"
+                to={`/cast/${actor.id}/${actor.name}`}
+                className="flex-shrink-0 w-44 bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition duration-300"
               >
-                <div className="bg-white rounded-lg shadow-lg">
-                  <img
-                    src={
-                      actor.profile_path
-                        ? `${baseimgURL}${actor.profile_path}`
-                        : "/images/profile.png"
-                    }
-                    alt="profile"
-                    className="rounded-lg"
-                  />
-                  <div className="text-center">
-                    <span className="block text-lg font-semibold">
-                      {actor.name}
-                    </span>
-                    <span className="block text-sm text-gray-500">
-                      as {actor.character}
-                    </span>
-                  </div>
+                <img
+                  src={
+                    actor.profile_path
+                      ? `${baseimgURL}${actor.profile_path}`
+                      : "/images/profile.png"
+                  }
+                  alt={actor.name}
+                  className="w-full aspect-[2/3] object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-semibold">{actor.name}</h3>
+                  <p className="text-sm text-gray-400">{actor.character}</p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
-        </div>
+        </section>
+
+        {/* Related Movies */}
+        {/* <section className="space-y-6">
+          <h2 className="text-3xl font-bold">More Like This</h2>
+          <div className="flex overflow-x-auto gap-4 pb-4">
+            {relatedMovies.map((movie) => (
+              <Link
+                key={movie.id}
+                to={`/movie/${movie.id}`}
+                className="flex-shrink-0 w-44 bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition duration-300"
+              >
+                <img
+                  src={`${baseimgURL}${movie.poster_path}`}
+                  alt={movie.title}
+                  className="w-full aspect-[2/3] object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-semibold">{movie.title}</h3>
+                  <p className="text-sm text-gray-400">{movie.release_date}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section> */}
       </div>
     </div>
   );
 };
+
 export default Movie;

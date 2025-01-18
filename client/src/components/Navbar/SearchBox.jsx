@@ -1,54 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
+import { MagnifyingGlassIcon as SearchIcon } from "@heroicons/react/24/outline";
 
-const SearchBox = ({ className }) => {
+const SearchBox = () => {
   const [query, setQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const [showSearch, setShowSearch] = useState(false);
+  const searchRef = useRef(null);
 
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-  };
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
 
-  const handleClick = () => {
-    navigate(`/search/${query}`);
-    setShowSearch(false);
-  };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
       navigate(`/search/${query}`);
+      setQuery("");
+      setIsOpen(false);
     }
   };
 
   return (
-    <>
-      <SearchOutlined
-        className="text-white px-1 md:hidden hover:bg-green-500 rounded-lg"
-        onClick={() => setShowSearch(!showSearch)}
-      />
-      <div
-        className={`absolute w-full left-0 p-2 bg-green-400 lg:relative lg:top-0 lg:p-0 lg:w-auto flex items-center justify-center ease-in-out ${className} ${
-          showSearch ? `top-14` : `-top-60`
-        }`}
+    <div className="relative" ref={searchRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="text-gray-300 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
       >
-        <input
-          type="text"
-          value={query}
-          onKeyDown={handleKeyDown}
-          onChange={handleInputChange}
-          className="h-8 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Search here ..."
-        />
-        <button
-          onClick={handleClick}
-          className="px-2 h-8 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center align-center"
-        >
-          <SearchOutlined className="text-2xl" />
-        </button>
-      </div>
-    </>
+        <SearchIcon className="h-5 w-5" />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-72 bg-black/90 backdrop-blur-sm rounded-lg shadow-lg p-4 border border-white/10">
+          <form onSubmit={handleSearch} className="flex">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1 bg-gray-800 text-white rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 border-0"
+              placeholder="Search movies..."
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-r-md transition-colors"
+            >
+              <SearchIcon className="h-5 w-5" />
+            </button>
+          </form>
+        </div>
+      )}
+    </div>
   );
 };
 

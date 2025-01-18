@@ -1,114 +1,100 @@
-import { React, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
-import { fetchData } from "../../services/fetchData";
 import SearchBox from "./SearchBox";
-import NavElement from "./NavElement";
-import NavButton from "./NavButton";
-import axios from "axios";
-import { Button } from "antd";
-import {
-  HomeOutlined,
-  InfoCircleOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { Button } from "@nextui-org/react";
+import { HomeIcon, UserCircleIcon, FilmIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../../context/authContext";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebase";
+import ThemeSwitch from "./ThemeSwitch";
 
 const Navbar = () => {
   const { user } = useAuth();
-  console.log(user);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Add scroll listener
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = () => {
     const auth = getAuth(app);
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        console.log("Logged out successfully");
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+    signOut(auth).then(() => {
+      console.log("Logged out successfully");
+    });
   };
 
-  // const [name, setName] = useState("Guest");
-  // if (user.displayName) {
-  //   setName(user.displayName);
-  // }
-
-  // const getName = async () => {
-  //   try {
-  //     const nameData = await fetchData(
-  //       `${import.meta.env.VITE_BASE_API_URL}api/navbar`
-  //     );
-  //     setName(nameData.name);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getName();
-  // }, [name]);
-
-  // const handleLogout = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BASE_API_URL}api/user/logout`
-  //     );
-  //     if (response.status === 200) {
-  //       setName("Guest");
-  //       console.log("Logged out successfully");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   return (
-    <nav className="bg-green-400 flex justify-between items-center py-0 px-2 font-thin text-2xl h-14">
-      <div className="flex justify-around items-center align-middle p-0 m-0">
-        <a href="/" className="px-4 hover:bg-green-500 rounded-lg">
-          <HomeOutlined className="text-white" />
-          <NavElement
-            title="Home"
-            link="/"
-            className="hidden md:inline-block"
-          />
-        </a>
-        <a
-          href="https://yugal1107.vercel.app"
-          className="px-4 hover:bg-green-500 rounded-lg"
-        >
-          <InfoCircleOutlined className="text-white" />
-          <NavElement title="About Me" className="hidden md:inline-block" />
-        </a>
-        <Dropdown />
-        <div className="px-4 flex">
-          <SearchBox className="lg:flex" />
+    <nav
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-black/90 backdrop-blur-sm"
+          : "bg-gradient-to-b from-black/70 to-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Left section */}
+          <div className="flex items-center space-x-4">
+            <Link
+              to="/"
+              className="flex items-center space-x-2 text-pink-500 hover:text-pink-400"
+            >
+              <FilmIcon className="h-8 w-8" />
+              <span className="text-2xl font-bold hidden sm:block">YuStream</span>
+            </Link>
+
+            <div className="hidden md:flex items-center space-x-4">
+              <Link
+                to="/"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Home
+              </Link>
+              <Dropdown />
+              <Link
+                to="https://yugal.tech"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                About
+              </Link>
+            </div>
+          </div>
+
+          {/* Right section */}
+          <div className="flex items-center space-x-4">
+            <SearchBox />
+            <ThemeSwitch />
+            
+            {user ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-300 text-sm hidden md:block">
+                  {user.displayName || user.email}
+                </span>
+                <Button
+                  onClick={handleLogout}
+                  className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <Link to="/login">
+                <Button
+                  className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
-      {/* <Button href="/login" type="primary" size="large">
-        <span className="text-xl">Login</span>
-      </Button> */}
-      {/* {name === "Guest" ? (
-        <NavButton title="Login" link="/login" />
-      ) : (
-        <>
-          <NavElement title={name} link="/" />
-          <NavButton title="Logout" link="/logout" logout={handleLogout} />
-        </>
-      )} */}
-      {user ? (
-        <Button type="primary" size="large" onClick={handleLogout}>
-          <span className="text-xl">Logout</span>
-        </Button>
-      ) : (
-        <Button href="/login" type="primary" size="large">
-          <span className="text-xl">Login</span>
-        </Button>
-      )}
     </nav>
   );
 };
