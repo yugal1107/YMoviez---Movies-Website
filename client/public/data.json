@@ -1,0 +1,404 @@
+{
+    "dates": {
+        "maximum": "2024-06-12",
+        "minimum": "2024-05-22"
+    },
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": "/fqv8v6AycXKsivp1T5yKtLbGXce.jpg",
+            "genre_ids": [
+                878,
+                12,
+                28
+            ],
+            "id": 653346,
+            "original_language": "en",
+            "original_title": "Kingdom of the Planet of the Apes",
+            "overview": "Several generations in the future following Caesar's reign, apes are now the dominant species and live harmoniously while humans have been reduced to living in the shadows. As a new tyrannical ape leader builds his empire, one young ape undertakes a harrowing journey that will cause him to question all that he has known about the past and to make choices that will define a future for apes and humans alike.",
+            "popularity": 2443.648,
+            "poster_path": "/gKkl37BQuKTanygYQG1pyYgLVgf.jpg",
+            "release_date": "2024-05-08",
+            "title": "Kingdom of the Planet of the Apes",
+            "video": false,
+            "vote_average": 7.179,
+            "vote_count": 459
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/ySgY4jBvZ6qchrxKnBg4M8tZp8V.jpg",
+            "genre_ids": [
+                27,
+                53
+            ],
+            "id": 1111873,
+            "original_language": "en",
+            "original_title": "Abigail",
+            "overview": "A group of criminals kidnaps a teenage ballet dancer, the daughter of a notorious gang leader, in order to obtain a ransom of $50 million, but over time, they discover that she is not just an ordinary girl. After the kidnappers begin to diminish, one by one, they discover, to their increasing horror, that they are locked inside with an unusual girl.",
+            "popularity": 1077.607,
+            "poster_path": "/7qxG0zyt29BI0IzFDfsps62kbQi.jpg",
+            "release_date": "2024-04-18",
+            "title": "Abigail",
+            "video": false,
+            "vote_average": 6.884,
+            "vote_count": 447
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/vWzJDjLPmycnQ42IppEjMpIhrhc.jpg",
+            "genre_ids": [
+                16,
+                35,
+                10751
+            ],
+            "id": 748783,
+            "original_language": "en",
+            "original_title": "The Garfield Movie",
+            "overview": "Garfield, the world-famous, Monday-hating, lasagna-loving indoor cat, is about to have a wild outdoor adventure! After an unexpected reunion with his long-lost father – scruffy street cat Vic – Garfield and his canine friend Odie are forced from their perfectly pampered life into joining Vic in a hilarious, high-stakes heist.",
+            "popularity": 1045.031,
+            "poster_path": "/zK2sFxZcelHJRPVr242rxy5VK4T.jpg",
+            "release_date": "2024-04-30",
+            "title": "The Garfield Movie",
+            "video": false,
+            "vote_average": 6.759,
+            "vote_count": 81
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/aINel9503ompOlGKn4sIVMg09Un.jpg",
+            "genre_ids": [
+                9648,
+                27,
+                53
+            ],
+            "id": 838209,
+            "original_language": "ko",
+            "original_title": "파묘",
+            "overview": "After tracing the origin of a disturbing supernatural affliction to a wealthy family's ancestral gravesite, a team of paranormal experts relocates the remains—and soon discovers what happens to those who dare to mess with the wrong grave.",
+            "popularity": 697.008,
+            "poster_path": "/pQYHouPsDw32FhDLr7E3jmw0WTk.jpg",
+            "release_date": "2024-02-22",
+            "title": "Exhuma",
+            "video": false,
+            "vote_average": 7.435,
+            "vote_count": 108
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/504GSaoxBA5nLlcMsJfjzLZEKUp.jpg",
+            "genre_ids": [
+                10749,
+                18
+            ],
+            "id": 937287,
+            "original_language": "en",
+            "original_title": "Challengers",
+            "overview": "Tennis player turned coach Tashi has taken her husband, Art, and transformed him into a world-famous Grand Slam champion. To jolt him out of his recent losing streak, she signs him up for a \"Challenger\" event — close to the lowest level of pro tournament — where he finds himself standing across the net from his former best friend and Tashi's former boyfriend.",
+            "popularity": 609.678,
+            "poster_path": "/4vc8wOf2yG9TiXoJpvz2fJHOmHA.jpg",
+            "release_date": "2024-04-18",
+            "title": "Challengers",
+            "video": false,
+            "vote_average": 7.347,
+            "vote_count": 605
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/5Eip60UDiPLASyKjmHPMruggTc4.jpg",
+            "genre_ids": [
+                27,
+                9648,
+                53
+            ],
+            "id": 1041613,
+            "original_language": "en",
+            "original_title": "Immaculate",
+            "overview": "An American nun embarks on a new journey when she joins a remote convent in the Italian countryside. However, her warm welcome quickly turns into a living nightmare when she discovers her new home harbours a sinister secret and unspeakable horrors.",
+            "popularity": 807.041,
+            "poster_path": "/fdZpvODTX5wwkD0ikZNaClE4AoW.jpg",
+            "release_date": "2024-03-20",
+            "title": "Immaculate",
+            "video": false,
+            "vote_average": 6.201,
+            "vote_count": 468
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/uv2twFGMk2qBdyJBJAVcrpRtSa9.jpg",
+            "genre_ids": [
+                10752,
+                28,
+                18
+            ],
+            "id": 929590,
+            "original_language": "en",
+            "original_title": "Civil War",
+            "overview": "In the near future, a group of war journalists attempt to survive while reporting the truth as the United States stands on the brink of civil war.",
+            "popularity": 572.696,
+            "poster_path": "/sh7Rg8Er3tFcN9BpKIPOMvALgZd.jpg",
+            "release_date": "2024-04-10",
+            "title": "Civil War",
+            "video": false,
+            "vote_average": 7.392,
+            "vote_count": 692
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/jTWllMddJzCb7hBVNZICtgKhYM9.jpg",
+            "genre_ids": [
+                35,
+                14,
+                10751,
+                16
+            ],
+            "id": 639720,
+            "original_language": "en",
+            "original_title": "IF",
+            "overview": "A girl discovers she can see everyone's imaginary friends and embarks on a magical adventure to reconnect forgotten IFs with their kids.",
+            "popularity": 538.843,
+            "poster_path": "/xbKFv4KF3sVYuWKllLlwWDmuZP7.jpg",
+            "release_date": "2024-05-08",
+            "title": "IF",
+            "video": false,
+            "vote_average": 7.276,
+            "vote_count": 49
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/1sh2S5J7bTPu6LuOgS9gamkGs2J.jpg",
+            "genre_ids": [
+                878,
+                28,
+                12
+            ],
+            "id": 786892,
+            "original_language": "en",
+            "original_title": "Furiosa: A Mad Max Saga",
+            "overview": "As the world falls, young Furiosa is snatched from the Green Place of Many Mothers into the hands of a great biker horde led by the warlord Dementus. Sweeping through the wasteland, they encounter the citadel presided over by Immortan Joe. The two tyrants wage war for dominance, and Furiosa must survive many trials as she puts together the means to find her way home.",
+            "popularity": 489.228,
+            "poster_path": "/2IrH4wBPoH339gulKMCzbjgPgzg.jpg",
+            "release_date": "2024-05-22",
+            "title": "Furiosa: A Mad Max Saga",
+            "video": false,
+            "vote_average": 8.3,
+            "vote_count": 10
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/pI5jxew0I9kub4IXrtsOB8F40dw.jpg",
+            "genre_ids": [
+                16,
+                10751,
+                18,
+                12,
+                14
+            ],
+            "id": 1022789,
+            "original_language": "en",
+            "original_title": "Inside Out 2",
+            "overview": "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who’ve long been running a successful operation by all accounts, aren’t sure how to feel when Anxiety shows up. And it looks like she’s not alone.",
+            "popularity": 473.954,
+            "poster_path": "/gMB8vgHu2lcyzv1fyptD6drHmJd.jpg",
+            "release_date": "2024-06-06",
+            "title": "Inside Out 2",
+            "video": false,
+            "vote_average": 0.0,
+            "vote_count": 0
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/vTlK3chwsEToSoQJYUcJaHlNhIf.jpg",
+            "genre_ids": [
+                18,
+                12
+            ],
+            "id": 618588,
+            "original_language": "en",
+            "original_title": "Arthur the King",
+            "overview": "Over the course of ten days and 435 miles, an unbreakable bond is forged between pro adventure racer Michael Light and a scrappy street dog companion dubbed Arthur. As the team is pushed to their outer limits of endurance in the race, Arthur redefines what victory, loyalty and friendship truly mean.",
+            "popularity": 351.943,
+            "poster_path": "/gxVcBc4VM0kAg9wX4HVg6KJHG46.jpg",
+            "release_date": "2024-03-15",
+            "title": "Arthur the King",
+            "video": false,
+            "vote_average": 6.9,
+            "vote_count": 127
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/y9Hz04SvfWxUKWYvehZYxRvFoFY.jpg",
+            "genre_ids": [
+                27,
+                53
+            ],
+            "id": 1087388,
+            "original_language": "en",
+            "original_title": "Sting",
+            "overview": "After raising an unnervingly talented spider in secret, 12-year-old Charlotte must face the truth about her pet and fight for her family's survival.",
+            "popularity": 291.434,
+            "poster_path": "/uXUs1fwSuE06LgYETw2mi4JxQvc.jpg",
+            "release_date": "2024-04-12",
+            "title": "Sting",
+            "video": false,
+            "vote_average": 6.622,
+            "vote_count": 49
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/k0ucFBBgSDTXYU8fVHXJyjAuIIe.jpg",
+            "genre_ids": [
+                27
+            ],
+            "id": 1063879,
+            "original_language": "fr",
+            "original_title": "Vermines",
+            "overview": "Residents of a rundown French apartment building battle against an army of deadly, rapidly reproducing spiders.",
+            "popularity": 304.468,
+            "poster_path": "/dY98PkUAbIGUUg0FhXEcOkbzHIZ.jpg",
+            "release_date": "2023-12-27",
+            "title": "Infested",
+            "video": false,
+            "vote_average": 6.901,
+            "vote_count": 197
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/oMiKHO3H5RixfLsiU5Vumhlp5sj.jpg",
+            "genre_ids": [
+                80,
+                10749,
+                53
+            ],
+            "id": 948549,
+            "original_language": "en",
+            "original_title": "Love Lies Bleeding",
+            "overview": "Reclusive gym manager Lou falls hard for Jackie, an ambitious bodybuilder headed through town to Las Vegas in pursuit of her dream. But their love ignites violence, pulling them deep into the web of Lou’s criminal family.",
+            "popularity": 248.334,
+            "poster_path": "/p7jyFWiLyHPttqYBFAlLJwtYTYH.jpg",
+            "release_date": "2024-03-08",
+            "title": "Love Lies Bleeding",
+            "video": false,
+            "vote_average": 6.7,
+            "vote_count": 175
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/s5znBQmprDJJ553IMQfwEVlfroH.jpg",
+            "genre_ids": [
+                28,
+                10752,
+                18
+            ],
+            "id": 799583,
+            "original_language": "en",
+            "original_title": "The Ministry of Ungentlemanly Warfare",
+            "overview": "Taking place during World War II, the British Army assigns a group of competent soldiers to carry out a mission against the Nazi forces behind enemy lines... A true story about a secret British World War II organization; the Special Operations Executive. Founded by Winston Churchill, their irregular warfare against the Germans helped to change the course of the war, and gave birth to modern black operations.",
+            "popularity": 225.433,
+            "poster_path": "/8aF0iAKH9MJMYAZdi0Slg77RYa2.jpg",
+            "release_date": "2024-04-18",
+            "title": "The Ministry of Ungentlemanly Warfare",
+            "video": false,
+            "vote_average": 7.2,
+            "vote_count": 188
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/lA6KdSkCTxwzvqzPqxch997RabQ.jpg",
+            "genre_ids": [
+                28,
+                53
+            ],
+            "id": 560016,
+            "original_language": "en",
+            "original_title": "Monkey Man",
+            "overview": "Kid is an anonymous young man who ekes out a meager living in an underground fight club where, night after night, wearing a gorilla mask, he is beaten bloody by more popular fighters for cash. After years of suppressed rage, Kid discovers a way to infiltrate the enclave of the city’s sinister elite. As his childhood trauma boils over, his mysteriously scarred hands unleash an explosive campaign of retribution to settle the score with the men who took everything from him.",
+            "popularity": 243.406,
+            "poster_path": "/4lhR4L2vzzjl68P1zJyCH755Oz4.jpg",
+            "release_date": "2024-04-03",
+            "title": "Monkey Man",
+            "video": false,
+            "vote_average": 7.183,
+            "vote_count": 391
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/4yrOyO3N55XazHQXXYoqiiPQd40.jpg",
+            "genre_ids": [
+                27
+            ],
+            "id": 938614,
+            "original_language": "en",
+            "original_title": "Late Night with the Devil",
+            "overview": "A live broadcast of a late-night talk show in 1977 goes horribly wrong, unleashing evil into the nation's living rooms.",
+            "popularity": 294.612,
+            "poster_path": "/u3YQJctMzFN2wAvnkmXy41bXhFv.jpg",
+            "release_date": "2024-03-19",
+            "title": "Late Night with the Devil",
+            "video": false,
+            "vote_average": 7.287,
+            "vote_count": 369
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/iQslVnGFJWQzz5kGTvOhU85656f.jpg",
+            "genre_ids": [
+                18,
+                10749
+            ],
+            "id": 1156593,
+            "original_language": "es",
+            "original_title": "Culpa tuya",
+            "overview": "",
+            "popularity": 164.955,
+            "poster_path": "/iWUouGcOAB49ASJV45HD5JL1pxC.jpg",
+            "release_date": "2024-06-08",
+            "title": "Your Fault",
+            "video": false,
+            "vote_average": 0.0,
+            "vote_count": 0
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/hIeEpk2w1dnC9ly9ZJwwbunH2Cx.jpg",
+            "genre_ids": [
+                16,
+                18,
+                35,
+                878
+            ],
+            "id": 838240,
+            "original_language": "es",
+            "original_title": "Robot Dreams",
+            "overview": "Dog lives in Manhattan and he's tired of being alone. One day he decides to build himself a robot, a companion. Their friendship blossoms, until they become inseparable, to the rhythm of '80s NYC. One summer night, Dog, with great sadness, is forced to abandon Robot at the beach. Will they ever meet again?",
+            "popularity": 189.054,
+            "poster_path": "/aoFmPEEb4QoqSNaTVfkATLB1CGF.jpg",
+            "release_date": "2023-12-06",
+            "title": "Robot Dreams",
+            "video": false,
+            "vote_average": 8.12,
+            "vote_count": 355
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/kGWpaisyiOrOhkjn5FviMRUaoCb.jpg",
+            "genre_ids": [
+                18,
+                10751
+            ],
+            "id": 1107387,
+            "original_language": "zh",
+            "original_title": "忠犬八公",
+            "overview": "This is the story of a puppy that touched hundreds of millions of people around the world. Hachiko (/Batong) is a cute Chinese pastoral dog. He met his destined owner Chen Jingxiu in the vast crowd and became a member of the Chen family. With the passage of time, the once beautiful home is no longer there, but Batong is still waiting where it is, and its fate is closely tied to its family. This film is adapted from the original script \"Hachiko\" by Kaneto Shindo.",
+            "popularity": 240.843,
+            "poster_path": "/ssWZpXHtILfKZhEORFG5C0giWLd.jpg",
+            "release_date": "2023-03-31",
+            "title": "Hachiko",
+            "video": false,
+            "vote_average": 7.3,
+            "vote_count": 25
+        }
+    ],
+    "total_pages": 60,
+    "total_results": 1187
+}

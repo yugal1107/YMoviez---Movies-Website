@@ -1,0 +1,416 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": "/eWF3oRyL4QWaidN9F4uvM7cBJUV.jpg",
+            "genre_ids": [
+                10766
+            ],
+            "id": 206559,
+            "origin_country": [
+                "ZA"
+            ],
+            "original_language": "af",
+            "original_name": "Binnelanders",
+            "overview": "A South African Afrikaans soap opera. It is set in and around the fictional private hospital, Binneland Kliniek, in Pretoria, and the storyline follows the trials, trauma and tribulations of the staff and patients of the hospital.",
+            "popularity": 1969.772,
+            "poster_path": "/v9nGSRx5lFz6KEgfmgHJMSgaARC.jpg",
+            "first_air_date": "2005-10-13",
+            "name": "Binnelanders",
+            "vote_average": 5.453,
+            "vote_count": 54
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/nmg2lY4QuyXQrAnrC2lRblK5rT6.jpg",
+            "genre_ids": [
+                18
+            ],
+            "id": 1416,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "Grey's Anatomy",
+            "overview": "Follows the personal and professional lives of a group of doctors at Seattle’s Grey Sloan Memorial Hospital.",
+            "popularity": 1940.589,
+            "poster_path": "/jcEl8SISNfGdlQFwLzeEtsjDvpw.jpg",
+            "first_air_date": "2005-03-27",
+            "name": "Grey's Anatomy",
+            "vote_average": 8.242,
+            "vote_count": 9957
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/yWVqYVOUcS6vu22v4BPXKJW10m5.jpg",
+            "genre_ids": [
+                10764,
+                10751
+            ],
+            "id": 206679,
+            "origin_country": [
+                "CZ"
+            ],
+            "original_language": "cs",
+            "original_name": "Na lovu",
+            "overview": "Na Lovu is a Czech game-show, based on the license of the popular global format The Chase. A heart-racing quiz show where four competitors must pit their wits and face off against Lovec (the Chaser), a ruthless quiz genius determined to stop them from winning cash prizes.",
+            "popularity": 1831.118,
+            "poster_path": "/udJ1wVuOwFg1q6UBcQGwcpcdIYF.jpg",
+            "first_air_date": "2021-08-16",
+            "name": "Na lovu",
+            "vote_average": 8.0,
+            "vote_count": 2
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/eGoX4DFXFtFgvBAdAv3pQSxyHDi.jpg",
+            "genre_ids": [
+                18
+            ],
+            "id": 234512,
+            "origin_country": [
+                "PT"
+            ],
+            "original_language": "pt",
+            "original_name": "Papel Principal",
+            "overview": "At the center of this story is Aurora Guerra, a popular actress who became a star in the teen series \"The Chosen Ones\" at an early age. Irene and Julio, Aurora's parents, signed her up for a casting several years ago and the matriarch, realizing that the decision was between her and another girl, managed to play the casting director in Aurora's favor. Lúcia has the same dream: to be a successful actress and decides to apply for the casting as well, but she soon realizes Irene's scheme and decides to confront her. After a violent argument between the two, Lúcia ends up having an accident that almost took her life and killed her chance of becoming an actress, due to the physical disabilities she was left with. Twenty years later, Lucia is determined to take revenge. The young woman wants to get back what she believes Aurora has taken from her, far from imagining that she is just a victim of Irene's evil deeds.",
+            "popularity": 1664.475,
+            "poster_path": "/t0ZWTCP451IgzMgHSPDBenpLG1W.jpg",
+            "first_air_date": "2023-09-25",
+            "name": "Leading Role",
+            "vote_average": 0.0,
+            "vote_count": 0
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/qZ7CdO7rkH0KyCxvZBoP4Mm2cQL.jpg",
+            "genre_ids": [
+                10767,
+                99
+            ],
+            "id": 132544,
+            "origin_country": [
+                "KR"
+            ],
+            "original_language": "ko",
+            "original_name": "위대한 수업, 그레이트 마인즈",
+            "overview": "",
+            "popularity": 1663.432,
+            "poster_path": "/lj46PSaBziqCqbGXlmnXN325biA.jpg",
+            "first_air_date": "2021-08-30",
+            "name": "Great Minds",
+            "vote_average": 5.143,
+            "vote_count": 13
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/i8iqYtAy9qcO5RSrA1f6fY1n6SN.jpg",
+            "genre_ids": [
+                10766
+            ],
+            "id": 235484,
+            "origin_country": [
+                "ZA"
+            ],
+            "original_language": "af",
+            "original_name": "Suidooster",
+            "overview": "Suidooster is a South African television soap opera produced by Suidooster Films which revolves around a matriarch, her family, friends and the people of Suidooster, a small shopping and business centre in the fictional Cape Town suburb of Ruiterbosch.",
+            "popularity": 1625.638,
+            "poster_path": "/naCgSiacvV685kait6fBvhVhdce.jpg",
+            "first_air_date": "2015-11-16",
+            "name": "Suidooster",
+            "vote_average": 8.333,
+            "vote_count": 9
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/y1e4wd1e60vNitKfNu3uva9I5wJ.jpg",
+            "genre_ids": [
+                10767
+            ],
+            "id": 210081,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "Sherri",
+            "overview": "Sherri Shepherd, actress, comic, and Emmy Award-winning longtime co-host of \"The View\", appears before a live audience with a daily dose of pop culture, comedy, conversations, and daytime talk staples, including celebrity and human interest interviews;",
+            "popularity": 1598.701,
+            "poster_path": "/7qcRQY4nSGrQ0lMMDV1c0dKKOoc.jpg",
+            "first_air_date": "2022-09-12",
+            "name": "Sherri",
+            "vote_average": 4.8,
+            "vote_count": 6
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/lhdUwhInXu31qHm65jwBAlpTp8P.jpg",
+            "genre_ids": [
+                10767
+            ],
+            "id": 82873,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "The Kelly Clarkson Show",
+            "overview": "Kelly Clarkson presents the biggest newsmakers and names in film, television and music; as well as emerging new talent and everyday people who are beacons of hope in their communities.",
+            "popularity": 1585.155,
+            "poster_path": "/9Gg1oM8Us8gCS5aJA8e0ZRuIHnf.jpg",
+            "first_air_date": "2019-09-09",
+            "name": "The Kelly Clarkson Show",
+            "vote_average": 6.313,
+            "vote_count": 48
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/2Bkqjc9tNWo3KLr1aRYyJ7vMQtM.jpg",
+            "genre_ids": [
+                10764
+            ],
+            "id": 235493,
+            "origin_country": [
+                "NL"
+            ],
+            "original_language": "nl",
+            "original_name": "De Bondgenoten",
+            "overview": "",
+            "popularity": 1535.713,
+            "poster_path": "/wsipinibYxrZhpkQ6MKxIMgL0hv.jpg",
+            "first_air_date": "2023-10-22",
+            "name": "De Bondgenoten",
+            "vote_average": 6.3,
+            "vote_count": 3
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/5S0SI4NjyMji05OPL0GOZ4BsiMh.jpg",
+            "genre_ids": [
+                10764
+            ],
+            "id": 136166,
+            "origin_country": [
+                "NL"
+            ],
+            "original_language": "nl",
+            "original_name": "Lang Leve de Liefde",
+            "overview": "",
+            "popularity": 1415.89,
+            "poster_path": "/9lpvvzEl5kViIc2vUJG4QKzj2ds.jpg",
+            "first_air_date": "2020-01-20",
+            "name": "Lang Leve de Liefde",
+            "vote_average": 4.5,
+            "vote_count": 4
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/uCY1j1YqfDWRbbS7hJwd9szX1sJ.jpg",
+            "genre_ids": [
+                10766,
+                18,
+                35
+            ],
+            "id": 237480,
+            "origin_country": [
+                "BR"
+            ],
+            "original_language": "pt",
+            "original_name": "No Rancho Fundo",
+            "overview": "",
+            "popularity": 2377.489,
+            "poster_path": "/eONkvEahSQJan1HTzWJKjvaMe29.jpg",
+            "first_air_date": "2024-04-15",
+            "name": "No Rancho Fundo",
+            "vote_average": 4.5,
+            "vote_count": 5
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/yYNa1nqvNK94xZz3eKyfvZdAvPi.jpg",
+            "genre_ids": [
+                10766,
+                18
+            ],
+            "id": 112470,
+            "origin_country": [
+                "FR"
+            ],
+            "original_language": "fr",
+            "original_name": "Ici tout commence",
+            "overview": "",
+            "popularity": 1385.762,
+            "poster_path": "/yuTHx38jpogXovMhqNatvozigMJ.jpg",
+            "first_air_date": "2020-11-02",
+            "name": "Here it all begins",
+            "vote_average": 7.218,
+            "vote_count": 39
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/vSrR7pq1wtPw85XpiOrdNcYdtUb.jpg",
+            "genre_ids": [
+                18
+            ],
+            "id": 239526,
+            "origin_country": [
+                "ES"
+            ],
+            "original_language": "es",
+            "original_name": "Sueños de libertad",
+            "overview": "",
+            "popularity": 1352.908,
+            "poster_path": "/k0uSCsavcoGviQK9rfyH2srRjhZ.jpg",
+            "first_air_date": "2024-02-25",
+            "name": "Sueños de libertad",
+            "vote_average": 5.8,
+            "vote_count": 4
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/hib8MpBPU7GdluS38htXCF4uw0c.jpg",
+            "genre_ids": [
+                80,
+                18,
+                9648
+            ],
+            "id": 2734,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "Law & Order: Special Victims Unit",
+            "overview": "In the criminal justice system, sexually-based offenses are considered especially heinous. In New York City, the dedicated detectives who investigate these vicious felonies are members of an elite squad known as the Special Victims Unit. These are their stories.",
+            "popularity": 1320.176,
+            "poster_path": "/onmSVwYsPMYtO8OjLdjS8FfRNKb.jpg",
+            "first_air_date": "1999-09-20",
+            "name": "Law & Order: Special Victims Unit",
+            "vote_average": 7.936,
+            "vote_count": 3663
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/m1rvaIIrDGwSYMt5mWG1WiTndmE.jpg",
+            "genre_ids": [
+                18
+            ],
+            "id": 91239,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "Bridgerton",
+            "overview": "Wealth, lust, and betrayal set in the backdrop of Regency era England, seen through the eyes of the powerful Bridgerton family.",
+            "popularity": 1963.039,
+            "poster_path": "/luoKpgVwi1E5nQsi7W0UuKHu2Rq.jpg",
+            "first_air_date": "2020-12-25",
+            "name": "Bridgerton",
+            "vote_average": 8.1,
+            "vote_count": 2399
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/ms6ldaiHeAkJxicCHs5b4IULhrn.jpg",
+            "genre_ids": [
+                10751
+            ],
+            "id": 30763,
+            "origin_country": [
+                "FR"
+            ],
+            "original_language": "fr",
+            "original_name": "Le Juste Prix",
+            "overview": "Le Juste Prix is a French adaptation of the American game show The Price Is Right that airs on TF1. It first premiered in 1988 and ran until the original version was canceled in 2001. In 2002 a brief sequel, Le Juste Euro, ran on France 2 and was hosted by Patrice Laffont, it only ran for two episodes. On July 27, 2009 a new version of Le Juste Prix premiered on TF1. The current version is hosted by Vincent Lagaf with Gerard Vivès as announcer.",
+            "popularity": 1300.853,
+            "poster_path": "/sNJmEmhAjL9tTt3zUVY4XF0OMIo.jpg",
+            "first_air_date": "1987-12-13",
+            "name": "Le Juste Prix",
+            "vote_average": 5.5,
+            "vote_count": 2
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/s92ZvqE4gWOrZq60AKvhgZZxDY4.jpg",
+            "genre_ids": [
+                10764
+            ],
+            "id": 240909,
+            "origin_country": [
+                "CO"
+            ],
+            "original_language": "es",
+            "original_name": "La Casa de los Famosos Colombia",
+            "overview": "",
+            "popularity": 2134.883,
+            "poster_path": "/lCn94cscNlFToXIbIWRSGBqb20Q.jpg",
+            "first_air_date": "2024-02-11",
+            "name": "La Casa de los Famosos Colombia",
+            "vote_average": 6.8,
+            "vote_count": 16
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/dfnKyfoyvSlcxb6gAgmyYS1vWk2.jpg",
+            "genre_ids": [
+                18
+            ],
+            "id": 215709,
+            "origin_country": [
+                "TR"
+            ],
+            "original_language": "tr",
+            "original_name": "Esaret",
+            "overview": "Orhun is a successful businessman who was raised in a wealthy but loveless family along with his twin sister Nihan, younger sister Nurşah and their cold, distant mother Afife. Nihan left to do volunteer work as a doctor in Eritrea, but recently she has been impossible to contact, and her family is worried about her. While looking for his sister, he comes across Hira, a poor girl living the life of a prisoner at the hands of traffickers. When they find out that Nihan has been poisoned and killed by a local gang, Orhun breaks down. When it emerges that it was actually Hira who poisoned his sister, Orhun hatches an evil revenge plan. Meanwhile, Afife, their mother, has kept Orhun's father away since his childhood secretly. Orhun decides to marry Hira as revenge. Afife hates people of lower status and she’s obsessed with “pure blood”. Will this marriage imprison Afife , or will the couple find redemption after paying all their dues?",
+            "popularity": 1249.171,
+            "poster_path": "/d1YiLLhjGnCoC0D4G0ri2MloFqO.jpg",
+            "first_air_date": "2022-11-21",
+            "name": "Redemption",
+            "vote_average": 10.0,
+            "vote_count": 4
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/mc3rG5M9dFVjMfaCFNfbD5gu2pK.jpg",
+            "genre_ids": [
+                16,
+                35
+            ],
+            "id": 1433,
+            "origin_country": [
+                "US"
+            ],
+            "original_language": "en",
+            "original_name": "American Dad!",
+            "overview": "The series focuses on an eccentric motley crew that is the Smith family and their three housemates: Father, husband, and breadwinner Stan Smith; his better half housewife, Francine Smith; their college-aged daughter, Hayley Smith; and their high-school-aged son, Steve Smith. Outside of the Smith family, there are three additional main characters, including Hayley's boyfriend turned husband, Jeff Fischer; the family's man-in-a-goldfish-body pet, Klaus; and most notably the family's zany alien, Roger, who is \"full of masquerades, brazenness, and shocking antics.\"",
+            "popularity": 1247.151,
+            "poster_path": "/xnFFz3etm1vftF0ns8RMHA8XdqT.jpg",
+            "first_air_date": "2005-02-06",
+            "name": "American Dad!",
+            "vote_average": 6.9,
+            "vote_count": 2016
+        },
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "genre_ids": [
+                18,
+                35
+            ],
+            "id": 36361,
+            "origin_country": [
+                "CZ"
+            ],
+            "original_language": "cs",
+            "original_name": "Ulice",
+            "overview": "Ulice is a Czech soap opera produced and broadcast by Nova. In the Czech language Ulice means street.\n\nThe show describes the lives of the Farský, Jordán, Boháč, Nikl, and Liška families and many other people that live in Prague. Their daily battle against real problems of living in a modern world like divorce, love, betrayal and illness or disease. Ulice often shows crime.",
+            "popularity": 1212.034,
+            "poster_path": "/gFEHva8Csx18hMGJJZ6gi4sFSKR.jpg",
+            "first_air_date": "2005-09-05",
+            "name": "Ulice",
+            "vote_average": 3.3,
+            "vote_count": 18
+        }
+    ],
+    "total_pages": 8640,
+    "total_results": 172787
+}
