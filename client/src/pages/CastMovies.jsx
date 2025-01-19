@@ -37,26 +37,45 @@ const CastMovies = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <div className="p-4">
-        <h1 className="inline text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-500">
-          Movies from <span className="text-red-500">{castname}</span>
-        </h1>
-      </div>
+    <div className="min-h-screen bg-black text-white pt-24 pb-16">
+      <div className="container mx-auto px-4">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-gray-300">Movies featuring</span>{" "}
+            <span className="text-pink-500">{castname}</span>
+          </h1>
+          <p className="text-gray-400 text-lg">
+            Found {searchResults.cast?.length || 0} movies
+          </p>
+        </div>
 
-      <div className="flex flex-wrap gap-7 justify-center">
-        {searchResults.cast.map((movie) => (
-          <Link key={movie.id} to={`/movie/${movie.id}`}>
-            <Moviecard
-              key={movie.id}
-              name={movie.title || movie.name}
-              description={movie.overview}
-              rating={movie.vote_average}
-              image_url={movie.poster_path}
-              id={movie.id}
-            />
-          </Link>
-        ))}
+        {/* Movies Grid */}
+        {searchResults.cast?.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+            {searchResults.cast.map((movie) => (
+              <Link
+                key={movie.id}
+                to={`/movie/${movie.id}`}
+                className="transform hover:scale-105 transition duration-300 ease-in-out"
+              >
+                <Moviecard
+                  name={movie.title || movie.name}
+                  description={movie.overview}
+                  rating={movie.vote_average}
+                  image_url={movie.poster_path}
+                  id={movie.id}
+                />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">
+              No movies found for this actor/actress.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

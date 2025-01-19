@@ -46,7 +46,7 @@ const Navbar = () => {
               className="flex items-center space-x-2 text-pink-500 hover:text-pink-400"
             >
               <FilmIcon className="h-8 w-8" />
-              <span className="text-2xl font-bold hidden sm:block">YuStream</span>
+              <span className="text-2xl font-bold hidden sm:block">YMoviez</span>
             </Link>
 
             <div className="hidden md:flex items-center space-x-4">
@@ -61,7 +61,7 @@ const Navbar = () => {
                 to="https://yugal.tech"
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
-                About
+                About Dev
               </Link>
             </div>
           </div>

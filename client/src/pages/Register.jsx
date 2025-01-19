@@ -1,93 +1,125 @@
-import { Input } from "@nextui-org/react";
-import React, { useState } from "react";
+import { useState } from "react";
+import React from "react";
+import { Input, Button } from "@nextui-org/react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { app } from "../firebase";
-import { Button } from "@nextui-org/react";
-import { useAuth } from "../context/authContext";
-import { Navigate, useNavigate } from "react-router-dom";
+
+const provider = new GoogleAuthProvider();
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
-
-  const { user } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        return updateProfile(auth.currentUser, { displayName: name });
-        // console.log(user);
-        // ...
-      }).then(() => {
-        navigate("/login");
+      .then(() => {
+        navigate("/");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage);
-        // ..
+        setError(error.message);
       });
   };
 
-  console.log(user);
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    const auth = getAuth(app);
+    signInWithPopup(auth, provider)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
 
   return (
-    <div className="flex h-dvh justify-center items-center bg-cyan-200 p-4 sm:p-8">
-  <div className="rounded-2xl flex flex-col bg-white w-full sm:w-2/3 md:w-1/2 lg:w-1/3 shadow-lg">
-    <h1 className="text-3xl text-center p-7 rounded-2xl font-bold">
-      Register Here
-    </h1>
-    <form
-      action="submit"
-      onSubmit={handleSubmit}
-      className="flex flex-col p-5 px-6 sm:px-10 gap-6 sm:gap-10"
-    >
-      <Input
-        type="text"
-        label="Name"
-        placeholder="Enter your name"
-        labelPlacement="outside"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Input
-        type="email"
-        label="Email"
-        placeholder="you@example.com"
-        labelPlacement="outside"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        labelPlacement="outside"
-        label="Password"
-        placeholder="Enter your password"
-        type={"password"}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <div className="flex flex-col justify-center items-center">
-        <Button type="submit" className="bg-cyan-300 px-4 py-2 rounded-lg">
-          Submit
-        </Button>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="w-full max-w-md p-8 space-y-6 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800">
+        <h1 className="text-4xl font-bold text-center text-white mb-8">
+          Create Account
+        </h1>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-2">
+            <Input
+              type="email"
+              label="Email"
+              placeholder="you@example.com"
+              labelPlacement="outside"
+              onChange={(e) => setEmail(e.target.value)}
+              classNames={{
+                label: "text-gray-400",
+                input: "bg-gray-800 text-white border-gray-700",
+              }}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Input
+              type="password"
+              label="Password"
+              placeholder="Create a password"
+              labelPlacement="outside"
+              onChange={(e) => setPassword(e.target.value)}
+              classNames={{
+                label: "text-gray-400",
+                input: "bg-gray-800 text-white border-gray-700",
+              }}
+            />
+          </div>
+
+          <div className="space-y-4">
+            <Button
+              type="submit"
+              className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2"
+            >
+              Sign Up
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-700"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-900 text-gray-400">or</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleGoogleSignIn}
+              className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 flex items-center justify-center gap-2"
+            >
+              <img className="h-5 w-5" src="/google-icon.png" alt="Google" />
+              Continue with Google
+            </Button>
+          </div>
+        </form>
+
+        {error && (
+          <div className="p-4 bg-red-900/50 border border-red-500/50 rounded-lg">
+            <p className="text-red-500 text-sm text-center">{error}</p>
+          </div>
+        )}
+
+        <p className="text-center text-gray-400">
+          Already have an account?{" "}
+          <Link to="/login" className="text-pink-500 hover:text-pink-400">
+            Sign in
+          </Link>
+        </p>
       </div>
-    </form>
-    {error && (
-      <p className="text-red-500 text-center bg-red-100 rounded-2xl p-3">
-        {error}
-      </p>
-    )}
-  </div>
-</div>);
+    </div>
+  );
 };
 
 export default Register;

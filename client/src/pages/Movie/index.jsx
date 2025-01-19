@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchData } from "../services/fetchData";
-import { Loader2, Star, Calendar, Clock } from "lucide-react";
+import { fetchData } from "../../services/fetchData";
+import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import Poster from "./Poster";
+import MovieInfo from "./MovieInfo";
 
 const baseimgURL = "https://image.tmdb.org/t/p/original";
 
@@ -51,41 +53,17 @@ const Movie = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Hero Section with Backdrop */}
-      <div 
-        className="relative h-[70vh] w-full bg-cover bg-center"
+      <div
+        className="relative h-[60vh] w-full bg-cover bg-center"
         style={{
           backgroundImage: `url(${baseimgURL}${movie.backdrop_path})`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 flex gap-8">
-          {/* Poster */}
-          <div className="hidden md:block w-64 translate-y-16">
-            <img
-              src={`${baseimgURL}${movie.poster_path}`}
-              alt="Movie Poster"
-              className="w-full rounded-lg shadow-2xl ring-1 ring-white/10 transition-transform hover:scale-105"
-            />
-          </div>
+        <div className="container mx-auto absolute bottom-0 left-0 right-0 p-8 flex gap-8">
+          <Poster baseimgURL={baseimgURL} poster_path={movie.poster_path} />
           {/* Movie Info */}
-          <div className="flex-1 space-y-4 self-end">
-            <h1 className="text-5xl font-bold">{movie.title}</h1>
-            <div className="flex items-center gap-6 text-lg">
-              <div className="flex items-center text-yellow-400">
-                <Star className="h-6 w-6 mr-1 fill-yellow-400" />
-                <span>{movie.vote_average.toFixed(1)}</span>
-              </div>
-              <div className="flex items-center text-gray-300">
-                <Calendar className="h-5 w-5 mr-1" />
-                <span>{movie.release_date}</span>
-              </div>
-              <div className="flex items-center text-gray-300">
-                <Clock className="h-5 w-5 mr-1" />
-                <span>{movie.runtime} min</span>
-              </div>
-            </div>
-            <p className="text-xl text-gray-300 max-w-3xl">{movie.overview}</p>
-          </div>
+          <MovieInfo movie={movie} />
         </div>
       </div>
 
