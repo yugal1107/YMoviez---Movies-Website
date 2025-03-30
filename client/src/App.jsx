@@ -9,12 +9,12 @@ import CastMovies from "./pages/CastMovies";
 import CarouselUI from "./components/Carousel";
 import GenreMovies from "./pages/GenreMovies";
 import MovieChatbot from "./pages/MovieChatbot";
+import "./styles/animations.css"; // Add this import for the shimmer effect
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <MovieChatbot />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -26,6 +26,7 @@ function App() {
         <Route path="/genre/:genreId" element={<GenreMovies />} />
         <Route path="/demo" element={<CarouselUI />} />
       </Routes>
+      <MovieChatbot />
     </Router>
   );
 }
