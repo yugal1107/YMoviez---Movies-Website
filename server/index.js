@@ -9,7 +9,11 @@ import castRouter from "./routers/castRouter.js";
 import genreRouter from "./routers/genreRouter.js";
 import cors from "cors";
 import chatRouter from "./routers/chatRouter.js";
-import axios from "axios";
+import { Pool } from "pg";
+import { initializeApp, cert } from "firebase-admin/app";
+import tmdbRoutes from "./routes/tmdb.js";
+import userRoutes from "./routes/user.js";
+
 
 dotenv.config();
 const app = express();
@@ -17,72 +21,29 @@ const PORT = 3000;
 
 app.use(cors());
 
-// app.use(
-//   cors({
-//     origin: "https://moviesfrontend-two.vercel.app",
-//     credentials: true,
-//   })
-// );
-
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// TMDB Proxy Route
-app.get("/api/tmdb/*", async (req, res) => {
-  try {
-    const tmdbPath = req.url.replace("/api/tmdb", ""); // Remove /api/tmdb prefix
-    const tmdbUrl = `https://api.themoviedb.org/3${tmdbPath}`;
-    const response = await axios.get(tmdbUrl, {
-      timeout: 1000,
-      headers: {
-        Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    // Axios automatically throws for non-2xx status, so if we reach here, the request was successful
-    res.json(response.data);
-  } catch (error) {
-    console.error("TMDB Proxy Error:", error.message);
-    if (error.response) {
-      // TMDB returned an error (e.g., 404, 401)
-      res.status(error.response.status).json({
-        error: `TMDB API request failed: ${error.response.statusText}`,
-      });
-    } else {
-      // Network or other error
-      res.status(500).json({ error: "Internal server error" });
-    }
-  }
-});
-
-// app.use("/api/movie", checkAuth);
-// app.use("/api/navbar", checkAuth);
-
 app.use("/api/home", homeRouter);
 app.use("/api/movie", movieRouter);
 app.use("/api/series", seriesRouter);
-// app.use("/api/user", userRouter);
 app.use("/api/navbar", navRouter);
 app.use("/api/cast", castRouter);
 app.use("/api/genres", genreRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/user", userRoutes);
 
-// Connection with MongoDB
-// mongoose
-//   .connect(process.env.MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((error) => {
-//     console.log("Error:", error.message);
-//   });
+// TMDB Proxy Route
+app.use("/api/tmdb", tmdbRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running at port 3000");
+});
+
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM signal received. Closing server...");
+  await pool.end();
+  process.exit(0);
 });
