@@ -1,8 +1,8 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import popular from "../data/popular.json" assert { type: "json" };
-import upcoming from "../data/upcoming.json" assert { type: "json" };
-import trending from "../data/trending.json" assert { type: "json" };
+// import popular from "../data/popular.json" assert { type: "json" };
+// import upcoming from "../data/upcoming.json" assert { type: "json" };
+// import trending from "../data/trending.json" assert { type: "json" };
 import axiosRetry from "axios-retry";
 
 axiosRetry(axios, { retries: 3 });

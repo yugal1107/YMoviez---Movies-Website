@@ -5,49 +5,112 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   getAuth,
   createUserWithEmailAndPassword,
+  updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
+  sendEmailVerification,
+  signOut,
 } from "firebase/auth";
 import { app } from "../firebase";
 
 const provider = new GoogleAuthProvider();
 
 const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingEmail, setIsLoadingEmail] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoadingEmail(true);
+    setError("");
+
+    // Basic password validation
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      setIsLoadingEmail(false);
+      return;
+    }
+
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        navigate("/");
+      .then((userCredential) => {
+        const user = userCredential.user;
+        // Update displayName
+        return updateProfile(user, {
+          displayName: name,
+        }).then(() => {
+          // Send verification email
+          return sendEmailVerification(user).then(() => {
+            // Sign out the user to prevent access until email is verified
+            return signOut(auth).then(() => {
+              setError("Verification email sent! Please check your inbox and verify your email before logging in.");
+              // Optionally redirect to login page
+              navigate("/login");
+            });
+          });
+        });
       })
       .catch((error) => {
-        setError(error.message);
+        // Map Firebase errors to user-friendly messages
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setError("This email is already in use. Please log in or use a different email.");
+            break;
+          case "auth/invalid-email":
+            setError("Invalid email address. Please check and try again.");
+            break;
+          case "auth/weak-password":
+            setError("Password is too weak. Please use a stronger password.");
+            break;
+          default:
+            setError(error.message);
+        }
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoadingEmail(false);
       });
   };
 
   const handleGoogleSignIn = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoadingGoogle(true);
+    setError("");
     const auth = getAuth(app);
     signInWithPopup(auth, provider)
-      .then(() => {
-        navigate("/");
+      .then((result) => {
+        const user = result.user;
+        // Google users typically have verified emails, but check anyway
+        if (!user.emailVerified) {
+          // Send verification email if email is not verified
+          return sendEmailVerification(user).then(() => {
+            // Sign out to enforce verification
+            return signOut(auth).then(() => {
+              setError("Verification email sent! Please check your inbox and verify your email before logging in.");
+              navigate("/login");
+            });
+          });
+        } else if (!user.displayName) {
+          navigate("/profile-setup"); // Redirect to profile setup if displayName is missing
+        } else {
+          navigate("/");
+        }
       })
       .catch((error) => {
-        setError(error.message);
+        switch (error.code) {
+          case "auth/popup-closed-by-user":
+            setError("Google sign-in was canceled. Please try again.");
+            break;
+          default:
+            setError(error.message);
+        }
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoadingGoogle(false);
       });
   };
 
@@ -70,6 +133,26 @@ const Register = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <Input
+                type="text"
+                label="Name"
+                placeholder="Your name"
+                labelPlacement="outside"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                classNames={{
+                  label: "text-gray-400 font-medium mb-1",
+                  base: "pb-3",
+                  input: "bg-gray-800/70 text-white border-gray-700",
+                  inputWrapper:
+                    "bg-gray-800/70 border border-gray-700 hover:border-purple-500/50 focus-within:border-purple-500 h-12",
+                }}
+                autoComplete="name"
+                required
+              />
+            </div>
+
             <div className="space-y-4">
               <Input
                 type="email"
@@ -109,7 +192,7 @@ const Register = () => {
                 required
               />
               <p className="text-xs text-gray-500 mt-1">
-                Must be at least 8 characters
+                Must be at least 6 characters
               </p>
             </div>
 
@@ -117,7 +200,7 @@ const Register = () => {
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg shadow-purple-600/20"
-                isLoading={isLoading}
+                isLoading={isLoadingEmail}
               >
                 Sign Up
               </Button>
@@ -136,7 +219,7 @@ const Register = () => {
               <Button
                 onClick={handleGoogleSignIn}
                 className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 border border-gray-700 hover:border-gray-600 transition-all duration-300"
-                isLoading={isLoading}
+                isLoading={isLoadingGoogle}
               >
                 <img className="h-5 w-5" src="/google-icon.png" alt="Google" />
                 Google
@@ -145,8 +228,22 @@ const Register = () => {
           </form>
 
           {error && (
-            <div className="mt-6 p-4 bg-red-900/30 border border-red-500/50 rounded-lg animate-pulse">
-              <p className="text-red-400 text-sm text-center">{error}</p>
+            <div
+              className={`mt-6 p-4 rounded-lg animate-pulse ${
+                error.includes("Verification email sent")
+                  ? "bg-green-900/30 border border-green-500/50"
+                  : "bg-red-900/30 border border-red-500/50"
+              }`}
+            >
+              <p
+                className={`text-sm text-center ${
+                  error.includes("Verification email sent")
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {error}
+              </p>
             </div>
           )}
 
