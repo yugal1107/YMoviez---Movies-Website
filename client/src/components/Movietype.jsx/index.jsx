@@ -1,11 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Moviecard from "../Moviecard";
+import ScrollButton from "../ScrollButton";
 
-const baseImgURL = "https://image.tmdb.org/t/p/w500";
-
-const Movietype = ({ data, title, icon }) => {
+const Movietype = ({
+  data,
+  title,
+  icon,
+  scrollRef,
+  onScrollLeft,
+  onScrollRight,
+  likedMovies,
+}) => {
   return (
     <div className="relative">
       <div className="mb-6 flex items-center justify-between">
@@ -20,9 +27,16 @@ const Movietype = ({ data, title, icon }) => {
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
-
-      <div className="relative">
-        <div className="flex space-x-6 overflow-x-auto p-4 scrollbar-hide">
+      <div className="relative group px-2 lg:px-10">
+        <ScrollButton
+          onClick={onScrollLeft}
+          icon={<ChevronRight className="h-5 w-5 lg:h-6 lg:w-6 rotate-180" />}
+          direction="left"
+        />
+        <div
+          ref={scrollRef}
+          className="flex space-x-6 overflow-x-auto py-4 scrollbar-hide scroll-smooth"
+        >
           {data.results.map((movie) => (
             <Link
               key={movie.id}
@@ -35,14 +49,16 @@ const Movietype = ({ data, title, icon }) => {
                 rating={movie.vote_average}
                 image_url={movie.poster_path}
                 id={movie.id}
+                likedMovies={likedMovies}
               />
             </Link>
           ))}
         </div>
-
-        {/* Optional: Gradient fades for scroll indication */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 md:w-10 bg-gradient-to-r from-gray-400 dark:from-gray-900" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 md:w-10 bg-gradient-to-l from-gray-400 dark:from-gray-900" />
+        <ScrollButton
+          onClick={onScrollRight}
+          icon={<ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" />}
+          direction="right"
+        />
       </div>
     </div>
   );

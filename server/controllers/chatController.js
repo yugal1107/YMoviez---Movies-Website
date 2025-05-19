@@ -19,7 +19,7 @@ const chatController = {
       }
 
       // Initialize the model
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
       // Send the message directly with the context
       const prompt = `You are a friendly movie recommendation chatbot. Please help with the following request: ${message}. 

@@ -11,7 +11,7 @@ router.get("/*", async (req, res) => {
   try {
     const response = await axios.get(tmdbUrl, {
       headers: {
-        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+        Authorization: `Bearer ${process.env.ACCESS_TOKEN_AUTH}`,
         "Content-Type": "application/json",
       },
     });

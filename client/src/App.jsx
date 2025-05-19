@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Movie from "./pages/Movie";
@@ -10,11 +10,18 @@ import CarouselUI from "./components/Carousel";
 import GenreMovies from "./pages/GenreMovies";
 import MovieChatbot from "./pages/MovieChatbot";
 import "./styles/animations.css"; // Add this import for the shimmer effect
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <Toaster
+        position="bottom-center"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

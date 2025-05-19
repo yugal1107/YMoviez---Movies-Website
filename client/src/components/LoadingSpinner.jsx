@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
+import { Loader2 } from "lucide-react";
 
 const LoadingSpinner = () => {
   return (
-    <div className="flex items-center justify-center">
-      <div className="w-24 h-24 border-8 border-b-green-600 border-t-green-400 border-l-green-600 border-r-green-400 rounded-full animate-spin"></div>
+    <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <Loader2 className="h-12 w-12 animate-spin text-pink-500 dark:text-pink-400" />
     </div>
   );
 };
