@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Plus, X } from "lucide-react";
 import usePlaylists from "../hooks/usePlaylists";
+import usePlaylistMovies from "../hooks/usePlaylistMovies";
 
 const PlaylistSelector = ({ tmdbId, onClose }) => {
-  const { playlists, isLoading, createPlaylist } = usePlaylists();
+  const { playlists, isLoading: playlistsLoading, createPlaylist } = usePlaylists();
   const [isOpen, setIsOpen] = useState(true);
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+
+  // Use the hook at the top level, but only for the selected playlist
+  const { addMovie } = usePlaylistMovies(selectedPlaylist);
 
   useEffect(() => {
     const handleEscape = (e) => {
@@ -26,11 +31,17 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
   };
 
   const handleAddToPlaylist = async (playlistId) => {
-    const { addMovie } = await import("../hooks/usePlaylistMovies").then(
-      (module) => module.default(playlistId)
-    );
-    await addMovie(tmdbId);
-    setSelectedPlaylist(playlistId);
+    setIsAdding(true);
+    try {
+      setSelectedPlaylist(playlistId);
+      await addMovie(tmdbId);
+      setTimeout(() => {
+        setIsOpen(false);
+        onClose();
+      }, 500); // Close modal after success
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -65,7 +76,7 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
             />
             <button
               onClick={handleCreatePlaylist}
-              className="p-2 bg-pink-500 text-white rounded-md hover:bg-pink-600"
+              className="p-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 disabled:opacity-50"
               disabled={!newPlaylistName.trim()}
               aria-label="Create playlist"
             >
@@ -77,7 +88,7 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
           <label className="block text-sm font-medium text-gray-300 mb-1">
             Select Playlist
           </label>
-          {isLoading ? (
+          {playlistsLoading ? (
             <p className="text-gray-400">Loading playlists...</p>
           ) : playlists.length === 0 ? (
             <p className="text-gray-400">No playlists found.</p>
@@ -87,11 +98,12 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
                 <button
                   key={playlist.playlist_id}
                   onClick={() => handleAddToPlaylist(playlist.playlist_id)}
+                  disabled={isAdding}
                   className={`w-full p-2 rounded-md text-left transition-colors ${
                     selectedPlaylist === playlist.playlist_id
                       ? "bg-pink-500 text-white"
                       : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                  }`}
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {playlist.name}
                 </button>

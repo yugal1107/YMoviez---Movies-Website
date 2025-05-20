@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import usePlaylists from "../hooks/usePlaylists";
 import usePlaylistMovies from "../hooks/usePlaylistMovies";
-import { Loader2, Film } from "lucide-react";
+import { Loader2, Film, X } from "lucide-react";
 import Moviecard from "../components/Moviecard";
 
 const PlaylistPage = () => {
