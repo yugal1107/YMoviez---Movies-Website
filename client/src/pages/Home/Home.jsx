@@ -1,5 +1,5 @@
 import { React, useRef } from "react";
-import Movietype from "../../components/Movietype.jsx/index.jsx";
+import Movietype from "../../components/Movietype/index.jsx";
 import { useAuth } from "../../context/authContext.jsx";
 import { Loader2, Film, Popcorn, Star, Heart } from "lucide-react";
 import MovieCarousel from "../../components/Carousel.jsx";

@@ -24,6 +24,34 @@ export const createPlaylist = async (name, user, fetchData, baseApiUrl) => {
   }
 };
 
+export const deletePlaylist = async (playlistId, user, fetchData, baseApiUrl) => {
+  if (!user) {
+    toast.error("Please login to delete playlists");
+    return { success: false, error: "User not logged in" };
+  }
+
+  try {
+    const response = await fetchData(`${baseApiUrl}api/user/playlists/${playlistId}`, {
+      method: "DELETE",
+    });
+
+    if (response?.message === "Playlist deleted") {
+      toast.success("Playlist deleted!");
+      return { success: true };
+    }
+    throw new Error("Unexpected response");
+  } catch (error) {
+    if (error.response?.status === 403) {
+      toast.error("You don’t own this playlist");
+    } else if (error.response?.status === 404) {
+      toast.error("Playlist not found");
+    } else {
+      toast.error("Failed to delete playlist");
+    }
+    return { success: false, error: error.message };
+  }
+};
+
 export const getPlaylists = async (user, fetchData, baseApiUrl) => {
   if (!user) return [];
 
@@ -118,12 +146,7 @@ export const removeMovieFromPlaylist = async (
   }
 };
 
-export const getPlaylistMovies = async (
-  playlistId,
-  user,
-  fetchData,
-  baseApiUrl
-) => {
+export const getPlaylistMovies = async (playlistId, user, fetchData, baseApiUrl) => {
   if (!user) return [];
 
   try {

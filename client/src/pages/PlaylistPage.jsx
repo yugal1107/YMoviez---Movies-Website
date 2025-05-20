@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import usePlaylists from "../hooks/usePlaylists";
 import usePlaylistMovies from "../hooks/usePlaylistMovies";
-import { Loader2, Film, X } from "lucide-react";
+import { Loader2, Film, Trash2, X } from "lucide-react";
 import Moviecard from "../components/Moviecard";
 
 const PlaylistPage = () => {
-  const { playlists, isLoading: playlistsLoading } = usePlaylists();
+  const { playlists, isLoading: playlistsLoading, deletePlaylist } = usePlaylists();
 
   if (playlistsLoading) {
     return (
@@ -27,7 +27,11 @@ const PlaylistPage = () => {
         ) : (
           <div className="space-y-12">
             {playlists.map((playlist) => (
-              <PlaylistSection key={playlist.playlist_id} playlist={playlist} />
+              <PlaylistSection
+                key={playlist.playlist_id}
+                playlist={playlist}
+                onDelete={() => deletePlaylist(playlist.playlist_id)}
+              />
             ))}
           </div>
         )}
@@ -36,16 +40,25 @@ const PlaylistPage = () => {
   );
 };
 
-const PlaylistSection = ({ playlist }) => {
+const PlaylistSection = ({ playlist, onDelete }) => {
   const { movies, isLoading, removeMovie } = usePlaylistMovies(
     playlist.playlist_id
   );
 
   return (
     <section className="space-y-6">
-      <div className="flex items-center gap-2">
-        <Film className="h-6 w-6 text-pink-500" />
-        <h2 className="text-2xl font-bold">{playlist.name}</h2>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Film className="h-6 w-6 text-pink-500" />
+          <h2 className="text-2xl font-bold">{playlist.name}</h2>
+        </div>
+        <button
+          onClick={onDelete}
+          className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+          aria-label={`Delete playlist ${playlist.name}`}
+        >
+          <Trash2 className="h-5 w-5" />
+        </button>
       </div>
       {isLoading ? (
         <div className="flex justify-center items-center py-12">
