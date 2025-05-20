@@ -1,12 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import usePlaylists from "../hooks/usePlaylists";
+import Movietype from "../components/Movietype";
+import { Loader2, Film, Trash2 } from "lucide-react";
 import usePlaylistMovies from "../hooks/usePlaylistMovies";
-import { Loader2, Film, Trash2, X } from "lucide-react";
-import Moviecard from "../components/Moviecard";
 
 const PlaylistPage = () => {
-  const { playlists, isLoading: playlistsLoading, deletePlaylist } = usePlaylists();
+  const {
+    playlists,
+    isLoading: playlistsLoading,
+    deletePlaylist,
+  } = usePlaylists();
 
   if (playlistsLoading) {
     return (
@@ -17,12 +20,31 @@ const PlaylistPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white py-16">
-      <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold mb-8">Your Playlists</h1>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black pt-24 pb-16 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10 text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <span className="text-gray-100">Your Playlists</span>
+          </h1>
+          <p className="text-gray-400">
+            {playlists.length > 0
+              ? `You have ${playlists.length} playlist${
+                  playlists.length > 1 ? "s" : ""
+                }`
+              : "You don't have any playlists yet. Create one to get started!"}
+          </p>
+        </div>
+
         {playlists.length === 0 ? (
-          <div className="bg-gray-900/50 rounded-lg p-6 text-center">
-            <p className="text-gray-400">No playlists found. Create one!</p>
+          <div className="flex flex-col items-center justify-center p-12 bg-gray-800/30 rounded-xl">
+            <Film className="h-16 w-16 text-gray-500 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-300 mb-2">
+              No Playlists Found
+            </h3>
+            <p className="text-gray-500 text-center max-w-md">
+              Create your first playlist by clicking the "Add to Playlist"
+              button on any movie.
+            </p>
           </div>
         ) : (
           <div className="space-y-12">
@@ -41,60 +63,50 @@ const PlaylistPage = () => {
 };
 
 const PlaylistSection = ({ playlist, onDelete }) => {
-  const { movies, isLoading, removeMovie } = usePlaylistMovies(
-    playlist.playlist_id
+  const { movies, isLoading } = usePlaylistMovies(playlist.playlist_id);
+
+  // Create a custom action component for the delete button
+  const DeleteButton = (
+    <button
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        onDelete();
+      }}
+      className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors ml-2"
+      aria-label={`Delete playlist ${playlist.name}`}
+    >
+      <Trash2 className="h-5 w-5" />
+    </button>
   );
 
   return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Film className="h-6 w-6 text-pink-500" />
-          <h2 className="text-2xl font-bold">{playlist.name}</h2>
-        </div>
-        <button
-          onClick={onDelete}
-          className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-          aria-label={`Delete playlist ${playlist.name}`}
-        >
-          <Trash2 className="h-5 w-5" />
-        </button>
-      </div>
+    <div className="relative">
       {isLoading ? (
-        <div className="flex justify-center items-center py-12">
+        <div className="flex justify-center items-center py-8">
           <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
         </div>
       ) : movies.length === 0 ? (
-        <div className="bg-gray-900/50 rounded-lg p-6">
+        <div className="bg-gray-900/50 rounded-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Film className="h-6 w-6 text-pink-500" />
+              <h2 className="text-2xl font-bold">{playlist.name}</h2>
+            </div>
+            {DeleteButton}
+          </div>
           <p className="text-gray-400">No movies in this playlist.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-          {movies.map((movie) => (
-            <div key={movie.tmdb_id} className="relative group">
-              <Link
-                to={`/movie/${movie.tmdb_id}`}
-                className="transform hover:scale-105 transition duration-300"
-              >
-                <Moviecard
-                  name={movie.title}
-                  rating={movie.vote_average}
-                  image_url={movie.poster_path}
-                  id={movie.tmdb_id}
-                />
-              </Link>
-              <button
-                onClick={() => removeMovie(movie.tmdb_id)}
-                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-label="Remove from playlist"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
-        </div>
+        <Movietype
+          data={movies}
+          title={playlist.name}
+          icon={<Film className="h-6 w-6 text-pink-500" />}
+          viewAllLink={`/playlist/${playlist.playlist_id}`}
+          scrollId={`playlist-${playlist.playlist_id}`}
+          actionElement={DeleteButton}
+        />
       )}
-    </section>
+    </div>
   );
 };
 

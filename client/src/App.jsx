@@ -12,6 +12,8 @@ import MovieChatbot from "./pages/MovieChatbot";
 import "./styles/animations.css"; // Add this import for the shimmer effect
 import { Toaster } from "react-hot-toast";
 import PlaylistPage from "./pages/PlaylistPage";
+import PlaylistDetailPage from "./pages/PlaylistDetailPage";
+import ContentTypePage from "./pages/ContentTypePage";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
         <Route path="/genre/:genreId" element={<GenreMovies />} />
         <Route path="/demo" element={<CarouselUI />} />
         <Route path="playlists" element={<PlaylistPage />} />
+        <Route path="/playlist/:playlistid" element={<PlaylistDetailPage />} />
+        <Route path="/content/:contentType" element={<ContentTypePage />} />
       </Routes>
       <MovieChatbot />
     </Router>
