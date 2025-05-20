@@ -2,10 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Moviecard from "../../components/Moviecard";
 import { Sparkles, Film } from "lucide-react";
-import { useAuth } from "../../context/authContext";
-import { likeMovie } from "../../utils/movieUtils";
-import { fetchData } from "../../utils/fetchData";
-import { toast } from "react-hot-toast";
+import useLikedMovies from "../../hooks/use-liked-movies";
 
 const RecommendedMovies = ({
   movies,
@@ -13,21 +10,7 @@ const RecommendedMovies = ({
   subtitle = "Movies you might enjoy",
   isPoweredByML = false,
 }) => {
-  const { user } = useAuth();
-
-  const handleLike = async (movieId) => {
-    if (!user) {
-      toast.error("Please login to like movies");
-      return;
-    }
-
-    await likeMovie(
-      movieId,
-      user,
-      fetchData,
-      import.meta.env.VITE_BASE_API_URL
-    );
-  };
+  const { likedMovies } = useLikedMovies();
 
   if (!movies || movies.length === 0) return null;
 
@@ -62,7 +45,7 @@ const RecommendedMovies = ({
               rating={movie.vote_average}
               image_url={movie.poster_path}
               id={movie.id}
-              onLike={handleLike}
+              likedMovies={likedMovies}
             />
           </Link>
         ))}

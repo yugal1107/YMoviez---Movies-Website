@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const Poster = ({ baseimgURL, poster_path }) => {
   return (
@@ -7,9 +7,10 @@ const Poster = ({ baseimgURL, poster_path }) => {
         src={`${baseimgURL}${poster_path}`}
         alt="Movie Poster"
         className="w-full rounded-lg shadow-2xl ring-1 ring-white/10 transition-transform hover:scale-105"
+        loading="lazy"
       />
     </div>
   );
 };
 
-export default Poster;
+export default memo(Poster);

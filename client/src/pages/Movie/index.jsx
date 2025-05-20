@@ -1,123 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../../utils/fetchData";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
 import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
+import useLikedMovies from "../../hooks/use-liked-movies";
+import LikeButton from "../../components/LikeButton";
+import PlaylistSelector from "../../components/PlaylistSelector";
 
 const baseimgURL = "https://image.tmdb.org/t/p/original";
 
 const Movie = () => {
   const { movieid } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [movie, setMovie] = useState({});
-  const [cast, setCast] = useState([]);
-  const [recommendations, setRecommendations] = useState([]);
-  const [recommendationsLoading, setRecommendationsLoading] = useState(true);
-  const [recommendationsError, setRecommendationsError] = useState(null);
+  const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
+  const { likedMovies } = useLikedMovies();
 
-  // Fetch main movie data first
-  const getMovieData = async () => {
-    try {
-      setLoading(true);
-      // Fetch main movie details
-      const responseData = await fetchData(
-        `${import.meta.env.VITE_BASE_API_URL}api/movie/details/${movieid}`
-      );
+  // Fetch movie details and cast using React Query
+  const { data: movieData, isLoading: movieLoading } = useQuery({
+    queryKey: ["movieDetails", movieid],
+    queryFn: () =>
+      fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}api/tmdb/movie/${movieid}`
+      ),
+  });
 
-      // Fetch cast details
-      const castData = await fetchData(
-        `${import.meta.env.VITE_BASE_API_URL}api/movie/cast/${movieid}`
-      );
+  const { data: castData, isLoading: castLoading } = useQuery({
+    queryKey: ["movieCast", movieid],
+    queryFn: () =>
+      fetchData(
+        `${import.meta.env.VITE_BASE_API_URL}api/tmdb/movie/${movieid}/credits`
+      ),
+  });
 
-      setMovie(responseData.movieDetails);
-      setCast(castData.castData.cast);
-    } catch (error) {
-      console.error("Error fetching movie data:", error);
-    } finally {
-      setLoading(false);
-      // Now fetch recommendations separately
-      getRecommendations();
-    }
-  };
-
-  // Separate function to fetch recommendations after main content loads
-  const getRecommendations = async () => {
-    setRecommendationsLoading(true);
-    setRecommendationsError(null);
-
-    try {
-      const recommendationResponse = await axios.get(
-        `https://movieml.yugal.tech/recommend?tmdb_id=${movieid}&top_n=10`
-      );
-
-      if (
-        recommendationResponse.data &&
-        recommendationResponse.data.length > 0
-      ) {
-        // Process the recommendations to get detailed info for each movie
-        const recommendedMoviesDetails = await Promise.all(
-          recommendationResponse.data.map(async (rec) => {
-            try {
-              // Fetch details for each recommended movie
-              const details = await fetchData(
-                `${import.meta.env.VITE_BASE_API_URL}api/movie/details/${
-                  rec.tmdbId
-                }`
-              );
-              return {
-                id: rec.tmdbId,
-                title: details.movieDetails.title,
-                name: details.movieDetails.title,
-                poster_path: details.movieDetails.poster_path,
-                vote_average: details.movieDetails.vote_average || rec.rating,
-              };
-            } catch (error) {
-              console.error(
-                `Error fetching details for movie ${rec.tmdbId}:`,
-                error
-              );
-              return null;
-            }
+  // Fetch recommendations using React Query
+  const { data: recommendations = [], isLoading: recommendationsLoading } =
+    useQuery({
+      queryKey: ["recommendations", movieid],
+      queryFn: async () => {
+        const recs = await fetchData(
+          `${import.meta.env.VITE_BASE_API_URL}api/recommend?tmdb_id=${movieid}&top_n=10`
+        );
+        const details = await Promise.all(
+          recs.map(async (rec) => {
+            const movieDetails = await fetchData(
+              `${import.meta.env.VITE_BASE_API_URL}api/tmdb/movie/${rec.tmdbId}`
+            );
+            return {
+              id: rec.tmdbId,
+              title: movieDetails.title,
+              name: movieDetails.title,
+              poster_path: movieDetails.poster_path,
+              vote_average: movieDetails.vote_average || rec.rating,
+            };
           })
         );
-        // Filter out any null values from failed requests
-        setRecommendations(
-          recommendedMoviesDetails.filter((movie) => movie !== null)
-        );
-      } else {
-        setRecommendations([]);
-      }
-    } catch (error) {
-      console.error("Error fetching recommendations:", error);
+        return details.filter((movie) => movie !== null);
+      },
+      enabled: !!movieData,
+    });
 
-      // Check if it's the "movie not found in dataset" error
-      if (error.response && error.response.data && error.response.data.detail) {
-        if (error.response.data.detail.includes("not found in dataset")) {
-          setRecommendationsError(
-            "This movie is not in our recommendation database."
-          );
-        } else {
-          setRecommendationsError("Error loading recommendations.");
-        }
-      } else {
-        setRecommendationsError("Error loading recommendations.");
-      }
-
-      setRecommendations([]);
-    } finally {
-      setRecommendationsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getMovieData();
-  }, [movieid]);
-
-  if (loading) {
+  if (movieLoading || castLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-black">
         <Loader2 className="h-12 w-12 animate-spin text-pink-500" />
@@ -125,7 +69,10 @@ const Movie = () => {
     );
   }
 
-  // Render UI for recommendations section based on loading and error states
+  const movie = movieData || {};
+  const cast = castData?.cast || [];
+  const isLiked = likedMovies?.some((liked) => liked.id === parseInt(movieid));
+
   const renderRecommendationsSection = () => {
     if (recommendationsLoading) {
       return (
@@ -143,20 +90,7 @@ const Movie = () => {
       );
     }
 
-    if (recommendationsError) {
-      return (
-        <section className="space-y-6">
-          <div className="flex items-center gap-2 mb-2">
-            <h2 className="text-3xl font-bold">Recommendations</h2>
-          </div>
-          <div className="bg-gray-900/50 rounded-lg p-6 text-center">
-            <p className="text-gray-400">{recommendationsError}</p>
-          </div>
-        </section>
-      );
-    }
-
-    if (recommendations && recommendations.length > 0) {
+    if (recommendations.length > 0) {
       return (
         <RecommendedMovies
           movies={recommendations}
@@ -173,9 +107,7 @@ const Movie = () => {
           <h2 className="text-3xl font-bold">Recommendations</h2>
         </div>
         <div className="bg-gray-900/50 rounded-lg p-6 text-center">
-          <p className="text-gray-400">
-            No recommendations found for this movie.
-          </p>
+          <p className="text-gray-400">No recommendations found.</p>
         </div>
       </section>
     );
@@ -183,7 +115,6 @@ const Movie = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Hero Section with Backdrop */}
       <div
         className="relative h-[60vh] w-full bg-cover bg-center"
         style={{
@@ -193,18 +124,27 @@ const Movie = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
         <div className="container mx-auto absolute bottom-0 left-0 right-0 p-8 flex gap-8">
           <Poster baseimgURL={baseimgURL} poster_path={movie.poster_path} />
-          {/* Movie Info */}
-          <MovieInfo movie={movie} />
+          <div className="flex-1 space-y-4 self-end">
+            <MovieInfo movie={movie} />
+            <div className="flex items-center gap-3">
+              <LikeButton id={parseInt(movieid)} initialLikeState={isLiked} />
+              <button
+                onClick={() => setShowPlaylistSelector(true)}
+                className="px-3 py-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 text-sm"
+              >
+                Add to Playlist
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-16 space-y-16">
-        {/* Genres and Production */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Genres</h2>
             <div className="flex flex-wrap gap-2">
-              {movie.genres.map((genre) => (
+              {movie.genres?.map((genre) => (
                 <Link
                   key={genre.id}
                   to={`/genre/${genre.id}`}
@@ -218,7 +158,7 @@ const Movie = () => {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">Production Companies</h2>
             <div className="flex flex-wrap gap-2">
-              {movie.production_companies.map((company) => (
+              {movie.production_companies?.map((company) => (
                 <span
                   key={company.id}
                   className="px-4 py-2 rounded-full bg-gray-800 text-gray-300"
@@ -230,7 +170,6 @@ const Movie = () => {
           </div>
         </div>
 
-        {/* Cast Section */}
         <section className="space-y-6">
           <h2 className="text-3xl font-bold">Cast</h2>
           <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
@@ -258,9 +197,15 @@ const Movie = () => {
           </div>
         </section>
 
-        {/* Recommendations Section - dynamically rendered based on state */}
         {renderRecommendationsSection()}
       </div>
+
+      {showPlaylistSelector && (
+        <PlaylistSelector
+          tmdbId={parseInt(movieid)}
+          onClose={() => setShowPlaylistSelector(false)}
+        />
+      )}
     </div>
   );
 };
