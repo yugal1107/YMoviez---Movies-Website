@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Moviecard from "../../components/Moviecard";
 import { Sparkles, Film } from "lucide-react";
 import { useAuth } from "../../context/authContext";
-import { likeMovie } from "../../utils/movieUtils";
+import { likeMovie } from "../../utils/likeUtils";
 import { fetchData } from "../../utils/fetchData";
 import { toast } from "react-hot-toast";
 

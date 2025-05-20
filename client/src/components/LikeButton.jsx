@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
-import { likeMovie, dislikeMovie } from "../utils/movieUtils";
+import { likeMovie, dislikeMovie } from "../utils/likeUtils";
 import { useAuth } from "../context/authContext";
 import useLikedMovies from "../hooks/use-liked-movies";
 import { fetchData } from "../utils/fetchData";
