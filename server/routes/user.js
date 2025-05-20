@@ -1,11 +1,10 @@
 import express from "express";
-import authenticateToken from "../middlewares/auth.js"; // Use the exported middleware directly
+import authenticateToken from "../middlewares/auth.js";
 
 const createUserRouter = (pool, getOrCreateMovie) => {
   const router = express.Router();
 
-  // Middleware to ensure all routes are authenticated
-  router.use(authenticateToken); // Use the middleware directly
+  router.use(authenticateToken);
 
   // Likes: Add a like
   router.post("/likes", async (req, res) => {
@@ -17,7 +16,6 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     }
 
     try {
-      // Get or create the movie in the movies table
       const movie = await getOrCreateMovie(tmdb_id);
       const movie_id = movie.movie_id;
 
@@ -28,13 +26,17 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       `;
       const values = [user_id, movie_id];
       const result = await pool.query(query, values);
-      res.status(201).json({ message: "Movie liked", like_id: result.rows[0].like_id });
+      res
+        .status(201)
+        .json({ message: "Movie liked", like_id: result.rows[0].like_id });
     } catch (error) {
-      if (error.code === "23505") { // Unique constraint violation
+      if (error.code === "23505") {
         return res.status(409).json({ error: "Movie already liked" });
       }
       console.error("Error adding like:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to add like", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to add like", details: error.message });
     }
   });
 
@@ -48,7 +50,6 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     }
 
     try {
-      // Get the movie_id from the movies table
       const movie = await getOrCreateMovie(parseInt(tmdb_id));
       const movie_id = movie.movie_id;
 
@@ -66,7 +67,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.json({ message: "Like removed" });
     } catch (error) {
       console.error("Error removing like:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to remove like", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to remove like", details: error.message });
     }
   });
 
@@ -86,7 +89,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.json(result.rows);
     } catch (error) {
       console.error("Error fetching likes:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to fetch likes", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to fetch likes", details: error.message });
     }
   });
 
@@ -96,7 +101,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     const user_id = req.user.user_id;
 
     if (!name || typeof name !== "string" || name.length > 100) {
-      return res.status(400).json({ error: "Invalid or missing playlist name" });
+      return res
+        .status(400)
+        .json({ error: "Invalid or missing playlist name" });
     }
 
     try {
@@ -110,7 +117,61 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.status(201).json(result.rows[0]);
     } catch (error) {
       console.error("Error creating playlist:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to create playlist", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to create playlist", details: error.message });
+    }
+  });
+
+  // Playlists: Delete a playlist
+  router.delete("/playlists/:playlist_id", async (req, res) => {
+    const { playlist_id } = req.params;
+    const user_id = req.user.user_id;
+
+    if (!playlist_id || !Number.isInteger(parseInt(playlist_id))) {
+      return res.status(400).json({ error: "Invalid playlist_id" });
+    }
+
+    try {
+      // Verify playlist belongs to the user
+      const playlistQuery = `
+        SELECT 1 FROM playlists WHERE playlist_id = $1 AND user_id = $2;
+      `;
+      const playlistResult = await pool.query(playlistQuery, [
+        parseInt(playlist_id),
+        user_id,
+      ]);
+      if (playlistResult.rowCount === 0) {
+        return res
+          .status(403)
+          .json({ error: "Playlist not found or not owned by user" });
+      }
+
+      // Delete associated movies from playlist_movies
+      await pool.query("DELETE FROM playlist_movies WHERE playlist_id = $1", [
+        parseInt(playlist_id),
+      ]);
+
+      // Delete the playlist
+      const deleteQuery = `
+        DELETE FROM playlists
+        WHERE playlist_id = $1 AND user_id = $2
+        RETURNING *;
+      `;
+      const result = await pool.query(deleteQuery, [
+        parseInt(playlist_id),
+        user_id,
+      ]);
+
+      if (result.rowCount === 0) {
+        return res.status(404).json({ error: "Playlist not found" });
+      }
+      res.json({ message: "Playlist deleted" });
+    } catch (error) {
+      console.error("Error deleting playlist:", error.message, error.stack);
+      res
+        .status(500)
+        .json({ error: "Failed to delete playlist", details: error.message });
     }
   });
 
@@ -129,7 +190,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.json(result.rows);
     } catch (error) {
       console.error("Error fetching playlists:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to fetch playlists", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to fetch playlists", details: error.message });
     }
   });
 
@@ -139,21 +202,29 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     const { tmdb_id } = req.body;
     const user_id = req.user.user_id;
 
-    if (!playlist_id || !Number.isInteger(parseInt(playlist_id)) || !tmdb_id || !Number.isInteger(tmdb_id)) {
+    if (
+      !playlist_id ||
+      !Number.isInteger(parseInt(playlist_id)) ||
+      !tmdb_id ||
+      !Number.isInteger(tmdb_id)
+    ) {
       return res.status(400).json({ error: "Invalid playlist_id or tmdb_id" });
     }
 
     try {
-      // Verify playlist belongs to the user
       const playlistQuery = `
         SELECT 1 FROM playlists WHERE playlist_id = $1 AND user_id = $2;
       `;
-      const playlistResult = await pool.query(playlistQuery, [parseInt(playlist_id), user_id]);
+      const playlistResult = await pool.query(playlistQuery, [
+        parseInt(playlist_id),
+        user_id,
+      ]);
       if (playlistResult.rowCount === 0) {
-        return res.status(403).json({ error: "Playlist not found or not owned by user" });
+        return res
+          .status(403)
+          .json({ error: "Playlist not found or not owned by user" });
       }
 
-      // Get or create the movie
       const movie = await getOrCreateMovie(tmdb_id);
       const movie_id = movie.movie_id;
 
@@ -164,13 +235,27 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       `;
       const values = [parseInt(playlist_id), movie_id];
       const result = await pool.query(query, values);
-      res.status(201).json({ message: "Movie added to playlist", playlist_movie_id: result.rows[0].playlist_movie_id });
+      res
+        .status(201)
+        .json({
+          message: "Movie added to playlist",
+          playlist_movie_id: result.rows[0].playlist_movie_id,
+        });
     } catch (error) {
       if (error.code === "23505") {
         return res.status(409).json({ error: "Movie already in playlist" });
       }
-      console.error("Error adding movie to playlist:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to add movie to playlist", details: error.message });
+      console.error(
+        "Error adding movie to playlist:",
+        error.message,
+        error.stack
+      );
+      res
+        .status(500)
+        .json({
+          error: "Failed to add movie to playlist",
+          details: error.message,
+        });
     }
   });
 
@@ -179,21 +264,29 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     const { playlist_id, tmdb_id } = req.params;
     const user_id = req.user.user_id;
 
-    if (!playlist_id || !Number.isInteger(parseInt(playlist_id)) || !tmdb_id || !Number.isInteger(parseInt(tmdb_id))) {
+    if (
+      !playlist_id ||
+      !Number.isInteger(parseInt(playlist_id)) ||
+      !tmdb_id ||
+      !Number.isInteger(parseInt(tmdb_id))
+    ) {
       return res.status(400).json({ error: "Invalid playlist_id or tmdb_id" });
     }
 
     try {
-      // Verify playlist belongs to the user
       const playlistQuery = `
         SELECT 1 FROM playlists WHERE playlist_id = $1 AND user_id = $2;
       `;
-      const playlistResult = await pool.query(playlistQuery, [parseInt(playlist_id), user_id]);
+      const playlistResult = await pool.query(playlistQuery, [
+        parseInt(playlist_id),
+        user_id,
+      ]);
       if (playlistResult.rowCount === 0) {
-        return res.status(403).json({ error: "Playlist not found or not owned by user" });
+        return res
+          .status(403)
+          .json({ error: "Playlist not found or not owned by user" });
       }
 
-      // Get the movie_id
       const movie = await getOrCreateMovie(parseInt(tmdb_id));
       const movie_id = movie.movie_id;
 
@@ -210,8 +303,17 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       }
       res.json({ message: "Movie removed from playlist" });
     } catch (error) {
-      console.error("Error removing movie from playlist:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to remove movie from playlist", details: error.message });
+      console.error(
+        "Error removing movie from playlist:",
+        error.message,
+        error.stack
+      );
+      res
+        .status(500)
+        .json({
+          error: "Failed to remove movie from playlist",
+          details: error.message,
+        });
     }
   });
 
@@ -225,13 +327,17 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     }
 
     try {
-      // Verify playlist belongs to the user
       const playlistQuery = `
         SELECT 1 FROM playlists WHERE playlist_id = $1 AND user_id = $2;
       `;
-      const playlistResult = await pool.query(playlistQuery, [parseInt(playlist_id), user_id]);
+      const playlistResult = await pool.query(playlistQuery, [
+        parseInt(playlist_id),
+        user_id,
+      ]);
       if (playlistResult.rowCount === 0) {
-        return res.status(403).json({ error: "Playlist not found or not owned by user" });
+        return res
+          .status(403)
+          .json({ error: "Playlist not found or not owned by user" });
       }
 
       const query = `
@@ -244,8 +350,17 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       const result = await pool.query(query, [parseInt(playlist_id)]);
       res.json(result.rows);
     } catch (error) {
-      console.error("Error fetching playlist movies:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to fetch playlist movies", details: error.message });
+      console.error(
+        "Error fetching playlist movies:",
+        error.message,
+        error.stack
+      );
+      res
+        .status(500)
+        .json({
+          error: "Failed to fetch playlist movies",
+          details: error.message,
+        });
     }
   });
 
@@ -254,12 +369,21 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     const { tmdb_id, status } = req.body;
     const user_id = req.user.user_id;
 
-    if (!tmdb_id || !Number.isInteger(tmdb_id) || !status || !["watched", "want_to_watch"].includes(status)) {
-      return res.status(400).json({ error: "Invalid tmdb_id or status. Status must be 'watched' or 'want_to_watch'" });
+    if (
+      !tmdb_id ||
+      !Number.isInteger(tmdb_id) ||
+      !status ||
+      !["watched", "want_to_watch"].includes(status)
+    ) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Invalid tmdb_id or status. Status must be 'watched' or 'want_to_watch'",
+        });
     }
 
     try {
-      // Get or create the movie
       const movie = await getOrCreateMovie(tmdb_id);
       const movie_id = movie.movie_id;
 
@@ -275,7 +399,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.json({ message: "Watch status updated", ...result.rows[0] });
     } catch (error) {
       console.error("Error setting watch status:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to set watch status", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to set watch status", details: error.message });
     }
   });
 
@@ -295,7 +421,12 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.json(result.rows);
     } catch (error) {
       console.error("Error fetching watch status:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to fetch watch status", details: error.message });
+      res
+        .status(500)
+        .json({
+          error: "Failed to fetch watch status",
+          details: error.message,
+        });
     }
   });
 
@@ -309,7 +440,6 @@ const createUserRouter = (pool, getOrCreateMovie) => {
     }
 
     try {
-      // Get or create the movie
       const movie = await getOrCreateMovie(tmdb_id);
       const movie_id = movie.movie_id;
 
@@ -323,7 +453,9 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       res.status(201).json({ message: "Visit logged", ...result.rows[0] });
     } catch (error) {
       console.error("Error logging visit:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to log visit", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to log visit", details: error.message });
     }
   });
 
@@ -343,12 +475,21 @@ const createUserRouter = (pool, getOrCreateMovie) => {
       const result = await pool.query(query, [user_id]);
       res.json(result.rows);
     } catch (error) {
-      console.error("Error fetching recent visits:", error.message, error.stack);
-      res.status(500).json({ error: "Failed to fetch recent visits", details: error.message });
+      console.error(
+        "Error fetching recent visits:",
+        error.message,
+        error.stack
+      );
+      res
+        .status(500)
+        .json({
+          error: "Failed to fetch recent visits",
+          details: error.message,
+        });
     }
   });
 
-  // Test route (kept for debugging)
+  // Test route
   router.get("/test", (req, res) => {
     res.json({ message: "Authenticated!", user_id: req.user.user_id });
   });
