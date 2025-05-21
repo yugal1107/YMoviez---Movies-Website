@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../../utils/fetchData";
-import { Loader2 } from "lucide-react";
+import { Loader2, ListPlus } from "lucide-react";
 import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
@@ -40,7 +40,9 @@ const Movie = () => {
       queryKey: ["recommendations", movieid],
       queryFn: async () => {
         const recs = await fetchData(
-          `${import.meta.env.VITE_BASE_API_URL}api/recommend?tmdb_id=${movieid}&top_n=10`
+          `${
+            import.meta.env.VITE_BASE_API_URL
+          }api/recommend?tmdb_id=${movieid}&top_n=10`
         );
         const details = await Promise.all(
           recs.map(async (rec) => {
@@ -126,12 +128,17 @@ const Movie = () => {
           <Poster baseimgURL={baseimgURL} poster_path={movie.poster_path} />
           <div className="flex-1 space-y-4 self-end">
             <MovieInfo movie={movie} />
-            <div className="flex items-center gap-3">
-              <LikeButton id={parseInt(movieid)} initialLikeState={isLiked} />
+            <div className="flex flex-wrap items-center gap-4 mt-6">
+              <LikeButton
+                id={parseInt(movieid)}
+                initialLikeState={isLiked}
+                className="px-5 py-2.5 text-base font-medium rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
+              />
               <button
                 onClick={() => setShowPlaylistSelector(true)}
-                className="px-3 py-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 text-sm"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 text-white hover:from-indigo-700 hover:to-blue-600 text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
               >
+                <ListPlus className="h-5 w-5" />
                 Add to Playlist
               </button>
             </div>

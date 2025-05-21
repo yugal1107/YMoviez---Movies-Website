@@ -55,12 +55,6 @@ const Navbar = () => {
 
             {/* Desktop navigation */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link
-                to="/"
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Home
-              </Link>
               <Dropdown />
               <Link
                 to="/playlists"

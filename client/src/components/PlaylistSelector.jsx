@@ -6,7 +6,11 @@ import { useAuth } from "../context/authContext";
 import { fetchData } from "../utils/fetchData";
 
 const PlaylistSelector = ({ tmdbId, onClose }) => {
-  const { playlists, isLoading: playlistsLoading, createPlaylist } = usePlaylists();
+  const {
+    playlists,
+    isLoading: playlistsLoading,
+    createPlaylist,
+  } = usePlaylists();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const [newPlaylistName, setNewPlaylistName] = useState("");
@@ -70,8 +74,11 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 transition-opacity duration-300">
-      <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-100">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] transition-opacity duration-300">
+      <div
+        className="bg-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-100 relative"
+        onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing
+      >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Add to Playlists</h2>
@@ -122,7 +129,9 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
               <Loader2 className="h-6 w-6 animate-spin text-pink-500" />
             </div>
           ) : playlists.length === 0 ? (
-            <p className="text-gray-400 text-center py-4">No playlists found. Create one above!</p>
+            <p className="text-gray-400 text-center py-4">
+              No playlists found. Create one above!
+            </p>
           ) : (
             <div className="space-y-2 max-h-48 overflow-y-auto rounded-lg border border-gray-700 p-2">
               {playlists.map((playlist) => {
@@ -130,7 +139,9 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
                 return (
                   <button
                     key={playlist.playlist_id}
-                    onClick={() => togglePlaylistSelection(playlist.playlist_id)}
+                    onClick={() =>
+                      togglePlaylistSelection(playlist.playlist_id)
+                    }
                     disabled={isAdding}
                     className={`w-full p-3 rounded-md text-left transition-all duration-200 flex items-center justify-between ${
                       isSelected
@@ -140,9 +151,7 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
                     aria-label={`Select playlist ${playlist.name}`}
                   >
                     <span>{playlist.name}</span>
-                    {isSelected && (
-                      <Check className="h-5 w-5 text-pink-500" />
-                    )}
+                    {isSelected && <Check className="h-5 w-5 text-pink-500" />}
                   </button>
                 );
               })}

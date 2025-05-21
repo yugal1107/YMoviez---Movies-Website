@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import LikeButton from "./LikeButton";
 import PlaylistSelector from "./PlaylistSelector";
 
@@ -55,18 +56,24 @@ const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
         </div>
         <LikeButton id={id} initialLikeState={isLiked} />
         <button
-          onClick={() => setShowPlaylistSelector(true)}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent event from bubbling up to parent Link
+            e.preventDefault(); // Prevent default link behavior
+            setShowPlaylistSelector(true);
+          }}
           className="mt-2 px-3 py-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 text-sm"
         >
           Add to Playlist
         </button>
       </div>
-      {showPlaylistSelector && (
-        <PlaylistSelector
-          tmdbId={id}
-          onClose={() => setShowPlaylistSelector(false)}
-        />
-      )}
+      {showPlaylistSelector &&
+        createPortal(
+          <PlaylistSelector
+            tmdbId={id}
+            onClose={() => setShowPlaylistSelector(false)}
+          />,
+          document.body
+        )}
     </div>
   );
 };
