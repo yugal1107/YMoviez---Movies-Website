@@ -12,7 +12,7 @@ const Movietype = ({
   scrollId,
   likedMovies,
   useGrid = false,
-  actionElement, // New prop for action buttons like delete
+  hideViewAll = false, // New prop to control visibility of View All button
 }) => {
   const scrollRef = useRef(null);
 
@@ -33,24 +33,28 @@ const Movietype = ({
 
   return (
     <div className="relative">
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          {icon}
-          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-            {title}
-          </h2>
-          {actionElement && <span className="ml-2">{actionElement}</span>}
+      {/* Only render header if there's a title or viewAllLink is shown */}
+      {(title || (!hideViewAll && viewAllLink)) && (
+        <div className="mb-6 flex items-center justify-between">
+          {title && (
+            <div className="flex items-center space-x-2">
+              {icon}
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+                {title}
+              </h2>
+            </div>
+          )}
+          {!hideViewAll && viewAllLink && (
+            <Link
+              to={viewAllLink}
+              className="flex items-center space-x-1 text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 transition-colors"
+            >
+              <span className="text-xs md:text-sm font-medium">View All</span>
+              <ChevronRight className="h-5 w-5" />
+            </Link>
+          )}
         </div>
-        {viewAllLink && (
-          <Link
-            to={viewAllLink}
-            className="flex items-center space-x-1 text-pink-500 dark:text-pink-400 hover:text-pink-600 dark:hover:text-pink-300 transition-colors"
-          >
-            <span className="text-xs md:text-sm font-medium">View All</span>
-            <ChevronRight className="h-5 w-5" />
-          </Link>
-        )}
-      </div>
+      )}
 
       {useGrid ? (
         // Grid layout for detail pages

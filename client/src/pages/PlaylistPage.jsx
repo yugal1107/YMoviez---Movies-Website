@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import usePlaylists from "../hooks/usePlaylists";
 import Movietype from "../components/Movietype";
-import { Loader2, Film, Trash2 } from "lucide-react";
+import { Loader2, Film, MoreVertical, Trash2, Eye } from "lucide-react";
 import usePlaylistMovies from "../hooks/usePlaylistMovies";
+import DropdownMenu from "../components/DropdownMenu";
 
 const PlaylistPage = () => {
   const {
@@ -64,18 +66,30 @@ const PlaylistPage = () => {
 
 const PlaylistSection = ({ playlist, onDelete }) => {
   const { movies, isLoading } = usePlaylistMovies(playlist.playlist_id);
+  const navigate = useNavigate();
 
-  // Create a custom action component for the delete button
-  const DeleteButton = (
+  // Create dropdown menu items
+  const menuItems = [
+    {
+      label: "View All",
+      icon: <Eye className="h-4 w-4" />,
+      onClick: () => navigate(`/playlist/${playlist.playlist_id}`),
+    },
+    {
+      label: "Delete Playlist",
+      icon: <Trash2 className="h-4 w-4" />,
+      onClick: () => onDelete(),
+      className: "text-red-400 hover:bg-gray-700 hover:text-red-300",
+    },
+  ];
+
+  // Create the dropdown trigger button
+  const dropdownTrigger = (
     <button
-      onClick={(e) => {
-        e.stopPropagation(); // Prevent event bubbling
-        onDelete();
-      }}
-      className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors ml-2"
-      aria-label={`Delete playlist ${playlist.name}`}
+      className="p-2 rounded-full hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500"
+      aria-label="Playlist options"
     >
-      <Trash2 className="h-5 w-5" />
+      <MoreVertical className="h-5 w-5 text-gray-400" />
     </button>
   );
 
@@ -86,25 +100,31 @@ const PlaylistSection = ({ playlist, onDelete }) => {
           <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
         </div>
       ) : movies.length === 0 ? (
-        <div className="bg-gray-900/50 rounded-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Film className="h-6 w-6 text-pink-500" />
-              <h2 className="text-2xl font-bold">{playlist.name}</h2>
-            </div>
-            {DeleteButton}
+        <div className="bg-gray-900/50 rounded-lg p-6 mb-6 relative">
+          <div className="absolute top-4 right-4">
+            <DropdownMenu trigger={dropdownTrigger} items={menuItems} />
           </div>
-          <p className="text-gray-400">No movies in this playlist.</p>
+          <div className="flex items-center gap-2 pr-10">
+            <Film className="h-6 w-6 text-pink-500" />
+            <h2 className="text-2xl font-bold">{playlist.name}</h2>
+          </div>
+          <p className="text-gray-400 mt-4">No movies in this playlist.</p>
         </div>
       ) : (
-        <Movietype
-          data={movies}
-          title={playlist.name}
-          icon={<Film className="h-6 w-6 text-pink-500" />}
-          viewAllLink={`/playlist/${playlist.playlist_id}`}
-          scrollId={`playlist-${playlist.playlist_id}`}
-          actionElement={DeleteButton}
-        />
+        <div className="relative group">
+          {/* Improved positioning of dropdown menu */}
+          <div className="absolute top-0 right-0 z-10">
+            <DropdownMenu trigger={dropdownTrigger} items={menuItems} />
+          </div>
+          <Movietype
+            data={movies}
+            title={playlist.name}
+            icon={<Film className="h-6 w-6 text-pink-500" />}
+            viewAllLink={`/playlist/${playlist.playlist_id}`}
+            scrollId={`playlist-${playlist.playlist_id}`}
+            hideViewAll={true} // Hide the View All button since we have it in the dropdown
+          />
+        </div>
       )}
     </div>
   );
