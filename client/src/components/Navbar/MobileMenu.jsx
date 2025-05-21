@@ -10,6 +10,7 @@ import {
   Heart,
   Clock,
   Star,
+  Film,
 } from "lucide-react";
 
 const genres = [
@@ -175,6 +176,16 @@ const MobileMenu = ({ user, onClose, onLogout }) => {
                   ))}
                 </div>
               )}
+            </li>
+            <li>
+              <Link
+                to="/playlists"
+                onClick={onClose}
+                className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-gray-800/50 hover:bg-gray-800 text-white group transition-colors"
+              >
+                <Film className="h-5 w-5 text-gray-400 group-hover:text-pink-500 transition-colors" />
+                <span>Playlists</span>
+              </Link>
             </li>
             <li>
               <a

@@ -15,8 +15,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // console.log(user); // For debugging purposes
-
   // Add scroll listener
   useEffect(() => {
     const handleScroll = () => {
@@ -64,6 +62,12 @@ const Navbar = () => {
                 Home
               </Link>
               <Dropdown />
+              <Link
+                to="/playlists"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Playlists
+              </Link>
               <Link
                 to="https://yugal.tech"
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
