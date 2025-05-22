@@ -1,7 +1,7 @@
 import { React, useRef } from "react";
-import Movietype from "../../components/Movietype.jsx/index.jsx";
+import Movietype from "../../components/Movietype/index.jsx";
 import { useAuth } from "../../context/authContext.jsx";
-import { Loader2, Film, Popcorn, Star, Heart } from "lucide-react";
+import { Film, Popcorn, Star, Heart } from "lucide-react";
 import MovieCarousel from "../../components/Carousel.jsx";
 import LoadingSpinner from "../../components/LoadingSpinner.jsx";
 import { useQuery } from "@tanstack/react-query";
@@ -91,9 +91,8 @@ const Home = () => {
                 data={{ results: likedMovies }}
                 title="Liked Movies"
                 icon={<Heart className="h-6 w-6 text-pink-500" />}
-                scrollRef={likedRef}
-                onScrollLeft={() => handleScroll(likedRef, "left")}
-                onScrollRight={() => handleScroll(likedRef, "right")}
+                scrollId="liked-movies"
+                viewAllLink="/liked" // Optional: Create a dedicated page for liked movies later
                 likedMovies={likedMovies}
               />
             )}
@@ -103,9 +102,8 @@ const Home = () => {
                 title="Now Playing"
                 type="now_playing"
                 icon={<Film className="h-6 w-6" />}
-                scrollRef={nowPlayingRef}
-                onScrollLeft={() => handleScroll(nowPlayingRef, "left")}
-                onScrollRight={() => handleScroll(nowPlayingRef, "right")}
+                scrollId="now-playing"
+                viewAllLink="/content/now_playing"
                 likedMovies={likedMovies}
               />
             )}
@@ -115,9 +113,8 @@ const Home = () => {
                 title="Top Rated"
                 type="top_rated"
                 icon={<Star className="h-6 w-6" />}
-                scrollRef={topRatedRef}
-                onScrollLeft={() => handleScroll(topRatedRef, "left")}
-                onScrollRight={() => handleScroll(topRatedRef, "right")}
+                scrollId="top-rated"
+                viewAllLink="/content/top_rated"
                 likedMovies={likedMovies}
               />
             )}
@@ -127,9 +124,8 @@ const Home = () => {
                 title="Popular Movies"
                 type="popular"
                 icon={<Popcorn className="h-6 w-6" />}
-                scrollRef={popularRef}
-                onScrollLeft={() => handleScroll(popularRef, "left")}
-                onScrollRight={() => handleScroll(popularRef, "right")}
+                scrollId="popular-movies"
+                viewAllLink="/content/popular"
                 likedMovies={likedMovies}
               />
             )}

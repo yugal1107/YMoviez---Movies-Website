@@ -105,7 +105,12 @@ const SearchBox = () => {
           <div className="p-2 border-t border-gray-700">
             <p className="px-2 py-1 text-xs text-gray-400">Popular searches:</p>
             <div className="flex flex-wrap gap-2 p-2">
-              {["Action", "Comedy", "Sci-Fi", "Latest"].map((term) => (
+              {[
+                "Final Destination",
+                "Mission Impossible",
+                "Stree 2",
+                "Interstellar",
+              ].map((term) => (
                 <button
                   key={term}
                   onClick={() => {

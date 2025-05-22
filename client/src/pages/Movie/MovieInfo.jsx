@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Star, Calendar, Clock } from "lucide-react";
 
 const MovieInfo = ({ movie }) => {
@@ -8,7 +8,7 @@ const MovieInfo = ({ movie }) => {
       <div className="flex items-center gap-6 text-lg">
         <div className="flex items-center text-yellow-400">
           <Star className="h-6 w-6 mr-1 fill-yellow-400" />
-          <span>{movie.vote_average.toFixed(1)}</span>
+          <span>{movie.vote_average?.toFixed(1)}</span>
         </div>
         <div className="flex items-center text-gray-300">
           <Calendar className="h-5 w-5 mr-1" />
@@ -24,4 +24,4 @@ const MovieInfo = ({ movie }) => {
   );
 };
 
-export default MovieInfo;
+export default memo(MovieInfo);
