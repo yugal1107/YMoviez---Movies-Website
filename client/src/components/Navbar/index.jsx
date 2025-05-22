@@ -15,8 +15,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // console.log(user); // For debugging purposes
-
   // Add scroll listener
   useEffect(() => {
     const handleScroll = () => {
@@ -57,13 +55,13 @@ const Navbar = () => {
 
             {/* Desktop navigation */}
             <div className="hidden md:flex items-center space-x-4">
+              <Dropdown />
               <Link
-                to="/"
+                to="/playlists"
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
-                Home
+                Playlists
               </Link>
-              <Dropdown />
               <Link
                 to="https://yugal.tech"
                 className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"

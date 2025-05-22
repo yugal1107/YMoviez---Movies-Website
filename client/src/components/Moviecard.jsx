@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import LikeButton from "./LikeButton";
+import PlaylistSelector from "./PlaylistSelector";
 
 const baseimgURL = "https://image.tmdb.org/t/p/w500";
 
 const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
+  const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
+
   const noPosterSVG = (
     <svg
       width="208"
@@ -51,7 +55,25 @@ const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
           <span className="text-yellow-400">{rating}</span>
         </div>
         <LikeButton id={id} initialLikeState={isLiked} />
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent event from bubbling up to parent Link
+            e.preventDefault(); // Prevent default link behavior
+            setShowPlaylistSelector(true);
+          }}
+          className="mt-2 px-3 py-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 text-sm"
+        >
+          Add to Playlist
+        </button>
       </div>
+      {showPlaylistSelector &&
+        createPortal(
+          <PlaylistSelector
+            tmdbId={id}
+            onClose={() => setShowPlaylistSelector(false)}
+          />,
+          document.body
+        )}
     </div>
   );
 };
