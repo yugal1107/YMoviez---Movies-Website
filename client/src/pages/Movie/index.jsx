@@ -41,8 +41,8 @@ const Movie = () => {
       queryFn: async () => {
         const recs = await fetchData(
           `${
-            import.meta.env.VITE_BASE_API_URL
-          }api/recommend?tmdb_id=${movieid}&top_n=10`
+            import.meta.env.VITE_BASE_ML_URL
+          }/recommend?tmdb_id=${movieid}&top_n=10`
         );
         const details = await Promise.all(
           recs.map(async (rec) => {
