@@ -5,6 +5,7 @@ import "./index.css";
 import { UserProvider } from "./context/authContext.jsx";
 import { HeroUIProvider } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <UserProvider>
           <main className="dark text-foreground bg-background">
             <App />
+            <Analytics />
           </main>
         </UserProvider>
       </HeroUIProvider>
