@@ -19,8 +19,6 @@
     "express": "^4.19.2",
     "firebase-admin": "^13.3.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.0",
-    "pg": "^8.15.6",
-    "vercel": "^37.6.1"
+    "pg": "^8.15.6"
   }
 }
