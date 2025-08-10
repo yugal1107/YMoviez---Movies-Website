@@ -1,6 +1,5 @@
 import apiClient from "./apiClient"; // Import the configured Axios instance
 
-// The 'token' parameter is removed from this function
 async function fetchData(url, options = {}) {
   try {
     const response = await apiClient({

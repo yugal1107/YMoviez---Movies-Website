@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import SearchBox from "./SearchBox";
 import MobileMenu from "./MobileMenu";
+import MobileSearchBox from "./MobileSearchBox";
 import { Button } from "@heroui/react";
-import { FilmIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import {
+  FilmIcon,
+  Bars3Icon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 import { useAuth } from "../../context/authContext";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebase";
@@ -14,6 +19,7 @@ const Navbar = () => {
   const { user } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   // Add scroll listener
   useEffect(() => {
@@ -73,10 +79,20 @@ const Navbar = () => {
 
           {/* Right section */}
           <div className="flex items-center space-x-3">
-            {/* Only show SearchBox on md screens and above */}
+            {/* Desktop Search - Only show on md screens and above */}
             <div className="hidden md:block">
               <SearchBox />
             </div>
+
+            {/* Mobile Search Button - Only show on mobile */}
+            <button
+              onClick={() => setIsMobileSearchOpen(true)}
+              className="md:hidden p-2 rounded-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Open mobile search"
+            >
+              <MagnifyingGlassIcon className="h-6 w-6" />
+            </button>
+
             {/* <ThemeSwitch /> */}
 
             {/* User authentication section */}
@@ -124,6 +140,12 @@ const Navbar = () => {
           onLogout={handleLogout}
         />
       )}
+
+      {/* Mobile Search */}
+      <MobileSearchBox
+        isOpen={isMobileSearchOpen}
+        onClose={() => setIsMobileSearchOpen(false)}
+      />
     </nav>
   );
 };
