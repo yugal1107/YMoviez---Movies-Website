@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import LikeButton from "./LikeButton";
@@ -8,7 +8,42 @@ const baseImgURL = "https://image.tmdb.org/t/p/original";
 
 const MovieCarousel = memo(({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState(new Set());
   const { likedMovies } = useLikedMovies();
+
+  // Preload adjacent images for smooth transitions
+  useEffect(() => {
+    if (!movies || movies.length === 0) return;
+
+    const preloadImages = () => {
+      const imagesToPreload = [];
+
+      // Current image
+      imagesToPreload.push(currentIndex);
+
+      // Next image
+      const nextIndex =
+        currentIndex === movies.length - 1 ? 0 : currentIndex + 1;
+      imagesToPreload.push(nextIndex);
+
+      // Previous image
+      const prevIndex =
+        currentIndex === 0 ? movies.length - 1 : currentIndex - 1;
+      imagesToPreload.push(prevIndex);
+
+      imagesToPreload.forEach((index) => {
+        if (movies[index]?.backdrop_path && !loadedImages.has(index)) {
+          const img = new Image();
+          img.onload = () => {
+            setLoadedImages((prev) => new Set([...prev, index]));
+          };
+          img.src = `${baseImgURL}${movies[index].backdrop_path}`;
+        }
+      });
+    };
+
+    preloadImages();
+  }, [currentIndex, movies, loadedImages]);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) =>
@@ -33,8 +68,10 @@ const MovieCarousel = memo(({ movies }) => {
         <img
           src={`${baseImgURL}${currentMovie.backdrop_path}`}
           alt={currentMovie.title}
-          className="h-full w-full object-cover"
-          loading="lazy"
+          className="h-full w-full object-cover transition-opacity duration-300"
+          style={{
+            opacity: loadedImages.has(currentIndex) ? 1 : 0.7,
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent" />
       </div>
