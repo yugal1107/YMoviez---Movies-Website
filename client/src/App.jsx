@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import PlaylistPage from "./pages/PlaylistPage";
 import PlaylistDetailPage from "./pages/PlaylistDetailPage";
 import ContentTypePage from "./pages/ContentTypePage";
+import LikedMoviesPage from "./pages/LikedMoviesPage";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
         <Route path="/cast/:castid/:castname" element={<CastMovies />} />
         <Route path="/chatbot" element={<MovieChatbot />} />
         <Route path="/genre/:genreId" element={<GenreMovies />} />
-        <Route path="/demo" element={<CarouselUI />} />
+        <Route path="/liked" element={<LikedMoviesPage />} />
         <Route path="playlists" element={<PlaylistPage />} />
         <Route path="/playlist/:playlistid" element={<PlaylistDetailPage />} />
         <Route path="/content/:contentType" element={<ContentTypePage />} />
