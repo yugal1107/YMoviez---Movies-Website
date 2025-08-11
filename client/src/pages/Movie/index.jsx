@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../../utils/fetchData";
-import { Loader2, ListPlus } from "lucide-react";
+import { Loader2, ListPlus, Eye, Bookmark } from "lucide-react";
 import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
 import useLikedMovies from "../../hooks/use-liked-movies";
+import useWatchStatus from "../../hooks/use-watch-status";
 import LikeButton from "../../components/LikeButton";
 import PlaylistSelector from "../../components/PlaylistSelector";
+import toast from "react-hot-toast";
 
 const baseimgURL = "https://image.tmdb.org/t/p/original";
 
@@ -16,6 +18,7 @@ const Movie = () => {
   const { movieid } = useParams();
   const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
   const { likedMovies } = useLikedMovies();
+  const { watchStatus, setWatchStatus } = useWatchStatus();
 
   // Fetch movie details and cast using React Query
   const { data: movieData, isLoading: movieLoading } = useQuery({
@@ -74,6 +77,14 @@ const Movie = () => {
   const movie = movieData || {};
   const cast = castData?.cast || [];
   const isLiked = likedMovies?.some((liked) => liked.id === parseInt(movieid));
+  const currentWatchStatus = watchStatus.find(
+    (m) => m.tmdb_id === parseInt(movieid)
+  )?.status;
+
+  const handleWatchStatusUpdate = (status) => {
+    setWatchStatus(parseInt(movieid), status);
+    toast.success(`Movie marked as ${status.replace("_", " ")}!`);
+  };
 
   const renderRecommendationsSection = () => {
     if (recommendationsLoading) {
@@ -134,6 +145,32 @@ const Movie = () => {
                 initialLikeState={isLiked}
                 className="px-5 py-2.5 text-base font-medium rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
               />
+              <button
+                onClick={() => handleWatchStatusUpdate("watched")}
+                className={`px-5 py-2.5 rounded-full text-white text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105 ${
+                  currentWatchStatus === "watched"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-gray-700 hover:bg-gray-600"
+                }`}
+              >
+                <Eye className="h-5 w-5" />
+                {currentWatchStatus === "watched"
+                  ? "Watched"
+                  : "Mark as Watched"}
+              </button>
+              <button
+                onClick={() => handleWatchStatusUpdate("want_to_watch")}
+                className={`px-5 py-2.5 rounded-full text-white text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105 ${
+                  currentWatchStatus === "want_to_watch"
+                    ? "bg-yellow-600 hover:bg-yellow-700"
+                    : "bg-gray-700 hover:bg-gray-600"
+                }`}
+              >
+                <Bookmark className="h-5 w-5" />
+                {currentWatchStatus === "want_to_watch"
+                  ? "In Watchlist"
+                  : "Add to Watchlist"}
+              </button>
               <button
                 onClick={() => setShowPlaylistSelector(true)}
                 className="px-5 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 text-white hover:from-indigo-700 hover:to-blue-600 text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"

@@ -14,6 +14,7 @@ import { useAuth } from "../../context/authContext";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "../../firebase";
 import ThemeSwitch from "./ThemeSwitch";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
   const { user } = useAuth();
@@ -97,18 +98,7 @@ const Navbar = () => {
 
             {/* User authentication section */}
             {user ? (
-              <div className="hidden md:flex items-center space-x-3">
-                <span className="text-gray-300 text-sm">
-                  {user.displayName || user.email}
-                </span>
-                <Button
-                  onClick={handleLogout}
-                  className="bg-pink-500 hover:bg-pink-600 text-white px-3 py-1 rounded-md text-sm font-medium"
-                  size="sm"
-                >
-                  Logout
-                </Button>
-              </div>
+              <UserDropdown user={user} onLogout={handleLogout} />
             ) : (
               <Link to="/login" className="hidden md:block">
                 <Button

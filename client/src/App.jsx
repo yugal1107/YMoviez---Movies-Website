@@ -15,6 +15,8 @@ import PlaylistPage from "./pages/PlaylistPage";
 import PlaylistDetailPage from "./pages/PlaylistDetailPage";
 import ContentTypePage from "./pages/ContentTypePage";
 import LikedMoviesPage from "./pages/LikedMoviesPage";
+import WatchedPage from "./pages/WatchedPage";
+import WatchlistPage from "./pages/WatchlistPage";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
         <Route path="/chatbot" element={<MovieChatbot />} />
         <Route path="/genre/:genreId" element={<GenreMovies />} />
         <Route path="/liked" element={<LikedMoviesPage />} />
+        <Route path="/watched" element={<WatchedPage />} />
+        <Route path="/watchlist" element={<WatchlistPage />} />
         <Route path="playlists" element={<PlaylistPage />} />
         <Route path="/playlist/:playlistid" element={<PlaylistDetailPage />} />
         <Route path="/content/:contentType" element={<ContentTypePage />} />
