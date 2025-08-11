@@ -1,11 +1,12 @@
 import { React, useRef } from "react";
 import Movietype from "../../components/Movietype/index.jsx";
 import { useAuth } from "../../context/authContext.jsx";
-import { Film, Popcorn, Star, Heart } from "lucide-react";
+import { Film, Popcorn, Star, Heart, Clock } from "lucide-react";
 import MovieCarousel from "../../components/Carousel.jsx";
 import LoadingSpinner from "../../components/LoadingSpinner.jsx";
 import { useQuery } from "@tanstack/react-query";
 import useLikedMovies from "../../hooks/use-liked-movies.js";
+import useRecentlyVisited from "../../hooks/use-recently-visited.js";
 
 const fetchMovies = async (endpoint) => {
   const response = await fetch(
@@ -37,6 +38,8 @@ const Home = () => {
     loading: likedLoading,
     error: likedError,
   } = useLikedMovies();
+  const { recentlyVisited, isLoading: recentlyVisitedLoading } =
+    useRecentlyVisited();
 
   const {
     data: nowPlaying,
@@ -93,6 +96,16 @@ const Home = () => {
                 icon={<Heart className="h-6 w-6 text-pink-500" />}
                 scrollId="liked-movies"
                 viewAllLink="/liked" // Optional: Create a dedicated page for liked movies later
+                likedMovies={likedMovies}
+              />
+            )}
+            {recentlyVisited?.length > 0 && (
+              <Movietype
+                data={{ results: recentlyVisited }}
+                title="Recently Visited"
+                icon={<Clock className="h-6 w-6 text-blue-500" />}
+                scrollId="recently-visited"
+                viewAllLink="/recently-visited"
                 likedMovies={likedMovies}
               />
             )}

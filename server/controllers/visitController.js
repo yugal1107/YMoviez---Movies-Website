@@ -1,6 +1,5 @@
 const visitController = (pool, getOrCreateMovie) => ({
   logVisit: async (req, res) => {
-    // ...existing code from logVisit in userController.js...
     const { tmdb_id } = req.body;
     const user_id = req.user.user_id;
 
@@ -8,23 +7,55 @@ const visitController = (pool, getOrCreateMovie) => ({
       return res.status(400).json({ error: "Invalid or missing tmdb_id" });
     }
 
+    const client = await pool.connect();
     try {
-      const movie = await getOrCreateMovie(tmdb_id);
+      await client.query("BEGIN");
+
+      const movie = await getOrCreateMovie(tmdb_id, client);
       const movie_id = movie.movie_id;
 
-      const query = `
-        INSERT INTO recently_visited (user_id, movie_id, visited_at)
-        VALUES ($1, $2, NOW())
-        RETURNING visit_id, visited_at;
+      // Check if a recent visit for this user and movie already exists
+      const existingVisitQuery = `
+        SELECT visit_id FROM recently_visited
+        WHERE user_id = $1 AND movie_id = $2;
       `;
-      const values = [user_id, movie_id];
-      const result = await pool.query(query, values);
-      res.status(201).json({ message: "Visit logged", ...result.rows[0] });
+      const existingVisitResult = await client.query(existingVisitQuery, [
+        user_id,
+        movie_id,
+      ]);
+
+      if (existingVisitResult.rows.length > 0) {
+        // If it exists, update the timestamp
+        const updateQuery = `
+          UPDATE recently_visited
+          SET visited_at = NOW()
+          WHERE user_id = $1 AND movie_id = $2
+          RETURNING visit_id, visited_at;
+        `;
+        const result = await client.query(updateQuery, [user_id, movie_id]);
+        res
+          .status(200)
+          .json({ message: "Visit timestamp updated", ...result.rows[0] });
+      } else {
+        // If it doesn't exist, insert a new record
+        const insertQuery = `
+          INSERT INTO recently_visited (user_id, movie_id, visited_at)
+          VALUES ($1, $2, NOW())
+          RETURNING visit_id, visited_at;
+        `;
+        const result = await client.query(insertQuery, [user_id, movie_id]);
+        res.status(201).json({ message: "Visit logged", ...result.rows[0] });
+      }
+
+      await client.query("COMMIT");
     } catch (error) {
+      await client.query("ROLLBACK");
       console.error("Error logging visit:", error.message, error.stack);
       res
         .status(500)
         .json({ error: "Failed to log visit", details: error.message });
+    } finally {
+      client.release();
     }
   },
 

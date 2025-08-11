@@ -17,6 +17,7 @@ import ContentTypePage from "./pages/ContentTypePage";
 import LikedMoviesPage from "./pages/LikedMoviesPage";
 import WatchedPage from "./pages/WatchedPage";
 import WatchlistPage from "./pages/WatchlistPage";
+import RecentlyVisitedPage from "./pages/RecentlyVisitedPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/liked" element={<LikedMoviesPage />} />
         <Route path="/watched" element={<WatchedPage />} />
         <Route path="/watchlist" element={<WatchlistPage />} />
+        <Route path="/recently-visited" element={<RecentlyVisitedPage />} />
         <Route path="playlists" element={<PlaylistPage />} />
         <Route path="/playlist/:playlistid" element={<PlaylistDetailPage />} />
         <Route path="/content/:contentType" element={<ContentTypePage />} />

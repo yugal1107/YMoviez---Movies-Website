@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "../../utils/fetchData";
@@ -8,6 +8,7 @@ import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
 import useLikedMovies from "../../hooks/use-liked-movies";
 import useWatchStatus from "../../hooks/use-watch-status";
+import useRecentlyVisited from "../../hooks/use-recently-visited";
 import LikeButton from "../../components/LikeButton";
 import PlaylistSelector from "../../components/PlaylistSelector";
 import toast from "react-hot-toast";
@@ -19,6 +20,14 @@ const Movie = () => {
   const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
   const { likedMovies } = useLikedMovies();
   const { watchStatus, setWatchStatus } = useWatchStatus();
+  const { logVisit } = useRecentlyVisited();
+
+  // Log visit when component mounts
+  useEffect(() => {
+    if (movieid) {
+      logVisit(parseInt(movieid));
+    }
+  }, [movieid, logVisit]);
 
   // Fetch movie details and cast using React Query
   const { data: movieData, isLoading: movieLoading } = useQuery({

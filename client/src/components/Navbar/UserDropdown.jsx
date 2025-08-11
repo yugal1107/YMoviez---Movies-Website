@@ -6,6 +6,7 @@ import {
   EyeIcon,
   BookmarkIcon,
   ArrowRightOnRectangleIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline";
 
 const UserDropdown = ({ user, onLogout }) => {
@@ -26,6 +27,11 @@ const UserDropdown = ({ user, onLogout }) => {
     { name: "Liked Movies", href: "/liked", icon: HeartIcon },
     { name: "Watched", href: "/watched", icon: EyeIcon },
     { name: "Watchlist", href: "/watchlist", icon: BookmarkIcon },
+    {
+      name: "Recently Visited",
+      href: "/recently-visited",
+      icon: ClockIcon,
+    },
   ];
 
   return (
