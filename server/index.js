@@ -1,12 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import movieRouter from "./routers/movieRouter.js";
 import navRouter from "./routers/navRouter.js";
 import cookieParser from "cookie-parser";
-import { homeRouter } from "./routers/homeRouter.js";
-import seriesRouter from "./routers/seriesRouter.js";
-import castRouter from "./routers/castRouter.js";
-import genreRouter from "./routers/genreRouter.js";
 import cors from "cors";
 import chatRouter from "./routers/chatRouter.js";
 import tmdbRoutes from "./routes/tmdb.js";
@@ -72,12 +67,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/home", homeRouter);
-app.use("/api/movie", movieRouter);
-app.use("/api/series", seriesRouter);
 app.use("/api/navbar", navRouter);
-app.use("/api/cast", castRouter);
-app.use("/api/genres", genreRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/user", createUserRouter(pool, getOrCreateMovie));
 app.use("/api/tmdb", tmdbRoutes);
