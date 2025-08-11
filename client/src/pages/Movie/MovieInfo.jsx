@@ -19,7 +19,7 @@ const MovieInfo = ({ movie }) => {
           <span>{movie.runtime} min</span>
         </div>
       </div>
-      <p className="text-xl text-gray-300 max-w-3xl">{movie.overview}</p>
+      <p className="text-xl text-gray-300 max-w-3xl line-clamp-4">{movie.overview}</p>
     </div>
   );
 };
