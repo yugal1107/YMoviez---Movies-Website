@@ -45,21 +45,39 @@ const Register = () => {
           displayName: name,
         }).then(() => {
           // Send verification email
-          return sendEmailVerification(user).then(() => {
-            // Sign out the user to prevent access until email is verified
-            return signOut(auth).then(() => {
-              setError("Verification email sent! Please check your inbox and verify your email before logging in.");
-              // Optionally redirect to login page
-              navigate("/login");
+          console.log("Attempting to send verification email..."); // Add this log
+          return sendEmailVerification(user)
+            .then(() => {
+              console.log(
+                "Verification email sent successfully from Firebase."
+              ); // Add this log
+              // Sign out the user
+              return signOut(auth).then(() => {
+                setError(
+                  "Verification email sent! Please check your inbox and verify your email before logging in."
+                );
+                navigate("/login");
+              });
+            })
+            .catch((verificationError) => {
+              // Catch errors specifically from sendEmailVerification
+              console.error(
+                "Error sending verification email:",
+                verificationError
+              );
+              setError(
+                "Could not send verification email. Please try again later."
+              );
             });
-          });
         });
       })
       .catch((error) => {
         // Map Firebase errors to user-friendly messages
         switch (error.code) {
           case "auth/email-already-in-use":
-            setError("This email is already in use. Please log in or use a different email.");
+            setError(
+              "This email is already in use. Please log in or use a different email."
+            );
             break;
           case "auth/invalid-email":
             setError("Invalid email address. Please check and try again.");
@@ -90,7 +108,9 @@ const Register = () => {
           return sendEmailVerification(user).then(() => {
             // Sign out to enforce verification
             return signOut(auth).then(() => {
-              setError("Verification email sent! Please check your inbox and verify your email before logging in.");
+              setError(
+                "Verification email sent! Please check your inbox and verify your email before logging in."
+              );
               navigate("/login");
             });
           });
