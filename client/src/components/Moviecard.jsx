@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import LikeButton from "./LikeButton";
+import LikeButton from "./ui/LikeButton";
 import PlaylistSelector from "./PlaylistSelector";
 
 const baseimgURL = "https://image.tmdb.org/t/p/w500";

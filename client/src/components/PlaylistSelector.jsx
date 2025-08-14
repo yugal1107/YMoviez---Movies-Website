@@ -74,14 +74,14 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] transition-opacity duration-300">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] transition-opacity duration-300 p-4">
       <div
-        className="bg-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl transform transition-all duration-300 scale-100 relative"
+        className="bg-gray-800 rounded-xl p-4 md:p-6 w-full max-w-sm md:max-w-md shadow-2xl transform transition-all duration-300 scale-100 relative max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()} // Prevent clicks inside from closing
       >
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">Add to Playlists</h2>
+        <div className="flex justify-between items-center mb-4 md:mb-6">
+          <h2 className="text-subheading text-white">Add to Playlists</h2>
           <button
             onClick={() => {
               setIsOpen(false);
@@ -90,50 +90,50 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
             className="text-gray-400 hover:text-white transition-colors"
             aria-label="Close modal"
           >
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5 md:h-6 md:w-6" />
           </button>
         </div>
 
         {/* Create New Playlist */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+        <div className="mb-4 md:mb-6">
+          <label className="block text-caption font-medium text-gray-300 mb-2">
             Create New Playlist
           </label>
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <input
               type="text"
               value={newPlaylistName}
               onChange={(e) => setNewPlaylistName(e.target.value)}
-              className="flex-1 p-3 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200 placeholder-gray-400"
+              className="flex-1 p-2 md:p-3 rounded-lg bg-gray-700 text-caption md:text-body text-white focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200 placeholder-gray-400"
               placeholder="Enter playlist name"
               disabled={isAdding}
             />
             <button
               onClick={handleCreatePlaylist}
-              className="p-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50 transition-colors duration-200 flex items-center justify-center"
+              className="p-2 md:p-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50 transition-colors duration-200 flex items-center justify-center"
               disabled={!newPlaylistName.trim() || isAdding}
               aria-label="Create new playlist"
             >
-              <Plus className="h-5 w-5" />
+              <Plus className="h-4 w-4 md:h-5 md:w-5" />
             </button>
           </div>
         </div>
 
         {/* Select Playlists */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+        <div className="mb-4 md:mb-6">
+          <label className="block text-caption font-medium text-gray-300 mb-2">
             Select Playlists
           </label>
           {playlistsLoading ? (
             <div className="flex items-center justify-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin text-pink-500" />
+              <Loader2 className="h-5 w-5 md:h-6 md:w-6 animate-spin text-pink-500" />
             </div>
           ) : playlists.length === 0 ? (
-            <p className="text-gray-400 text-center py-4">
+            <p className="text-gray-400 text-center py-4 text-caption">
               No playlists found. Create one above!
             </p>
           ) : (
-            <div className="space-y-2 max-h-48 overflow-y-auto rounded-lg border border-gray-700 p-2">
+            <div className="space-y-2 max-h-40 md:max-h-48 overflow-y-auto rounded-lg border border-gray-700 p-2">
               {playlists.map((playlist) => {
                 const isSelected = selectedPlaylists.has(playlist.playlist_id);
                 return (
@@ -143,15 +143,17 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
                       togglePlaylistSelection(playlist.playlist_id)
                     }
                     disabled={isAdding}
-                    className={`w-full p-3 rounded-md text-left transition-all duration-200 flex items-center justify-between ${
+                    className={`w-full p-2 md:p-3 rounded-md text-left transition-all duration-200 flex items-center justify-between text-caption md:text-body ${
                       isSelected
                         ? "bg-pink-500/20 border-pink-500 text-white"
                         : "bg-gray-700 text-gray-300 hover:bg-gray-600"
                     } border border-transparent disabled:opacity-50 disabled:cursor-not-allowed`}
                     aria-label={`Select playlist ${playlist.name}`}
                   >
-                    <span>{playlist.name}</span>
-                    {isSelected && <Check className="h-5 w-5 text-pink-500" />}
+                    <span className="truncate pr-2">{playlist.name}</span>
+                    {isSelected && (
+                      <Check className="h-4 w-4 md:h-5 md:w-5 text-pink-500 flex-shrink-0" />
+                    )}
                   </button>
                 );
               })}
@@ -160,13 +162,13 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
         </div>
 
         {/* Confirm Button */}
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-2 md:gap-3">
           <button
             onClick={() => {
               setIsOpen(false);
               onClose();
             }}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors duration-200"
+            className="px-3 py-2 md:px-4 md:py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors duration-200 text-caption md:text-body"
             disabled={isAdding}
             aria-label="Cancel"
           >
@@ -174,14 +176,14 @@ const PlaylistSelector = ({ tmdbId, onClose }) => {
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50 transition-colors duration-200 flex items-center gap-2"
+            className="px-3 py-2 md:px-4 md:py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 disabled:opacity-50 transition-colors duration-200 flex items-center gap-2 text-caption md:text-body"
             disabled={isAdding || selectedPlaylists.size === 0}
             aria-label="Confirm adding to playlists"
           >
             {isAdding ? (
               <>
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Adding...
+                <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+                <span className="hidden sm:inline">Adding...</span>
               </>
             ) : (
               "Confirm"

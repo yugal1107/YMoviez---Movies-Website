@@ -7,11 +7,11 @@ import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
 import useLikedMovies from "../../hooks/use-liked-movies";
-import useWatchStatus from "../../hooks/use-watch-status";
 import useRecentlyVisited from "../../hooks/use-recently-visited";
-import LikeButton from "../../components/LikeButton";
+import WatchedButton from "../../components/ui/WatchedButton";
+import WatchlistButton from "../../components/ui/WatchlistButton";
+import LikeButton from "../../components/ui/LikeButton";
 import PlaylistSelector from "../../components/PlaylistSelector";
-import toast from "react-hot-toast";
 
 const baseimgURL = "https://image.tmdb.org/t/p/original";
 
@@ -19,7 +19,6 @@ const Movie = () => {
   const { movieid } = useParams();
   const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
   const { likedMovies } = useLikedMovies();
-  const { watchStatus, setWatchStatus } = useWatchStatus();
   const { logVisit } = useRecentlyVisited();
 
   // Log visit when component mounts
@@ -27,7 +26,8 @@ const Movie = () => {
     if (movieid) {
       logVisit(parseInt(movieid));
     }
-  }, [movieid, logVisit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [movieid]);
 
   // Fetch movie details and cast using React Query
   const { data: movieData, isLoading: movieLoading } = useQuery({
@@ -85,15 +85,9 @@ const Movie = () => {
 
   const movie = movieData || {};
   const cast = castData?.cast || [];
-  const isLiked = likedMovies?.some((liked) => liked.id === parseInt(movieid));
-  const currentWatchStatus = watchStatus.find(
-    (m) => m.tmdb_id === parseInt(movieid)
-  )?.status;
-
-  const handleWatchStatusUpdate = (status) => {
-    setWatchStatus(parseInt(movieid), status);
-    toast.success(`Movie marked as ${status.replace("_", " ")}!`);
-  };
+  const isLiked = likedMovies?.some(
+    (liked) => liked.tmdb_id === parseInt(movieid)
+  );
 
   const renderRecommendationsSection = () => {
     if (recommendationsLoading) {
@@ -144,64 +138,46 @@ const Movie = () => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-        <div className="container mx-auto absolute bottom-0 left-0 right-0 p-8 flex gap-8">
+        <div className="container mx-auto absolute bottom-0 left-0 right-0 p-4 md:p-8 flex flex-col md:flex-row gap-8">
           <Poster baseimgURL={baseimgURL} poster_path={movie.poster_path} />
-          <div className="flex-1 space-y-4 self-end">
+          <div className="flex-1 space-y-2 md:space-y-4 self-end">
             <MovieInfo movie={movie} />
-            <div className="flex flex-wrap items-center gap-4 mt-6">
+            <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-4">
               <LikeButton
                 id={parseInt(movieid)}
                 initialLikeState={isLiked}
-                className="px-5 py-2.5 text-base font-medium rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
+                className="px-4 py-2 text-small rounded-full flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
+              />
+              <WatchedButton
+                tmdbId={parseInt(movieid)}
+                className="px-4 py-2 rounded-full text-white text-small flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
+              />
+              <WatchlistButton
+                tmdbId={parseInt(movieid)}
+                className="px-4 py-2 rounded-full text-white text-small flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
               />
               <button
-                onClick={() => handleWatchStatusUpdate("watched")}
-                className={`px-5 py-2.5 rounded-full text-white text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105 ${
-                  currentWatchStatus === "watched"
-                    ? "bg-green-600 hover:bg-green-700"
-                    : "bg-gray-700 hover:bg-gray-600"
-                }`}
-              >
-                <Eye className="h-5 w-5" />
-                {currentWatchStatus === "watched"
-                  ? "Watched"
-                  : "Mark as Watched"}
-              </button>
-              <button
-                onClick={() => handleWatchStatusUpdate("want_to_watch")}
-                className={`px-5 py-2.5 rounded-full text-white text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105 ${
-                  currentWatchStatus === "want_to_watch"
-                    ? "bg-yellow-600 hover:bg-yellow-700"
-                    : "bg-gray-700 hover:bg-gray-600"
-                }`}
-              >
-                <Bookmark className="h-5 w-5" />
-                {currentWatchStatus === "want_to_watch"
-                  ? "In Watchlist"
-                  : "Add to Watchlist"}
-              </button>
-              <button
                 onClick={() => setShowPlaylistSelector(true)}
-                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 text-white hover:from-indigo-700 hover:to-blue-600 text-base font-medium flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 text-white hover:from-indigo-700 hover:to-blue-600 text-small flex items-center gap-2 shadow-md transition-all duration-300 transform hover:scale-105"
               >
-                <ListPlus className="h-5 w-5" />
-                Add to Playlist
+                <ListPlus className="h-4 w-4" />
+                <span className="hidden sm:inline">Add to Playlist</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-16 space-y-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="container mx-auto px-2 sm:px-4 py-6 md:py-16 space-y-8 md:space-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Genres</h2>
+            <h2 className="text-subheading">Genres</h2>
             <div className="flex flex-wrap gap-2">
               {movie.genres?.map((genre) => (
                 <Link
                   key={genre.id}
                   to={`/genre/${genre.id}`}
-                  className="px-4 py-2 rounded-full bg-pink-500/10 text-pink-500 hover:bg-pink-500/20 transition"
+                  className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-pink-500/10 text-pink-500 hover:bg-pink-500/20 transition text-caption"
                 >
                   {genre.name}
                 </Link>
@@ -209,12 +185,12 @@ const Movie = () => {
             </div>
           </div>
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Production Companies</h2>
+            <h2 className="text-subheading">Production Companies</h2>
             <div className="flex flex-wrap gap-2">
               {movie.production_companies?.map((company) => (
                 <span
                   key={company.id}
-                  className="px-4 py-2 rounded-full bg-gray-800 text-gray-300"
+                  className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gray-800 text-gray-300 text-caption"
                 >
                   {company.name}
                 </span>
@@ -224,13 +200,13 @@ const Movie = () => {
         </div>
 
         <section className="space-y-6">
-          <h2 className="text-3xl font-bold">Cast</h2>
-          <div className="flex overflow-x-auto gap-4 pb-4 scrollbar-hide">
+          <h2 className="text-subheading">Cast</h2>
+          <div className="flex overflow-x-auto gap-2 sm:gap-4 pb-4 scrollbar-hide">
             {cast.map((actor) => (
               <Link
                 key={actor.id}
                 to={`/cast/${actor.id}/${actor.name}`}
-                className="flex-shrink-0 w-44 bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition duration-300"
+                className="flex-shrink-0 w-28 sm:w-36 md:w-44 bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition duration-300"
               >
                 <img
                   src={
@@ -242,8 +218,10 @@ const Movie = () => {
                   className="w-full aspect-[2/3] object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="font-semibold">{actor.name}</h3>
-                  <p className="text-sm text-gray-400">{actor.character}</p>
+                  <h3 className="font-semibold text-caption">{actor.name}</h3>
+                  <p className="text-caption text-gray-400">
+                    {actor.character}
+                  </p>
                 </div>
               </Link>
             ))}

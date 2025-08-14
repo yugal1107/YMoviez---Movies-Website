@@ -44,11 +44,30 @@ export default {
           },
         },
       },
+      fontSize: {
+        heading: [
+          "clamp(2rem, 4vw, 2.75rem)",
+          { lineHeight: "1.2", fontWeight: "700" },
+        ],
+        subheading: [
+          "clamp(1.5rem, 3vw, 2rem)",
+          { lineHeight: "1.3", fontWeight: "600" },
+        ],
+        body: [
+          "clamp(1rem, 2vw, 1.125rem)",
+          { lineHeight: "1.6", fontWeight: "400" },
+        ],
+        caption: [
+          "clamp(0.85rem, 1vw, 1rem)",
+          { lineHeight: "1.4", fontWeight: "400" },
+        ],
+        small: [
+          "clamp(0.75rem, 0.8vw, 0.875rem)",
+          { lineHeight: "1.3", fontWeight: "400" },
+        ],
+      },
     },
   },
   plugins: [heroui()],
-  theme: {
-    extend: {},
-  },
   darkMode: "class",
 };

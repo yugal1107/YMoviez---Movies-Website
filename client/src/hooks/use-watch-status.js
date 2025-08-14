@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchData } from "../utils/fetchData";
 import { useAuth } from "../context/authContext";
+import toast from "react-hot-toast";
 
 const fetchWatchStatus = async (user) => {
   if (!user) return [];
@@ -39,8 +40,17 @@ const useWatchStatus = () => {
 
   const mutation = useMutation({
     mutationFn: setWatchStatusAPI,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["watchStatus", user?.uid]);
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["watchStatus", user?.uid] });
+      const message =
+        variables.status === "watched"
+          ? "Movie marked as watched!"
+          : "Added to your watchlist!";
+      toast.success(message);
+    },
+    onError: (error) => {
+      toast.error("Failed to update status.");
+      console.error("Error setting watch status:", error);
     },
   });
 
@@ -48,7 +58,12 @@ const useWatchStatus = () => {
     mutation.mutate({ tmdb_id, status });
   };
 
-  return { watchStatus, isLoading, error, setWatchStatus };
+  return {
+    watchStatus,
+    isLoading: mutation.isPending,
+    error,
+    setWatchStatus,
+  };
 };
 
 export default useWatchStatus;

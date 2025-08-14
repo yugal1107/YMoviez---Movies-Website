@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
-import { likeMovie, dislikeMovie } from "../utils/likeUtils";
-import { useAuth } from "../context/authContext";
-import useLikedMovies from "../hooks/use-liked-movies";
-import { fetchData } from "../utils/fetchData";
+import { likeMovie, dislikeMovie } from "../../utils/likeUtils";
+import { useAuth } from "../../context/authContext";
+import useLikedMovies from "../../hooks/use-liked-movies";
+import { fetchData } from "../../utils/fetchData";
 
 const LikeButton = ({ id, initialLikeState = false, className = "" }) => {
   const [isLiked, setIsLiked] = useState(initialLikeState);
@@ -58,7 +58,7 @@ const LikeButton = ({ id, initialLikeState = false, className = "" }) => {
         className={`h-4 w-4 ${isLiked ? "fill-white" : ""}`}
         strokeWidth={isLiked ? 0 : 1.5}
       />
-      <span className="text-sm">{isLiked ? "Liked" : "Like"}</span>
+      <span className="hidden sm:inline">{isLiked ? "Liked" : "Like"}</span>
     </button>
   );
 };

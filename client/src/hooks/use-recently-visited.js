@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { fetchData } from "../utils/fetchData";
 import { useAuth } from "../context/authContext";
 
@@ -40,17 +41,23 @@ const useRecentlyVisited = () => {
   const mutation = useMutation({
     mutationFn: logVisitAPI,
     onSuccess: () => {
-      queryClient.invalidateQueries(["recentlyVisited", user?.uid]);
+      // Invalidate to refetch the list after a visit is logged.
+      queryClient.invalidateQueries({
+        queryKey: ["recentlyVisited", user?.uid],
+      });
     },
   });
 
-  const logVisit = (tmdb_id) => {
-    // Prevent logging if already in the list to avoid spamming
-    if (recentlyVisited.some((movie) => movie.tmdb_id === tmdb_id)) {
-      return;
-    }
-    mutation.mutate(tmdb_id);
-  };
+  // Use useCallback to memoize the logVisit function, making it stable.
+  // The backend now handles duplicate visits, so the client-side check is removed.
+  const logVisit = useCallback(
+    (tmdb_id) => {
+      if (tmdb_id) {
+        mutation.mutate(tmdb_id);
+      }
+    },
+    [mutation] // The mutation object from useMutation is stable.
+  );
 
   return { recentlyVisited, isLoading, error, logVisit };
 };

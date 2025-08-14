@@ -18,14 +18,14 @@ const RecommendedMovies = ({
     <section className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <h2 className="text-3xl font-bold">{title}</h2>
+          <h2 className="text-subheading">{title}</h2>
           {isPoweredByML ? (
             <Sparkles className="h-6 w-6 text-pink-500" />
           ) : (
             <Film className="h-6 w-6 text-pink-500" />
           )}
         </div>
-        <p className="text-gray-400">{subtitle}</p>
+        <p className="text-caption text-gray-400">{subtitle}</p>
         {isPoweredByML && (
           <p className="text-xs text-pink-500/70 mt-1">
             Powered by machine learning

@@ -1,7 +1,7 @@
 import React, { useState, memo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import LikeButton from "./LikeButton";
+import LikeButton from "./ui/LikeButton";
 import useLikedMovies from "../hooks/use-liked-movies";
 
 const baseImgURL = "https://image.tmdb.org/t/p/original";
@@ -75,13 +75,13 @@ const MovieCarousel = memo(({ movies }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent" />
       </div>
-      <div className="absolute inset-0 flex items-center">
+      <div className="absolute inset-0 flex items-end p-12 md:py-12 md:p-0">
         <div className="container mx-auto px-4">
           <div className="max-w-lg md:ml-4">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h2 className="text-xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               {currentMovie.title || currentMovie.name}
             </h2>
-            <div className="flex items-center mb-4 space-x-3">
+            <div className="hidden md:flex items-center mb-4 space-x-3">
               <span className="bg-pink-600 text-white text-sm px-2 py-1 rounded-md flex items-center">
                 <span className="mr-1">
                   {currentMovie.vote_average.toFixed(1)}
@@ -94,14 +94,14 @@ const MovieCarousel = memo(({ movies }) => {
                 className="mt-0"
               />
             </div>
-            <p className="text-gray-300 text-sm md:text-lg mb-6 line-clamp-3">
+            <p className="hidden md:block text-gray-300 text-sm md:text-lg mb-6 line-clamp-3">
               {currentMovie.overview}
             </p>
             <Link
               to={`/movie/${currentMovie.id}`}
-              className="inline-flex items-center px-4 md:px-6 p-2 md:py-3 rounded-full bg-green-500 text-white text-sm md:text-base hover:bg-green-600 transition-colors"
+              className="inline-flex items-center px-4 md:px-6 p-2 md:py-3 rounded-full bg-green-500 text-white text-xs md:text-base hover:bg-green-600 transition-colors"
             >
-              <Play className="h-5 w-5 mr-2" />
+              <Play className="h-3 w-3 md:h-5 md:w-5 mr-2" />
               View Details
             </Link>
           </div>
