@@ -50,7 +50,6 @@ export const userCacheUtils = (pool) => ({
       const idsToFetch = [...missingUserIds, ...staleUserIds];
       if (idsToFetch.length > 0) {
         try {
-          console.log(`Fetching ${idsToFetch.length} users from Firebase`);
           const userRecords = await auth.getUsers(
             idsToFetch.map((id) => ({ uid: id }))
           );

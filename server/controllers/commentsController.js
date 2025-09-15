@@ -43,9 +43,9 @@ const commentsController = (pool, getOrCreateMovie) => {
           VALUES ($1, $2, $3, $4, NOW(), NOW())
           RETURNING comment_id, created_at, updated_at;
         `;
-        // Store the firebase_uid for new comments
+        // Store the internal user_id for new comments
         const values = [
-          req.user.firebase_uid,
+          req.user.user_id, // Use internal user_id instead of firebase_uid
           movie_id,
           parent_comment_id,
           comment_text,
@@ -122,7 +122,7 @@ const commentsController = (pool, getOrCreateMovie) => {
           });
         }
 
-        // Now fetch all comments with user data joined
+        // Fetch all comments with user data joined
         const commentsQuery = `
           WITH RECURSIVE comment_tree AS (
             -- Base case: selected root comments
@@ -138,12 +138,7 @@ const commentsController = (pool, getOrCreateMovie) => {
               0 as depth,
               c.created_at as root_created_at
             FROM comments c
-            LEFT JOIN users u ON (
-              CASE 
-                WHEN c.user_id::text ~ '^[0-9]+$' THEN u.user_id = c.user_id::integer
-                ELSE u.firebase_uid = c.user_id::text
-              END
-            )
+            JOIN users u ON c.user_id = u.user_id
             WHERE c.comment_id = ANY($1::int[])
             
             UNION ALL
@@ -161,12 +156,7 @@ const commentsController = (pool, getOrCreateMovie) => {
               ct.depth + 1,
               ct.root_created_at
             FROM comments c
-            LEFT JOIN users u ON (
-              CASE 
-                WHEN c.user_id::text ~ '^[0-9]+$' THEN u.user_id = c.user_id::integer
-                ELSE u.firebase_uid = c.user_id::text
-              END
-            )
+            JOIN users u ON c.user_id = u.user_id
             INNER JOIN comment_tree ct ON c.parent_comment_id = ct.comment_id
             WHERE ct.depth < 10
           )
@@ -267,10 +257,10 @@ const commentsController = (pool, getOrCreateMovie) => {
     },
 
     updateComment: async (req, res) => {
-      const { comment_id } = req.params;
+      const { commentId } = req.params;
       const { comment_text } = req.body;
 
-      if (!comment_id || !Number.isInteger(parseInt(comment_id))) {
+      if (!commentId || !Number.isInteger(parseInt(commentId))) {
         return res.status(400).json({ error: "Invalid comment_id" });
       }
 
@@ -287,8 +277,8 @@ const commentsController = (pool, getOrCreateMovie) => {
         `;
         const values = [
           comment_text,
-          parseInt(comment_id),
-          req.user.firebase_uid,
+          parseInt(commentId),
+          req.user.user_id, // Use internal user_id
         ];
         const result = await pool.query(query, values);
 
@@ -312,9 +302,9 @@ const commentsController = (pool, getOrCreateMovie) => {
     },
 
     deleteComment: async (req, res) => {
-      const { comment_id } = req.params;
+      const { commentId } = req.params;
 
-      if (!comment_id || !Number.isInteger(parseInt(comment_id))) {
+      if (!commentId || !Number.isInteger(parseInt(commentId))) {
         return res.status(400).json({ error: "Invalid comment_id" });
       }
 
@@ -324,7 +314,7 @@ const commentsController = (pool, getOrCreateMovie) => {
           WHERE comment_id = $1 AND user_id = $2
           RETURNING comment_id;
         `;
-        const values = [parseInt(comment_id), req.user.firebase_uid];
+        const values = [parseInt(commentId), req.user.user_id];
         const result = await pool.query(query, values);
 
         if (result.rowCount === 0) {

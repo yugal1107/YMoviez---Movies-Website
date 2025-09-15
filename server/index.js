@@ -67,6 +67,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
+app.use("/health", (req, res) => res.send("OK"));
 app.use("/api/navbar", navRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/user", createUserRouter(pool, getOrCreateMovie));
