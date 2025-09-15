@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useAuth } from "../../context/authContext";
 import { useComments } from "../../hooks/useComments";
 import {
   MessageSquare,
   Loader2,
   ChevronLeft,
   ChevronRight,
+  LogIn,
 } from "lucide-react";
 import CommentForm from "./CommentForm";
 import CommentItem from "./CommentItem";
 
 const CommentsSection = ({ tmdbId }) => {
+  const { user } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const commentsPerPage = 5;
 
@@ -41,9 +44,11 @@ const CommentsSection = ({ tmdbId }) => {
           <MessageSquare className="h-6 w-6" />
           Comments
         </h2>
-        <div className="bg-gray-900/50 rounded-lg p-6 text-center">
-          <p className="text-red-400">
-            Failed to load comments. Please try again.
+        <div className="bg-gray-900/50 rounded-lg p-8 text-center">
+          <LogIn className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 text-lg mb-2">Login to view comments</p>
+          <p className="text-gray-500 text-sm">
+            Please sign in to see and write comments
           </p>
         </div>
       </section>

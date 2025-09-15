@@ -2,11 +2,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ratingsApi } from "../utils/ratingsApi";
 import { toast } from "react-hot-toast";
 
-export const useUserRating = (tmdb_id) => {
+export const useUserRating = (tmdb_id, enabled = true) => {
   return useQuery({
     queryKey: ["userRating", tmdb_id],
     queryFn: () => ratingsApi.getUserRating(tmdb_id),
-    enabled: !!tmdb_id,
+    enabled: !!tmdb_id && enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };

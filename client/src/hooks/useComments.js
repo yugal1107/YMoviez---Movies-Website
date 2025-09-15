@@ -2,11 +2,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { commentsApi } from "../utils/commentsApi";
 import { toast } from "react-hot-toast";
 
-export const useComments = (tmdb_id, page = 1, limit = 10) => {
+export const useComments = (tmdb_id, page = 1, limit = 10, enabled = true) => {
   return useQuery({
     queryKey: ["comments", tmdb_id, page, limit],
     queryFn: () => commentsApi.getComments(tmdb_id, page, limit),
-    enabled: !!tmdb_id,
+    enabled: !!tmdb_id && enabled,
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 };

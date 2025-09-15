@@ -7,15 +7,15 @@ import {
 import { useAuth } from "../../context/authContext";
 import RatingDisplay from "../ui/RatingDisplay";
 import RatingInput from "../ui/RatingInput";
-import { Loader2, Users } from "lucide-react";
+import { Loader2, Users, LogIn } from "lucide-react";
 
 const RatingSection = ({ tmdbId, tmdbRating }) => {
   const { user } = useAuth();
   const [selectedRating, setSelectedRating] = useState(0);
 
-  const { data: userRating, isLoading: userRatingLoading } =
-    useUserRating(tmdbId);
-  const { data: movieRatings, isLoading: movieRatingsLoading } =
+  const { data: userRating, isLoading: userRatingLoading, error: userRatingError } =
+    useUserRating(tmdbId, !!user); // Only fetch if user is authenticated
+  const { data: movieRatings, isLoading: movieRatingsLoading, error: movieRatingsError } =
     useMovieRatings(tmdbId);
   const addRatingMutation = useAddOrUpdateRating();
 
@@ -36,6 +36,19 @@ const RatingSection = ({ tmdbId, tmdbRating }) => {
     return (
       <div className="flex items-center justify-center py-4">
         <Loader2 className="h-6 w-6 animate-spin text-pink-500" />
+      </div>
+    );
+  }
+
+  // Handle errors - show login message for unauthenticated users
+  if (movieRatingsError || (userRatingError && user)) {
+    return (
+      <div className="bg-gray-900/50 rounded-lg p-6 space-y-4">
+        <h3 className="text-xl font-semibold">Rating</h3>
+        <div className="text-center py-4">
+          <LogIn className="h-8 w-8 text-gray-500 mx-auto mb-2" />
+          <p className="text-gray-400">Login to view and rate this movie</p>
+        </div>
       </div>
     );
   }
@@ -64,7 +77,7 @@ const RatingSection = ({ tmdbId, tmdbRating }) => {
           )}
         </div>
 
-        {user && (
+        {user ? (
           <div className="bg-gray-800 rounded-lg p-4 space-y-3">
             <p className="text-sm font-medium">Rate this movie</p>
             <RatingInput
@@ -86,6 +99,11 @@ const RatingSection = ({ tmdbId, tmdbRating }) => {
                 )}
               </button>
             )}
+          </div>
+        ) : (
+          <div className="bg-gray-800 rounded-lg p-4 text-center space-y-2">
+            <LogIn className="h-8 w-8 text-gray-500 mx-auto" />
+            <p className="text-sm text-gray-400">Login to rate this movie</p>
           </div>
         )}
       </div>
