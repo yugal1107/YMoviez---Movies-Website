@@ -6,6 +6,8 @@ import { Loader2, ListPlus, Eye, Bookmark } from "lucide-react";
 import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
 import RecommendedMovies from "./RecommendedMovies";
+import RatingSection from "../../components/Rating/RatingSection";
+import CommentsSection from "../../components/Comments/CommentsSection";
 import useLikedMovies from "../../hooks/use-liked-movies";
 import useRecentlyVisited from "../../hooks/use-recently-visited";
 import WatchedButton from "../../components/ui/WatchedButton";
@@ -229,6 +231,15 @@ const Movie = () => {
         </section>
 
         {renderRecommendationsSection()}
+
+        {/* Rating Section */}
+        <RatingSection
+          tmdbId={parseInt(movieid)}
+          tmdbRating={movie.vote_average}
+        />
+
+        {/* Comments Section */}
+        <CommentsSection tmdbId={parseInt(movieid)} />
       </div>
 
       {showPlaylistSelector && (
