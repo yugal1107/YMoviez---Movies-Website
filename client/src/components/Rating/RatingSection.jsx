@@ -13,10 +13,16 @@ const RatingSection = ({ tmdbId, tmdbRating }) => {
   const { user } = useAuth();
   const [selectedRating, setSelectedRating] = useState(0);
 
-  const { data: userRating, isLoading: userRatingLoading, error: userRatingError } =
-    useUserRating(tmdbId, !!user); // Only fetch if user is authenticated
-  const { data: movieRatings, isLoading: movieRatingsLoading, error: movieRatingsError } =
-    useMovieRatings(tmdbId);
+  const {
+    data: userRating,
+    isLoading: userRatingLoading,
+    error: userRatingError,
+  } = useUserRating(tmdbId, !!user); // Only fetch if user is authenticated
+  const {
+    data: movieRatings,
+    isLoading: movieRatingsLoading,
+    error: movieRatingsError,
+  } = useMovieRatings(tmdbId);
   const addRatingMutation = useAddOrUpdateRating();
 
   // Determine which rating to display - user ratings if available, otherwise TMDB rating
@@ -40,8 +46,21 @@ const RatingSection = ({ tmdbId, tmdbRating }) => {
     );
   }
 
-  // Handle errors - show login message for unauthenticated users
-  if (movieRatingsError || (userRatingError && user)) {
+  // Handle authentication errors only - ignore 404/no data found errors
+  const isAuthError = (error) => {
+    return (
+      error &&
+      (error.message?.includes("Authentication") ||
+        error.message?.includes("Unauthorized") ||
+        error.status === 401 ||
+        error.response?.status === 401)
+    );
+  };
+
+  if (
+    isAuthError(movieRatingsError) ||
+    (isAuthError(userRatingError) && user)
+  ) {
     return (
       <div className="bg-gray-900/50 rounded-lg p-6 space-y-4">
         <h3 className="text-xl font-semibold">Rating</h3>
