@@ -4,6 +4,8 @@ import likesController from "../controllers/likesController.js";
 import playlistsController from "../controllers/playlistsController.js";
 import watchController from "../controllers/watchController.js";
 import visitController from "../controllers/visitController.js";
+import ratingsController from "../controllers/ratingsController.js";
+import commentsController from "../controllers/commentsController.js";
 import userController from "../controllers/userController.js";
 
 const createUserRouter = (pool, getOrCreateMovie) => {
@@ -13,6 +15,8 @@ const createUserRouter = (pool, getOrCreateMovie) => {
   const playlists = playlistsController(pool, getOrCreateMovie);
   const watch = watchController(pool, getOrCreateMovie);
   const visit = visitController(pool, getOrCreateMovie);
+  const ratings = ratingsController(pool, getOrCreateMovie);
+  const comments = commentsController(pool, getOrCreateMovie);
   const user = userController();
 
   router.use(authenticateToken);
@@ -40,6 +44,17 @@ const createUserRouter = (pool, getOrCreateMovie) => {
   // Recently Visited routes
   router.post("/recently-visited", visit.logVisit);
   router.get("/recently-visited", visit.getRecentVisits);
+
+  // Ratings routes
+  router.post("/ratings", ratings.addOrUpdateRating);
+  router.get("/ratings/:tmdb_id", ratings.getUserRating);
+  router.get("/ratings/movie/:tmdb_id", ratings.getMovieRatings);
+
+  // Comments routes
+  router.post("/comments", comments.addComment);
+  router.get("/comments/:tmdb_id", comments.getComments);
+  router.put("/comments/:commentId", comments.updateComment);
+  router.delete("/comments/:commentId", comments.deleteComment);
 
   // Test route
   router.get("/test", user.testRoute);

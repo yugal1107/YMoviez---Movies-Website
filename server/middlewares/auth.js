@@ -9,7 +9,7 @@ const authenticateToken = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log("Token received:", token);
+  // console.log("Token received:", token);
   try {
     const decodedToken = await auth.verifyIdToken(token);
     const firebase_uid = decodedToken.uid;
