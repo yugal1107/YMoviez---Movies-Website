@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 
 const StarRating = ({
   rating,
-  maxRating = 5,
+  maxRating = 10,
   onRatingChange,
   isInteractive = false,
   size = "h-5 w-5",

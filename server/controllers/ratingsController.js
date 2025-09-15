@@ -7,8 +7,8 @@ const ratingsController = (pool, getOrCreateMovie) => ({
       return res.status(400).json({ error: "Invalid or missing tmdb_id" });
     }
 
-    if (!rating || rating < 1 || rating > 5) {
-      return res.status(400).json({ error: "Rating must be between 1 and 5" });
+    if (!rating || rating < 1 || rating > 10) {
+      return res.status(400).json({ error: "Rating must be between 1 and 10" });
     }
 
     const client = await pool.connect();
@@ -92,11 +92,6 @@ const ratingsController = (pool, getOrCreateMovie) => ({
         return res.json({
           total_ratings: "0",
           average_rating: null,
-          rating_1: "0",
-          rating_2: "0",
-          rating_3: "0",
-          rating_4: "0",
-          rating_5: "0",
         });
       }
       const movieId = movieResult.rows[0].movie_id;
@@ -104,12 +99,7 @@ const ratingsController = (pool, getOrCreateMovie) => ({
       const query = `
         SELECT
           COUNT(*) as total_ratings,
-          AVG(rating) as average_rating,
-          COUNT(CASE WHEN rating = 1 THEN 1 END) as rating_1,
-          COUNT(CASE WHEN rating = 2 THEN 1 END) as rating_2,
-          COUNT(CASE WHEN rating = 3 THEN 1 END) as rating_3,
-          COUNT(CASE WHEN rating = 4 THEN 1 END) as rating_4,
-          COUNT(CASE WHEN rating = 5 THEN 1 END) as rating_5
+          AVG(rating) as average_rating
         FROM ratings
         WHERE movie_id = $1;
       `;
