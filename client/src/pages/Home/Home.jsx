@@ -8,12 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import useLikedMovies from "../../hooks/use-liked-movies.js";
 import useRecentlyVisited from "../../hooks/use-recently-visited.js";
 
+import { fetchData } from "../../utils/fetchData";
+
 const fetchMovies = async (endpoint) => {
-  const response = await fetch(
+  const response = await fetchData(
     `${import.meta.env.VITE_BASE_API_URL}api/tmdb/${endpoint}`
   );
-  if (!response.ok) throw new Error(`Failed to fetch ${endpoint}`);
-  return response.json();
+  if (response) {
+    return response;
+  }
+  throw new Error(`Failed to fetch ${endpoint}`);
 };
 
 const Home = () => {

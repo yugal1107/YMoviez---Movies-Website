@@ -5,15 +5,18 @@ import toast from "react-hot-toast";
 
 const fetchWatchStatus = async (user) => {
   if (!user) return [];
-  const data = await fetchData(
-    `${import.meta.env.VITE_BASE_API_URL}api/user/watch-status`
+  const response = await fetchData(
+    `${import.meta.env.VITE_BASE_API_URL}api/watch/status`
   );
-  return data;
+  if (response.success) {
+    return response.data;
+  }
+  throw new Error(response.message || "Failed to fetch watch status");
 };
 
 const setWatchStatusAPI = async ({ tmdb_id, status }) => {
-  return await fetchData(
-    `${import.meta.env.VITE_BASE_API_URL}api/user/watch-status`,
+  const response = await fetchData(
+    `${import.meta.env.VITE_BASE_API_URL}api/watch/status`,
     {
       method: "POST",
       body: JSON.stringify({ tmdb_id, status }),
@@ -22,6 +25,10 @@ const setWatchStatusAPI = async ({ tmdb_id, status }) => {
       },
     }
   );
+  if (response.success) {
+    return response.data;
+  }
+  throw new Error(response.message || "Failed to set watch status");
 };
 
 const useWatchStatus = () => {
