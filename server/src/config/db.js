@@ -1,4 +1,23 @@
 import { Pool } from "pg";
+import dotenv from "dotenv";
+
+
+dotenv.config();
+
+// Validate required environment variables for the database connection
+const requiredEnvVars = [
+  'DB_USER',
+  'DB_HOST',
+  'DB_NAME',
+  'DB_PASSWORD',
+  'DB_PORT'
+];
+
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+  throw new Error(`Missing required database environment variables: ${missingEnvVars.join(', ')}`);
+}
 
 // PostgreSQL connection pool
 const pool = new Pool({

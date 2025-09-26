@@ -5,15 +5,18 @@ import { useAuth } from "../context/authContext";
 
 const fetchRecentlyVisited = async (user) => {
   if (!user) return [];
-  const data = await fetchData(
-    `${import.meta.env.VITE_BASE_API_URL}api/user/recently-visited`
+  const response = await fetchData(
+    `${import.meta.env.VITE_BASE_API_URL}api/visits`
   );
-  return data;
+  if (response.success) {
+    return response.data;
+  }
+  throw new Error(response.message || "Failed to fetch recently visited");
 };
 
 const logVisitAPI = async (tmdb_id) => {
-  return await fetchData(
-    `${import.meta.env.VITE_BASE_API_URL}api/user/recently-visited`,
+  const response = await fetchData(
+    `${import.meta.env.VITE_BASE_API_URL}api/visits`,
     {
       method: "POST",
       body: JSON.stringify({ tmdb_id }),
@@ -22,6 +25,10 @@ const logVisitAPI = async (tmdb_id) => {
       },
     }
   );
+  if (response.success) {
+    return response.data;
+  }
+  throw new Error(response.message || "Failed to log visit");
 };
 
 const useRecentlyVisited = () => {

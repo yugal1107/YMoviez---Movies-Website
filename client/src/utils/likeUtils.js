@@ -8,7 +8,7 @@ export const likeMovie = async (movieId, user, fetchData, baseApiUrl) => {
 
   try {
     const token = await user.getIdToken();
-    const response = await fetchData(`${baseApiUrl}api/user/likes`, {
+    const response = await fetchData(`${baseApiUrl}api/likes`, {
       method: "POST",
       body: JSON.stringify({ tmdb_id: movieId }),
       headers: {
@@ -19,11 +19,11 @@ export const likeMovie = async (movieId, user, fetchData, baseApiUrl) => {
 
     console.log("Like Movie Response:", response); // Debug log
 
-    if (response.message === "Movie liked") {
-      toast.success("Movie liked!");
-      return { success: true, like_id: response.like_id };
+    if (response.success) {
+      toast.success(response.message || "Movie liked!");
+      return { success: true, like_id: response.data.like_id };
     }
-    throw new Error("Unexpected response from server");
+    throw new Error(response.message || "Unexpected response from server");
   } catch (error) {
     if (error.response?.status === 409) {
       toast("Movie already liked", { icon: "ℹ️" });
@@ -32,7 +32,7 @@ export const likeMovie = async (movieId, user, fetchData, baseApiUrl) => {
     if (error.response?.status === 401) {
       toast.error("Session expired. Please login again.");
     } else {
-      toast.error("Failed to like movie.");
+      toast.error(error.message || "Failed to like movie.");
     }
     return { success: false, error: error.message };
   }
@@ -46,18 +46,18 @@ export const dislikeMovie = async (movieId, user, fetchData, baseApiUrl) => {
 
   try {
     const token = await user.getIdToken();
-    const response = await fetchData(`${baseApiUrl}api/user/likes/${movieId}`, {
+    const response = await fetchData(`${baseApiUrl}api/likes/${movieId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (response.message === "Like removed") {
-      toast.success("Movie unliked!");
+    if (response.success) {
+      toast.success(response.message || "Movie unliked!");
       return { success: true };
     }
-    throw new Error("Unexpected response from server");
+    throw new Error(response.message || "Unexpected response from server");
   } catch (error) {
     if (error.response?.status === 404) {
       toast("Movie not in your likes", { icon: "ℹ️" });
@@ -66,7 +66,7 @@ export const dislikeMovie = async (movieId, user, fetchData, baseApiUrl) => {
     if (error.response?.status === 401) {
       toast.error("Session expired. Please login again.");
     } else {
-      toast.error("Failed to unlike movie.");
+      toast.error(error.message || "Failed to unlike movie.");
     }
     return { success: false, error: error.message };
   }

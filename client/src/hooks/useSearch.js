@@ -46,7 +46,7 @@ const useSearch = (debounceDelay = 300, minQueryLength = 2) => {
       const response = await fetchData(
         `${
           import.meta.env.VITE_BASE_API_URL
-        }api/tmdb/search/movie?query=${encodeURIComponent(searchQuery)}&page=1`
+      }api/tmdb/search/movie?query=${encodeURIComponent(searchQuery)}&page=1`
       );
       return response;
     } catch (error) {

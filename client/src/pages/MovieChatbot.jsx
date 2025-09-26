@@ -33,14 +33,18 @@ const MovieChatbot = () => {
     setInputMessage("");
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_API_URL}api/chat/send`,
-        {
-          message: inputMessage,
-        }
-      );
-      const botMessage = { text: response.data.message, isBot: true };
-      setMessages((prev) => [...prev, botMessage]);
+const response = await axios.post(
+      `${import.meta.env.VITE_BASE_API_URL}api/chat`,
+      {
+        prompt: userInput,
+        movieTitle: movie.title,
+      }
+    );
+    setConversation([
+      ...conversation,
+      { role: "user", content: userInput },
+      { role: "assistant", content: response.data.data },
+    ]);
     } catch (error) {
       console.error("Error sending message:", error);
       const errorMessage = {
