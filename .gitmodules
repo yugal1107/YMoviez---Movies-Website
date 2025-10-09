@@ -1,0 +1,3 @@
+[submodule "Movie-Recommendation-System"]
+	path = Movie-Recommendation-System
+	url = https://github.com/yugal1107/Movie-Recommendation-System
