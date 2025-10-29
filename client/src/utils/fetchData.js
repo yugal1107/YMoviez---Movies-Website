@@ -3,15 +3,14 @@ import apiClient from "./apiClient"; // Import the configured Axios instance
 async function fetchData(url, options = {}) {
   try {
     const response = await apiClient({
-      url, // If apiClient has a baseURL, this should be the relative path
+      url,
       method: options.method || "GET",
       headers: {
-        // Default Content-Type is handled by apiClient instance.
-        // Authorization header is handled by the interceptor if a user is logged in.
-        ...options.headers, // Allows overriding any headers if needed for specific calls
+        ...options.headers,
       },
-      data: options.body, // Axios uses 'data' for the request body
-      // timeout is already set in apiClient, but can be overridden in options if needed
+      data: options.body,
+      // Allow per-request timeout override
+      timeout: options.timeout,
     });
     return response.data;
   } catch (error) {

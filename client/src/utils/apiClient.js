@@ -6,7 +6,7 @@ import { app as firebaseApp } from "../firebase"; // Adjust path if your firebas
 const apiClient = axios.create({
   // You can set a baseURL here if all your API calls share a common prefix
   // baseURL: import.meta.env.VITE_BASE_API_URL,
-  timeout: 10000, // Default timeout for requests
+  timeout: 20000, // Default timeout for requests
   headers: {
     "Content-Type": "application/json", // Default Content-Type
   },

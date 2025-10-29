@@ -53,25 +53,37 @@ const Movie = () => {
     useQuery({
       queryKey: ["recommendations", movieid],
       queryFn: async () => {
+        // Fetch initial recommendations with a longer timeout
         const recs = await fetchData(
           `${
             import.meta.env.VITE_BASE_ML_URL
-          }/recommend?tmdb_id=${movieid}&top_n=10`
+          }/recommend?tmdb_id=${movieid}&top_n=10`,
+          { timeout: 30000 } // 30-second timeout
         );
+
+        if (!recs) return [];
+
+        // Fetch details for each recommendation
         const details = await Promise.all(
           recs.map(async (rec) => {
-            const movieDetails = await fetchData(
-              `${import.meta.env.VITE_BASE_API_URL}api/tmdb/movie/${rec.tmdbId}`
-            );
-            return {
-              id: rec.tmdbId,
-              title: movieDetails.title,
-              name: movieDetails.title,
-              poster_path: movieDetails.poster_path,
-              vote_average: movieDetails.vote_average || rec.rating,
-            };
+            try {
+              const movieDetails = await fetchData(
+                `${import.meta.env.VITE_BASE_API_URL}api/tmdb/movie/${rec.tmdbId}`
+              );
+              return {
+                id: rec.tmdbId,
+                title: movieDetails.title,
+                name: movieDetails.title,
+                poster_path: movieDetails.poster_path,
+                vote_average: movieDetails.vote_average || rec.rating,
+              };
+            } catch (error) {
+              console.error(`Failed to fetch details for movie ${rec.tmdbId}:`, error);
+              return null; // Return null for failed fetches
+            }
           })
         );
+        // Filter out any null results from failed fetches
         return details.filter((movie) => movie !== null);
       },
       enabled: !!movieData,
