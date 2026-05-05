@@ -21,7 +21,10 @@ import createCommentsRouter from "./routes/comments.routes.js";
 import createTestUserRouter from "./routes/test.user.routes.js";
 import mlRouter from "./routes/ml.routes.js";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
