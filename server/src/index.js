@@ -19,6 +19,7 @@ import createVisitRouter from "./routes/visit.routes.js";
 import createRatingsRouter from "./routes/ratings.routes.js";
 import createCommentsRouter from "./routes/comments.routes.js";
 import createTestUserRouter from "./routes/test.user.routes.js";
+import mlRouter from "./routes/ml.routes.js";
 
 dotenv.config();
 const app = express();
@@ -53,6 +54,7 @@ app.use("/api/visits", visitRouter); // Renamed from 'visit' to 'visits' for con
 app.use("/api/ratings", ratingsRouter);
 app.use("/api/comments", commentsRouter);
 app.use("/api/user", testUserRouter); // Contains the '/test' route
+app.use("/api/ml", mlRouter);
 
 // Centralized Error Handler - MUST be last
 app.use(errorHandler);

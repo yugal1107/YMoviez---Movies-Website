@@ -56,8 +56,8 @@ const Movie = () => {
         // Fetch initial recommendations with a longer timeout
         const recs = await fetchData(
           `${
-            import.meta.env.VITE_BASE_ML_URL
-          }/recommend?tmdb_id=${movieid}&top_n=10`,
+            import.meta.env.VITE_BASE_API_URL
+          }api/ml/recommend?tmdb_id=${movieid}&top_n=10`,
           { timeout: 30000 } // 30-second timeout
         );
 
