@@ -5,6 +5,7 @@ import { fetchData } from "../../utils/fetchData";
 import { Loader2, ListPlus, Eye, Bookmark } from "lucide-react";
 import Poster from "./Poster";
 import MovieInfo from "./MovieInfo";
+import MovieSkeleton from "./MovieSkeleton";
 import RecommendedMovies from "./RecommendedMovies";
 import RatingSection from "../../components/Rating/RatingSection";
 import CommentsSection from "../../components/Comments/CommentsSection";
@@ -90,11 +91,7 @@ const Movie = () => {
     });
 
   if (movieLoading || castLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center bg-black">
-        <Loader2 className="h-12 w-12 animate-spin text-pink-500" />
-      </div>
-    );
+    return <MovieSkeleton />;
   }
 
   const movie = movieData || {};
