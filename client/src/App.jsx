@@ -1,4 +1,13 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login";
@@ -22,6 +31,7 @@ import RecentlyVisitedPage from "./pages/RecentlyVisitedPage";
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Toaster
         position="bottom-center"
