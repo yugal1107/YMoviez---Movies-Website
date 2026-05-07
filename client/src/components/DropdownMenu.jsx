@@ -14,6 +14,7 @@ const DropdownMenu = ({
   align = "right",
   className = "",
   width = "w-48",
+  dropUp = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -60,7 +61,7 @@ const DropdownMenu = ({
         <div
           className={`absolute ${
             align === "left" ? "left-0" : "right-0"
-          } mt-2 ${width} rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 z-50 animate-in fade-in slide-in-from-top-5 duration-200 ${className}`}
+          } ${dropUp ? "bottom-full mb-2" : "mt-2"} ${width} rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-5 z-50 animate-in fade-in ${dropUp ? "slide-in-from-bottom-5" : "slide-in-from-top-5"} duration-200 ${className}`}
         >
           <div
             className="py-1 rounded-md overflow-hidden"

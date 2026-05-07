@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
+import { MoreVertical, ListPlus } from "lucide-react";
 import LikeButton from "./ui/LikeButton";
+import DropdownMenu from "./DropdownMenu";
 import PlaylistSelector from "./PlaylistSelector";
 
 const baseimgURL = "https://image.tmdb.org/t/p/w500";
 
 const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
   const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
+
+  const isLiked = likedMovies?.some((liked) => liked.id === id);
 
   const noPosterSVG = (
     <svg
@@ -32,10 +36,17 @@ const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
     </svg>
   );
 
-  const isLiked = likedMovies?.some((liked) => liked.id === id);
+  const menuItems = [
+    {
+      label: "Add to Playlist",
+      icon: <ListPlus className="h-4 w-4" />,
+      onClick: () => setShowPlaylistSelector(true),
+    },
+  ];
 
   return (
-    <div className="relative w-32 md:w-52 bg-gray-100 rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+    <div className="group/card relative w-32 md:w-52 bg-gray-100 rounded-lg shadow-lg">
+      {/* Poster */}
       {image_url ? (
         <img
           src={baseimgURL + image_url}
@@ -46,26 +57,42 @@ const Moviecard = ({ image_url, name, rating, id, likedMovies }) => {
       ) : (
         noPosterSVG
       )}
-      <div className="absolute inset-0 bg-black bg-opacity-0 rounded-lg flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-300 hover:bg-opacity-70 hover:opacity-100">
-        <div className="name text-lg font-semibold truncate w-full text-center px-2">
+
+      {/* Hover overlay — purely visual, pointer-events-none so it never blocks clicks below */}
+      <div className="pointer-events-none absolute inset-0 bg-black bg-opacity-0 rounded-lg flex flex-col justify-center items-center text-white opacity-0 transition-opacity duration-300 group-hover/card:bg-opacity-60 group-hover/card:opacity-100 px-2">
+        <div className="text-sm font-semibold truncate w-full text-center px-1">
           {name}
         </div>
-        <div className="rating mt-1">
-          <span className="font-medium">Rating: </span>
-          <span className="text-yellow-400">{rating}</span>
+        <div className="text-xs text-center mt-1 text-yellow-400">
+          ★ {rating?.toFixed(1) ?? "N/A"}
         </div>
-        <LikeButton id={id} initialLikeState={isLiked} />
-        <button
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent event from bubbling up to parent Link
-            e.preventDefault(); // Prevent default link behavior
-            setShowPlaylistSelector(true);
-          }}
-          className="mt-2 px-3 py-1 rounded-full bg-gray-700 text-white hover:bg-gray-600 text-sm"
-        >
-          Add to Playlist
-        </button>
       </div>
+
+      {/* Persistent action zone — always visible, stops propagation to prevent accidental navigation */}
+      <div
+        className="absolute bottom-2 right-2 z-10 flex items-center gap-1"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <LikeButton id={id} initialLikeState={isLiked} iconOnly />
+        <DropdownMenu
+          trigger={
+            <button
+              type="button"
+              className="rounded-full bg-black/50 p-1 text-white hover:bg-black/70 transition-all active:scale-90"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          }
+          items={menuItems}
+          align="right"
+          width="w-44"
+          dropUp
+        />
+      </div>
+
       {showPlaylistSelector &&
         createPortal(
           <PlaylistSelector
